@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using CommandLine;
+using CommandLine.Common;
 
-namespace TextTransCoder
+namespace CommandLine.TextTransCoder
 {
     public class ProgramArguments
     {
