@@ -200,7 +200,7 @@
 //            screen width. Added ParseHelp for /?.
 //    11/23/2004 Added support for default values.
 //////////////////////////////////////////////////////////////////////////////
-namespace CommandLine
+namespace CommandLine.Common
 {
     using System;
     using System.Diagnostics;
