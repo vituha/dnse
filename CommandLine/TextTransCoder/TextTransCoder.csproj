@@ -34,7 +34,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Include\CommandLineArguments.cs">
+    <Compile Include="..\..\Common\CommandLineArguments.cs">
       <Link>CommandLineArguments.cs</Link>
     </Compile>
     <Compile Include="Program.cs" />
