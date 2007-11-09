@@ -20,7 +20,7 @@ namespace Test
         {
             using (MethodTrace trace = MethodTrace.Monitor(MethodBase.GetCurrentMethod()))
             {
-                Trace.WriteLine("Insite DoSomething()");
+                Trace.WriteLine("Inside DoSomething()");
             }
         }
     }
