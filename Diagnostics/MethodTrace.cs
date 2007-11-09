@@ -78,11 +78,8 @@ namespace VS.Diagnostics
 
         public void Dispose()
         {
-            if (this.method != null)
-            {
-                TraceMethodEnd();
-                this.method = null;
-            }
+            TraceMethodEnd();
+            this.method = null;
         }
 
         #endregion
