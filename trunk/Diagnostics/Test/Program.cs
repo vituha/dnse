@@ -4,6 +4,7 @@ using System.Text;
 using VS.Diagnostics;
 using System.Reflection;
 using System.Diagnostics;
+using VS.Cache;
 
 namespace Test
 {
@@ -14,6 +15,18 @@ namespace Test
             Trace.WriteLine("============= Tracing Started ===========");
             DoSomething();
             Trace.WriteLine("=============  Tracing Ended  ===========");
+
+            CacheBase c1 = new LimitedCache(10);
+            for (int i = 0; i < 100; i++)
+            {
+                c1.Get<int>(GetRandom);
+            }
+        }
+
+        static Random rnd = new Random();
+        static int GetRandom()
+        {
+            return rnd.Next();
         }
 
         private static void DoSomething()
