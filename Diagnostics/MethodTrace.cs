@@ -4,6 +4,7 @@ using System.Text;
 using System.Reflection;
 using System.Diagnostics;
 using System.Collections;
+using VS.Cache;
 
 namespace VS.Diagnostics
 {
@@ -27,23 +28,7 @@ namespace VS.Diagnostics
         }
 
         #region PermanentCache
-        private Dictionary<Delegate, object> cache = new Dictionary<Delegate, object>();
-
-        protected delegate T ItemRetrieverDelegate<T>();
-        protected T GetCachedItem<T>(ItemRetrieverDelegate<T> retriever)
-        {
-            T value;
-            try
-            {
-                value = (T)this.cache[retriever];
-            }
-            catch (KeyNotFoundException)
-            {
-                value = retriever();
-                this.cache.Add(retriever, value);
-            }
-            return value;
-        }
+        private CacheBase cache = new LimitedCache(2);
         #endregion
 
         protected virtual string GetFormatedMethodName()
@@ -59,7 +44,7 @@ namespace VS.Diagnostics
         {
             get
             {
-                return GetCachedItem<string>(GetFormatedMethodName);
+                return this.cache.Get<string>(GetFormatedMethodName);
             }
         }
 
