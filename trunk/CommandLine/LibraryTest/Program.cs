@@ -4,8 +4,7 @@ using System.Text;
 using System.Reflection;
 using System.Diagnostics;
 
-using VS.Library.Diagnostics;
-using VS.Library.Cache;
+using VS.Library.Generics.Cache;
 
 namespace Test
 {
@@ -17,11 +16,13 @@ namespace Test
             DoSomething();
             Trace.WriteLine("=============  Tracing Ended  ===========");
 
-            CacheBase c1 = new LimitedCache(10);
+            LimitedCache<int, int> c1 = new LimitedCache<int, int>(20);
             for (int i = 0; i < 100; i++)
             {
-                c1.Get<int>(GetRandom);
+                c1.Get(i, GetRandom);
+                c1.Get(i % 10, GetRandom);
             }
+            DumpCache<int, int>(c1);
         }
 
         static Random rnd = new Random();
@@ -32,9 +33,20 @@ namespace Test
 
         private static void DoSomething()
         {
-            using (MethodTrace trace = MethodTrace.Monitor(MethodBase.GetCurrentMethod()))
+            using (MethodTraceImp trace = MethodTraceImp.Monitor(MethodBase.GetCurrentMethod()))
             {
                 Trace.WriteLine("Inside DoSomething()");
+            }
+        }
+
+        private static void DumpCache<TKey, TValue>(ICache<TKey, TValue> cache)
+        {
+            Trace.WriteLine("====== Cache contents =======");
+            foreach (TKey key in cache.Keys)
+            {
+                TValue value;
+                cache.TryGetValue(key, out value);
+                Trace.WriteLine(String.Format("Key: {0}, Value: {1}", key, value));
             }
         }
     }

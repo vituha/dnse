@@ -33,10 +33,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cache\CacheBase.cs" />
-    <Compile Include="Cache\LimitedCache.cs" />
-    <Compile Include="Comparison\FieldComparer.cs" />
-    <Compile Include="Comparison\PropertyComparer.cs" />
+    <Compile Include="Generics\Cache\CacheBase.cs" />
+    <Compile Include="Generics\Cache\GetterCache.cs" />
+    <Compile Include="Generics\Cache\ICache.cs" />
+    <Compile Include="Generics\Cache\LimitedCache.cs" />
+    <Compile Include="Generics\Common\Delegates.cs" />
+    <Compile Include="Generics\Comparison\ComplexComparer.cs" />
+    <Compile Include="Generics\Comparison\FieldComparer.cs" />
     <Compile Include="Diagnostics\MethodTrace.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
