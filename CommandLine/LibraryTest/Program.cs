@@ -33,9 +33,12 @@ namespace Test
 
         private static void DoSomething()
         {
+#if DEBUG
             using (MethodTraceImp trace = MethodTraceImp.Monitor(MethodBase.GetCurrentMethod()))
+#endif
             {
                 Trace.WriteLine("Inside DoSomething()");
+                System.Threading.Thread.Sleep(10);
             }
         }
 
