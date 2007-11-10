@@ -58,17 +58,17 @@ namespace VS.Library.Generics.Cache
 
         public TValue Get(TKey key, Delegate1<TValue> getter)
         {
-            return base.Get(key, (Delegate1<CacheItem>)delegate { return new CacheItem(key, getter()); }).Object;
+            return base.Get(key, delegate() { return new CacheItem(key, getter()); }).Object;
         }
 
         public TValue Get(TKey key, Delegate2<TValue, TKey> getter)
         {
-            return Get(key, (Delegate1<TValue>)delegate { return getter(key); });
+            return Get(key, delegate() { return getter(key); });
         }
 
         public TValue Get(TKey key, TValue defaultValue)
         {
-            return Get(key, (Delegate1<TValue>)delegate { return defaultValue; });
+            return base.Get(key, delegate(){ return new CacheItem(key, defaultValue); }).Object;
         }
 
         public bool TryGetValue(TKey key, out TValue value)

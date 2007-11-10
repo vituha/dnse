@@ -6,31 +6,45 @@ using System.Reflection;
 
 using VS.Library.Generics.Cache;
 using System.Diagnostics;
+using System.Timers;
 
 namespace Test
 {
-    public class MethodTraceImp : MethodTrace
+    public class MethodTraceImp : MethodTraceBase
     {
         public static MethodTraceImp Monitor(MethodBase method)
         {
-#if DEBUG
-            return new MethodTraceImp(method);
-#else
+#if NO_METHOD_TRACE
             return null;
+#else
+            return new MethodTraceImp(method);
 #endif
         }
 
         public MethodTraceImp(MethodBase method) : base(method) { }
 
         #region GetterCache
-        private IGetterCache<string> getterCache = new GetterCache<string>();
+        private IGetterCache<string> getterCache;
+        protected IGetterCache<string> GetterCache
+        {
+            get 
+            {
+                if (this.getterCache == null)
+                {
+                    return this.getterCache = new GetterCache<string>();
+                }
+                return this.getterCache;
+            }
+        }
         #endregion
+
+
 
         protected virtual string FormatedMethodName
         {
             get
             {
-                return this.getterCache.Get(
+                return GetterCache.Get(
                     delegate
                     {
                         return (
@@ -43,14 +57,17 @@ namespace Test
             }
         }
 
+        protected long startTicks;
         protected override void TraceMethodBegin()
         {
             Trace.WriteLine(this.FormatedMethodName + " Begin");
+            startTicks = DateTime.Now.Ticks;
         }
 
         protected override void TraceMethodEnd()
         {
-            Trace.WriteLine(this.FormatedMethodName + " End");
+            long ticks = (DateTime.Now.Ticks - this.startTicks);
+            Trace.WriteLine(String.Format(this.FormatedMethodName + " End. Took {0} ms", ticks / 10000.0));
         }
     }
 }

@@ -10,7 +10,7 @@ using VS.Library.Generics.Cache;
 
 namespace VS.Library.Diagnostics
 {
-    public abstract class MethodTrace: IDisposable
+    public abstract class MethodTraceBase: IDisposable
     {
         private MethodBase method;
         public MethodBase Method
@@ -18,25 +18,15 @@ namespace VS.Library.Diagnostics
             get { return this.method; }
         }
 
-        protected MethodTrace(MethodBase method)
+        protected MethodTraceBase(MethodBase method)
         {
             this.method = method;
             TraceMethodBegin();
         }
 
         protected abstract void TraceMethodBegin();
-/*
-        {
-            Trace.WriteLine(this.FormatedMethodName + " Begin");
-        }
- */
 
         protected abstract void TraceMethodEnd();
-/*
-        {
-            Trace.WriteLine(this.FormatedMethodName + " End");
-        }
- */
 
         #region IDisposable Members
 
