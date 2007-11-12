@@ -43,7 +43,7 @@ namespace Test
 
         private static string GetFormatedBlockName(StaticCodeBlockInfo info)
         {
-            if (info.IsAnonymous)
+            if (info == null || info.IsAnonymous)
             {
                 return "<anonymous block>";
             }
@@ -59,15 +59,15 @@ namespace Test
         }
 
         private static Dictionary<int, long> tickStorage = new Dictionary<int,long>();
-        private static void BlockStarted(int pinHash, StaticCodeBlockInfo context)
+        private static void BlockStarted(int pinId, StaticCodeBlockInfo context)
         {
             Trace.WriteLine(GetFormatedBlockName(context) + " Begin");
-            tickStorage.Add(pinHash, DateTime.Now.Ticks);
+            tickStorage.Add(pinId, DateTime.Now.Ticks);
         }
 
-        private static void BlockFinished(int pinHash, StaticCodeBlockInfo context)
+        private static void BlockFinished(int pinId, StaticCodeBlockInfo context)
         {
-            long ticks = (DateTime.Now.Ticks - tickStorage[pinHash]);
+            long ticks = (DateTime.Now.Ticks - tickStorage[pinId]);
             Trace.WriteLine(String.Format(GetFormatedBlockName(context) + " End. Took {0} ms", ticks / 10000.0));
         }
     }

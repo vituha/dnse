@@ -51,7 +51,7 @@ namespace Test
         private static void DumpCache<TKey, TValue>(ICache<TKey, TValue> cache)
         {
             Trace.WriteLine("====== Cache contents =======");
-            using (CodeTracker.Track(new StaticCodeBlockInfo()))
+            using (CodeTracker.Track())
             {
                 foreach (TKey key in cache.Keys)
                 {
