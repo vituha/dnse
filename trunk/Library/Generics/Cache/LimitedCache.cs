@@ -93,7 +93,9 @@ namespace VS.Library.Generics.Cache
             items.Sort(new FieldComparer<CacheItem, DateTime>("Created"));
             for (int i = 0; i < itemsToDelete; i++)
             {
-                this.Storage.Remove(((CacheItem)items[i]).Key);
+                CacheItem item = (CacheItem)items[i];
+                this.Storage.Remove(item.Key);
+                // Trace.WriteLine(String.Format("Removing item with date {0}", item.Created.Ticks));
             }
             Trace.WriteLine(String.Format("Packed to {0}", this.Storage.Count));
         }
