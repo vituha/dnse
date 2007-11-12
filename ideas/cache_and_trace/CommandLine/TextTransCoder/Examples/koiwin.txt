@@ -1,0 +1,2 @@
+-ie:koi8-r 
+-oe:windows-1251 
