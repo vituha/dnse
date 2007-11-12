@@ -13,19 +13,22 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            MethodTracer.Activate();
-            Trace.WriteLine("============= Tracing Started ===========");
-            DoSomething();
-            Trace.WriteLine("=============  Tracing Ended  ===========");
+            CodeTracer.Activate();
 
-            LimitedCache<int, int> c1 = new LimitedCache<int, int>(20);
-            for (int i = 0; i < 100; i++)
+            MethodTrackDemo();
+            PopulateAndDisplayCache();
+
+            CodeTracer.DeActivate();
+        }
+
+        private static void MethodTrackDemo()
+        {
+#if DEBUG
+            using (CodeTracker.Track(MethodBase.GetCurrentMethod()))
+#endif
             {
-                c1.Get(i, GetRandom);
-                c1.Get(i % 10, GetRandom);
+                Trace.WriteLine("Inside 'MethodTrackDemo'");
             }
-            DumpCache<int, int>(c1);
-            MethodTracer.DeActivate();
         }
 
         static Random rnd = new Random();
@@ -34,24 +37,23 @@ namespace Test
             return rnd.Next();
         }
 
-        private static void DoSomething()
+        private static void PopulateAndDisplayCache()
         {
-#if DEBUG
-            using (MethodTracker.Track(MethodBase.GetCurrentMethod()))
-#endif
+            LimitedCache<int, int> c1 = new LimitedCache<int, int>(20);
+            for (int i = 0; i < 100; i++)
             {
-                Trace.WriteLine("Inside DoSomething()");
-                System.Threading.Thread.Sleep(10);
+                c1.Get(i, GetRandom);
+                c1.Get(i % 10, GetRandom);
             }
+            DumpCache<int, int>(c1);
         }
+
 
         private static void DumpCache<TKey, TValue>(ICache<TKey, TValue> cache)
         {
-#if DEBUG
-            using (MethodTracker.Track(null))
-#endif
+            Trace.WriteLine("====== Cache contents =======");
+            using (CodeTracker.Track(MethodBase.GetCurrentMethod(), "dumping loop"))
             {
-                Trace.WriteLine("====== Cache contents =======");
                 foreach (TKey key in cache.Keys)
                 {
                     TValue value;
