@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Diagnostics;
 
 using VS.Library.Generics.Cache;
+using VS.Library.Diagnostics;
 
 namespace Test
 {
@@ -12,6 +13,7 @@ namespace Test
     {
         static void Main(string[] args)
         {
+            MethodTracer.Activate();
             Trace.WriteLine("============= Tracing Started ===========");
             DoSomething();
             Trace.WriteLine("=============  Tracing Ended  ===========");
@@ -23,6 +25,7 @@ namespace Test
                 c1.Get(i % 10, GetRandom);
             }
             DumpCache<int, int>(c1);
+            MethodTracer.DeActivate();
         }
 
         static Random rnd = new Random();
@@ -34,7 +37,7 @@ namespace Test
         private static void DoSomething()
         {
 #if DEBUG
-            using (MethodTraceImp trace = MethodTraceImp.Monitor(MethodBase.GetCurrentMethod()))
+            using (MethodTracker.Track(MethodBase.GetCurrentMethod()))
 #endif
             {
                 Trace.WriteLine("Inside DoSomething()");
@@ -44,12 +47,17 @@ namespace Test
 
         private static void DumpCache<TKey, TValue>(ICache<TKey, TValue> cache)
         {
-            Trace.WriteLine("====== Cache contents =======");
-            foreach (TKey key in cache.Keys)
+#if DEBUG
+            using (MethodTracker.Track(null))
+#endif
             {
-                TValue value;
-                cache.TryGetValue(key, out value);
-                Trace.WriteLine(String.Format("Key: {0}, Value: {1}", key, value));
+                Trace.WriteLine("====== Cache contents =======");
+                foreach (TKey key in cache.Keys)
+                {
+                    TValue value;
+                    cache.TryGetValue(key, out value);
+                    Trace.WriteLine(String.Format("Key: {0}, Value: {1}", key, value));
+                }
             }
         }
     }
