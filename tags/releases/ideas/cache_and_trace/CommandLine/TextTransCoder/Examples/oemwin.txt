@@ -1,0 +1,2 @@
+-ie:cp866 
+-oe:windows-1251 
