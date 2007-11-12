@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using VS.Library.Diagnostics;
 using System.Reflection;
 
 using VS.Library.Generics.Cache;
@@ -41,8 +40,12 @@ namespace Test
         }
         #endregion
 
-        private static string GetFormatedBlockName(CodeTracker.CodeBlockInfo info)
+        private static string GetFormatedBlockName(CodeBlockInfo info)
         {
+            if (info == null)
+            {
+                return "<anonymous block>";
+            }
             string pattern = "{0}() [tag: {1}]";
 
             return (
@@ -54,21 +57,28 @@ namespace Test
                  );
         }
 
-        private static Dictionary<CodeTracker.CodeBlockInfo, long> tickStorage = new Dictionary<CodeTracker.CodeBlockInfo,long>();
+        private static Dictionary<CodeBlockInfo, long> tickStorage = new Dictionary<CodeBlockInfo,long>();
         private static void BlockStarted(Object sender, EventArgs args)
         {
-            CodeTracker.CodeBlockInfo info = (CodeTracker.CodeBlockInfo)sender;
+            CodeBlockInfo info = (CodeBlockInfo)sender;
 
             Trace.WriteLine(GetFormatedBlockName(info) + " Begin");
-            tickStorage.Add(info, DateTime.Now.Ticks);
+            if (info != null)
+            {
+                tickStorage.Add(info, DateTime.Now.Ticks);
+            }
         }
 
         private static void BlockFinished(Object sender, EventArgs args)
         {
-            CodeTracker.CodeBlockInfo info = (CodeTracker.CodeBlockInfo)sender;
-            long ticks = (DateTime.Now.Ticks - tickStorage[info]);
-
-            Trace.WriteLine(String.Format(GetFormatedBlockName(info) + " End. Took {0} ms", ticks / 10000.0));
+            CodeBlockInfo info = (CodeBlockInfo)sender;
+            Trace.Write(GetFormatedBlockName(info) + " End.");
+            if (info != null)
+            {
+                long ticks = (DateTime.Now.Ticks - tickStorage[info]);
+                Trace.Write(String.Format(" Took {0} ms", ticks / 10000.0));
+            }
+            Trace.WriteLine("");
         }
     }
 }

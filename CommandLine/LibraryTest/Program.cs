@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Diagnostics;
 
 using VS.Library.Generics.Cache;
-using VS.Library.Diagnostics;
 
 namespace Test
 {
@@ -24,7 +23,7 @@ namespace Test
         private static void MethodTrackDemo()
         {
 #if DEBUG
-            using (CodeTracker.Track(MethodBase.GetCurrentMethod()))
+            using (CodeTracker.Track(new CodeBlockInfo(MethodBase.GetCurrentMethod(), "first block")))
 #endif
             {
                 Trace.WriteLine("Inside 'MethodTrackDemo'");
@@ -52,7 +51,7 @@ namespace Test
         private static void DumpCache<TKey, TValue>(ICache<TKey, TValue> cache)
         {
             Trace.WriteLine("====== Cache contents =======");
-            using (CodeTracker.Track(MethodBase.GetCurrentMethod(), "dumping loop"))
+            using (CodeTracker.Track())
             {
                 foreach (TKey key in cache.Keys)
                 {
