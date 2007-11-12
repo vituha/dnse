@@ -33,7 +33,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Diagnostics\MethodTraceBase.cs" />
+    <Compile Include="Diagnostics\MethodTracker.cs" />
     <Compile Include="Generics\Cache\CacheBase.cs" />
     <Compile Include="Generics\Cache\GetterCache.cs" />
     <Compile Include="Generics\Cache\ICache.cs" />
