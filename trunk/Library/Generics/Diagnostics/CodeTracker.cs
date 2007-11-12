@@ -42,8 +42,9 @@ namespace VS.Library.Generics.Diagnostics
             return instance.DoTrack(new Pin(null));
         }
 
-        public event EventHandler CodeBlockEnter;
-        public event EventHandler CodeBlockExit;
+        public delegate void CodeTrackerEventHandler(int pinHash, TContext context);
+        public event CodeTrackerEventHandler CodeBlockEnter;
+        public event CodeTrackerEventHandler CodeBlockExit;
 
         private IDisposable DoTrack(Pin pin)
         {
@@ -54,13 +55,13 @@ namespace VS.Library.Generics.Diagnostics
         private void DoMethodStarted(Pin pin)
         {
             if (this.CodeBlockEnter != null)
-                CodeBlockEnter(pin.context, EventArgs.Empty);
+                CodeBlockEnter(pin.GetHashCode(), pin.context);
         }
 
         private void DoMethodFinished(Pin pin)
         {
             if (this.CodeBlockExit != null)
-                CodeBlockExit(pin.context, EventArgs.Empty);
+                CodeBlockExit(pin.GetHashCode(), pin.context);
         }
     }
 }
