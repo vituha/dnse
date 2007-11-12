@@ -6,7 +6,7 @@ using VS.Library.Generics.Diagnostics;
 
 namespace Test
 {
-    public class CodeBlockInfo
+    public class StaticCodeBlockInfo
     {
         private string tag;
         public string Tag
@@ -20,32 +20,34 @@ namespace Test
             get { return this.method; }
         }
 
-        public CodeBlockInfo()
+        public virtual bool IsAnonymous
         {
-            this.tag = String.Empty;
-            this.method = null;
+            get { return String.IsNullOrEmpty(this.tag) && this.method == null; }
         }
 
-        public CodeBlockInfo(string tag)
+        public StaticCodeBlockInfo()
+            : this(null, null)
         {
-            this.tag = tag;
-            this.method = null;
         }
 
-        public CodeBlockInfo(MethodBase method, string tag)
+        public StaticCodeBlockInfo(string tag)
+            :this(null, tag)
+        {
+        }
+
+        public StaticCodeBlockInfo(MethodBase method, string tag)
         {
             this.tag = tag;
             this.method = method;
         }
 
-        public CodeBlockInfo(MethodBase method)
+        public StaticCodeBlockInfo(MethodBase method)
+            :this(method, null)
         {
-            this.tag = String.Empty;
-            this.method = method;
         }
     }
 
-    public class InstanceCodeBlockInfo: CodeBlockInfo
+    public class CodeBlockInfo: StaticCodeBlockInfo
     {
         private object instance;
         public object Instance
@@ -53,13 +55,21 @@ namespace Test
             get { return Instance; }
         }
 
-        public InstanceCodeBlockInfo(object instance, MethodBase method, string tag)
+        public override bool IsAnonymous
+        {
+            get
+            {
+                return this.instance == null && base.IsAnonymous;
+            }
+        }
+
+        public CodeBlockInfo(object instance, MethodBase method, string tag)
             : base(method, tag)
         {
             this.instance = instance;
         }
     }
 
-    public class CodeTracker : CodeTracker<CodeBlockInfo>
+    public class CodeTracker : CodeTracker<StaticCodeBlockInfo>
     { }
 }

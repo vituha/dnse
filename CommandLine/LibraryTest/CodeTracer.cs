@@ -6,6 +6,7 @@ using System.Reflection;
 using VS.Library.Generics.Cache;
 using System.Diagnostics;
 using System.Timers;
+using VS.Library.Generics.Diagnostics;
 
 namespace Test
 {
@@ -40,9 +41,9 @@ namespace Test
         }
         #endregion
 
-        private static string GetFormatedBlockName(CodeBlockInfo info)
+        private static string GetFormatedBlockName(StaticCodeBlockInfo info)
         {
-            if (info == null)
+            if (info.IsAnonymous)
             {
                 return "<anonymous block>";
             }
@@ -57,28 +58,17 @@ namespace Test
                  );
         }
 
-        private static Dictionary<CodeBlockInfo, long> tickStorage = new Dictionary<CodeBlockInfo,long>();
-        private static void BlockStarted(Object sender, EventArgs args)
+        private static Dictionary<int, long> tickStorage = new Dictionary<int,long>();
+        private static void BlockStarted(int pinHash, StaticCodeBlockInfo context)
         {
-            CodeBlockInfo info = (CodeBlockInfo)sender;
-
-            Trace.WriteLine(GetFormatedBlockName(info) + " Begin");
-            if (info != null)
-            {
-                tickStorage.Add(info, DateTime.Now.Ticks);
-            }
+            Trace.WriteLine(GetFormatedBlockName(context) + " Begin");
+            tickStorage.Add(pinHash, DateTime.Now.Ticks);
         }
 
-        private static void BlockFinished(Object sender, EventArgs args)
+        private static void BlockFinished(int pinHash, StaticCodeBlockInfo context)
         {
-            CodeBlockInfo info = (CodeBlockInfo)sender;
-            Trace.Write(GetFormatedBlockName(info) + " End.");
-            if (info != null)
-            {
-                long ticks = (DateTime.Now.Ticks - tickStorage[info]);
-                Trace.Write(String.Format(" Took {0} ms", ticks / 10000.0));
-            }
-            Trace.WriteLine("");
+            long ticks = (DateTime.Now.Ticks - tickStorage[pinHash]);
+            Trace.WriteLine(String.Format(GetFormatedBlockName(context) + " End. Took {0} ms", ticks / 10000.0));
         }
     }
 }

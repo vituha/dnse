@@ -23,7 +23,7 @@ namespace Test
         private static void MethodTrackDemo()
         {
 #if DEBUG
-            using (CodeTracker.Track(new CodeBlockInfo(MethodBase.GetCurrentMethod(), "first block")))
+            using (CodeTracker.Track(new StaticCodeBlockInfo(MethodBase.GetCurrentMethod(), "main method block")))
 #endif
             {
                 Trace.WriteLine("Inside 'MethodTrackDemo'");
@@ -51,7 +51,7 @@ namespace Test
         private static void DumpCache<TKey, TValue>(ICache<TKey, TValue> cache)
         {
             Trace.WriteLine("====== Cache contents =======");
-            using (CodeTracker.Track())
+            using (CodeTracker.Track(new StaticCodeBlockInfo()))
             {
                 foreach (TKey key in cache.Keys)
                 {
