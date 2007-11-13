@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Text;
 
 using VS.Library.Generics.Common;
+using VS.Library.Generics.Common.Delegates;
 
 namespace VS.Library.Generics.Cache
 {
-    public interface IGetterCache<TValue>: ICache<Delegate1<TValue>, TValue>
+    public interface IGetterCache<TValue>: ICache<D0<TValue>, TValue>
     {
-        TValue Get(Delegate1<TValue> key);
+        TValue Get(D0<TValue> key);
     }
     
-    public class GetterCache<TValue> : CacheBase<Delegate1<TValue>, TValue>, IGetterCache<TValue>
+    public class GetterCache<TValue> : CacheBase<D0<TValue>, TValue>, IGetterCache<TValue>
     {
-        public TValue Get(Delegate1<TValue> key)
+        public TValue Get(D0<TValue> key)
         {
             return Get(key, key);
         }
