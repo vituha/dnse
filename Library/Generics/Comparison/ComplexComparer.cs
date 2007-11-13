@@ -3,32 +3,71 @@ using System.Collections.Generic;
 using System.Text;
 using System.Collections;
 
+using VS.Library.Generics.Common;
+using VS.Library.Generics.Common.Delegates;
+using System.Diagnostics;
+
 namespace VS.Library.Generics.Comparison
 {
-    public class ComplexComparer<T> : IComparer<T>
+    /// <summary>
+    /// Represents a single key participating in complex comparison
+    /// </summary>
+    public class SortKey<T>
     {
-        public delegate object ValueGetterDelegate(T context);
-        public class SortKey
+        /// <summary>
+        /// comparable value getter
+        /// </summary>
+        public D1<object, T> ValueGetter;
+        /// <summary>
+        /// indicates whether to negate the result received from comparer
+        /// </summary>
+        public bool Negative;
+        /// <summary>
+        /// comparer to use for the value
+        /// </summary>
+        public IComparer Comparer;
+
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="getter">comparable value getter</param>
+        /// <param name="negative">indicates whether to negate the result of comparison</param>
+        /// <param name="comparer">comparer to use for the value</param>
+        public SortKey(D1<object, T> getter, bool negative, IComparer comparer)
         {
-            public ValueGetterDelegate ValueGetter;
-            public bool Negative;
-            public IComparer Comparer;
-
-            public SortKey(ValueGetterDelegate getter, bool ascending, IComparer comparer)
-            {
-                this.ValueGetter = getter;
-                this.Negative = ascending;
-                this.Comparer = comparer;
-            }
-
-            public SortKey(ValueGetterDelegate getter, bool ascending)
-                : this(getter, ascending, System.Collections.Comparer.Default) { }
-
-            public SortKey(ValueGetterDelegate getter)
-                : this(getter, true, System.Collections.Comparer.Default) { }
+            this.ValueGetter = getter;
+            this.Negative = negative;
+            this.Comparer = comparer;
         }
 
-        private IEnumerable<SortKey> keys;
+        /// <summary>
+        /// Creates a new instance using default comparer
+        /// </summary>
+        /// <param name="getter">comparable value getter</param>
+        /// <param name="negative">indicates whether to negate the result of comparison</param>
+        public SortKey(D1<object, T> getter, bool negative)
+            : this(getter, negative, System.Collections.Comparer.Default) { }
+
+        /// <summary>
+        /// Creates a new instance using default comparer and no negation 
+        /// </summary>
+        /// <param name="getter">comparable value getter</param>
+        public SortKey(D1<object, T> getter)
+            : this(getter, true, System.Collections.Comparer.Default) { }
+    }
+    
+    public class ComplexComparer<T> : IComparer<T>, IComparer
+    {
+        private IEnumerable<SortKey<T>> keys;
+        public IEnumerable<SortKey<T>> Keys
+        {
+            get { return keys; }
+            set 
+            {
+                Debug.Assert(value != null);
+                keys = value; 
+            }
+        }
 
         #region IComparer<T> Members
 
@@ -46,13 +85,13 @@ namespace VS.Library.Generics.Comparison
             try
             {
                 int result = 0;
-                IEnumerator<SortKey> en = keys.GetEnumerator();
+                IEnumerator<SortKey<T>> en = keys.GetEnumerator();
                 bool itemAvailable = en.MoveNext();
                 if (itemAvailable)
                 {
                     do
                     {
-                        SortKey key = en.Current;
+                        SortKey<T> key = en.Current;
                         result = key.Comparer.Compare(key.ValueGetter(x), key.ValueGetter(y));
                         if (key.Negative) result = -result;
                         itemAvailable = en.MoveNext();
@@ -63,9 +102,18 @@ namespace VS.Library.Generics.Comparison
             }
             catch (Exception e)
             {
-                ApplicationException outer = new ApplicationException("PropertyComparer: Unable to compare two objects", e);
+                ApplicationException outer = new ApplicationException("Unable to compare two objects", e);
                 throw outer;
             }
+        }
+
+        #endregion
+
+        #region IComparer Members
+
+        int IComparer.Compare(object x, object y)
+        {
+            return (this as IComparer<T>).Compare((T)x, (T)y);
         }
 
         #endregion

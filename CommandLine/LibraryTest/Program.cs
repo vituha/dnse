@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Diagnostics;
 
 using VS.Library.Generics.Cache;
+using VS.Library.Generics.Comparison;
 
 namespace Test
 {
@@ -16,6 +17,7 @@ namespace Test
 
             MethodTrackDemo();
             PopulateAndDisplayCache();
+            TestComparison();
 
             CodeTracer.DeActivate();
         }
@@ -38,7 +40,7 @@ namespace Test
 
         private static void PopulateAndDisplayCache()
         {
-            LimitedCache<int, int> c1 = new LimitedCache<int, int>(20);
+            LimitedCache<int, int> c1 = new LimitedCache<int, int>(10);
             for (int i = 0; i < 100; i++)
             {
                 c1.Get(i, GetRandom);
@@ -59,6 +61,31 @@ namespace Test
                     cache.TryGetValue(key, out value);
                     Trace.WriteLine(String.Format("Key: {0}, Value: {1}", key, value));
                 }
+            }
+        }
+
+        private static void TestComparison()
+        {
+            List<KeyValuePair<int, string>> list = new List<KeyValuePair<int, string>>();
+            list.Add( new KeyValuePair<int,string>(1, "Washington"));
+            list.Add( new KeyValuePair<int,string>(2, "Texas"));
+            list.Add( new KeyValuePair<int,string>(3, "Ogayo"));
+            list.Add( new KeyValuePair<int,string>(4, "Alaska"));
+            list.Add( new KeyValuePair<int,string>(5, "California"));
+
+            List<SortKey<KeyValuePair<int, string>>> keys = new List<SortKey<KeyValuePair<int, string>>>();
+            keys.Add(
+                new SortKey<KeyValuePair<int, string>>(
+                    delegate(KeyValuePair<int, string> item) { return item.Key; }, false
+                )
+            );
+            ComplexComparer<KeyValuePair<int, string>> comparer = new ComplexComparer<KeyValuePair<int, string>>();
+            comparer.Keys = keys;
+            list.Sort(comparer);
+
+            foreach (KeyValuePair<int, string> pair in list)
+            {
+                Trace.WriteLine(pair.Key);
             }
         }
     }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections;
 
 using VS.Library.Generics.Common;
+using VS.Library.Generics.Common.Delegates;
 
 namespace VS.Library.Generics.Cache
 {
@@ -21,7 +22,7 @@ namespace VS.Library.Generics.Cache
             get { return this.cache.Keys; }
         }
 
-        public TValue Get(TKey key, Delegate1<TValue> getter)
+        public TValue Get(TKey key, D0<TValue> getter)
         {
             TValue value;
             if (!TryGetValue(key, out value))
@@ -32,9 +33,9 @@ namespace VS.Library.Generics.Cache
             return value;
         }
 
-        public TValue Get(TKey key, Delegate2<TValue, TKey> getter)
+        public TValue Get(TKey key, D1<TValue, TKey> getter)
         {
-            return Get(key, (Delegate1<TValue>)delegate { return getter(key); });
+            return Get(key, (D0<TValue>)delegate { return getter(key); });
         }
 
         public TValue Get(TKey key, TValue defaultValue)

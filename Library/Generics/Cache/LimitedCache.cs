@@ -6,6 +6,7 @@ using System.Diagnostics;
 
 using VS.Library.Generics.Common;
 using VS.Library.Generics.Comparison;
+using VS.Library.Generics.Common.Delegates;
 
 namespace VS.Library.Generics.Cache
 {
@@ -56,12 +57,12 @@ namespace VS.Library.Generics.Cache
             Add(key, new CacheItem(key, value));
         }
 
-        public TValue Get(TKey key, Delegate1<TValue> getter)
+        public TValue Get(TKey key, D0<TValue> getter)
         {
             return base.Get(key, delegate() { return new CacheItem(key, getter()); }).Object;
         }
 
-        public TValue Get(TKey key, Delegate2<TValue, TKey> getter)
+        public TValue Get(TKey key, D1<TValue, TKey> getter)
         {
             return Get(key, delegate() { return getter(key); });
         }
@@ -90,7 +91,16 @@ namespace VS.Library.Generics.Cache
         {
             int itemsToDelete = this.Storage.Count / 2;
             ArrayList items = new ArrayList(this.Storage.Values);
-            items.Sort(new FieldComparer<CacheItem, DateTime>("Created"));
+            List<SortKey<CacheItem>> keys = new List<SortKey<CacheItem>>();
+            keys.Add(
+                new SortKey<CacheItem>(
+                    delegate (CacheItem item) { return item.Created; }, true
+                )
+            );
+            ComplexComparer<CacheItem> comparer = new ComplexComparer<CacheItem>();
+            comparer.Keys = keys;
+            items.Sort(comparer);
+            //items.Sort(new FieldComparer<CacheItem, DateTime>("Created"));
             for (int i = 0; i < itemsToDelete; i++)
             {
                 CacheItem item = (CacheItem)items[i];
