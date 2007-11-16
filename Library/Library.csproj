@@ -40,7 +40,7 @@
     <Compile Include="Generics\Common\Delegates.cs" />
     <Compile Include="Generics\Comparison\ComplexComparer.cs" />
     <Compile Include="Generics\Comparison\FieldComparer.cs" />
-    <Compile Include="Generics\Diagnostics\CodeTracker.cs" />
+    <Compile Include="Generics\Diagnostics\Code.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
