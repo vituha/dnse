@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 
-namespace VS.Library.Generics.Diagnostics
+namespace VS.Library.Diagnostics
 {
-    public class CodeEventArgs<TContext>: EventArgs
+    public class CodeEventArgs: EventArgs
     {
         private object instance;
 
@@ -19,29 +19,50 @@ namespace VS.Library.Generics.Diagnostics
         {
             get { return method; }
         }
-        private TContext context;
+        private int blockId;
 
-        public TContext Context
+        public int BlockId
         {
-            get { return context; }
+            get { return blockId; }
         }
 
-        public CodeEventArgs(object instance, MethodBase method, TContext context)
+        internal CodeEventArgs(Code.Pin pin)
         {
-            this.instance = instance;
-            this.method = method;
-            this.context = context;
+            this.blockId = pin.GetHashCode();
+            this.instance = pin.Instance;
+            this.method = pin.Method;
         }
     }
 
-    public class Code<TContext> where TContext: class
+    public class Code
     {
-        internal class Pin : CodeEventArgs<TContext>, IDisposable
+        internal class Pin : IDisposable
         {
-            private bool disposed = false;
-            public Pin(object instance, MethodBase method, TContext context)
-                : base(instance, method, context)
+            private object _instance;
+
+            public object Instance
             {
+                get { return _instance; }
+            }
+            private MethodBase method;
+
+            public MethodBase Method
+            {
+                get { return method; }
+            }
+            private object context;
+
+            public object Context
+            {
+                get { return context; }
+            }
+            
+            private bool disposed = false;
+            public Pin(object _instance, MethodBase method, object context)
+            {
+                this._instance = _instance;
+                this.method = method;
+                this.context = context;
             }
 
             #region IDisposable Members
@@ -57,10 +78,10 @@ namespace VS.Library.Generics.Diagnostics
             #endregion
         }
 
-        private static Code<TContext> instance = new Code<TContext>();
-        public static Code<TContext> Instance
+        private static Code instance = new Code();
+        public static Code Instance
         {
-            get { return Code<TContext>.instance; }
+            get { return Code.instance; }
         }
 
         public static IDisposable Track()
@@ -68,22 +89,22 @@ namespace VS.Library.Generics.Diagnostics
             return instance.DoTrack(new Pin(null, null, null));
         }
 
-        public static IDisposable Track(TContext context)
+        public static IDisposable Track(object context)
         {
             return instance.DoTrack(new Pin(null, null, context));
         }
 
-        public static IDisposable Track(MethodBase method, TContext context)
+        public static IDisposable Track(MethodBase method, object context)
         {
             return instance.DoTrack(new Pin(null, method, context));
         }
 
-        public static IDisposable Track(object _instance, MethodBase method, TContext context)
+        public static IDisposable Track(object _instance, MethodBase method, object context)
         {
             return instance.DoTrack(new Pin(_instance, method, context));
         }
 
-        public delegate void CodeTrackerEventHandler(int blockId, CodeEventArgs<TContext> args);
+        public delegate void CodeTrackerEventHandler(object context, CodeEventArgs args);
         public event CodeTrackerEventHandler CodeBlockEnter;
         public event CodeTrackerEventHandler CodeBlockExit;
 
@@ -96,13 +117,13 @@ namespace VS.Library.Generics.Diagnostics
         private void DoMethodStarted(Pin pin)
         {
             if (this.CodeBlockEnter != null)
-                CodeBlockEnter(pin.GetHashCode(), pin);
+                CodeBlockEnter(pin.Context, new CodeEventArgs(pin));
         }
 
         private void DoMethodFinished(Pin pin)
         {
             if (this.CodeBlockExit != null)
-                CodeBlockExit(pin.GetHashCode(), pin);
+                CodeBlockExit(pin.Context, new CodeEventArgs(pin));
         }
     }
 }

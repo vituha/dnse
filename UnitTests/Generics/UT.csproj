@@ -4,11 +4,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F881754A-FAC3-4250-AD43-00DD15C95465}</ProjectGuid>
+    <ProjectGuid>{1D9A60FA-5FED-4E83-B0D5-31DF7383A70E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VS.Library</RootNamespace>
-    <AssemblyName>VS.Library</AssemblyName>
+    <RootNamespace>VS.Library.UT</RootNamespace>
+    <AssemblyName>VS.Library.UT</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -28,20 +28,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.4.3.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Generics\Cache\CacheBase.cs" />
-    <Compile Include="Generics\Cache\GetterCache.cs" />
-    <Compile Include="Generics\Cache\ICache.cs" />
-    <Compile Include="Generics\Cache\LimitedCache.cs" />
-    <Compile Include="Generics\Common\Delegates.cs" />
-    <Compile Include="Generics\Comparison\ComplexComparer.cs" />
-    <Compile Include="Generics\Comparison\FieldComparer.cs" />
     <Compile Include="Diagnostics\Code.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Library\Library.csproj">
+      <Project>{F881754A-FAC3-4250-AD43-00DD15C95465}</Project>
+      <Name>Library</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

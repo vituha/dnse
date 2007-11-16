@@ -4,11 +4,13 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{1D9A60FA-5FED-4E83-B0D5-31DF7383A70E}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{BD835073-AE22-4A24-B192-A301205A33C0}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VS.Generics.UT</RootNamespace>
-    <AssemblyName>Generics.UT</AssemblyName>
+    <RootNamespace>Code</RootNamespace>
+    <AssemblyName>Code</AssemblyName>
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -28,17 +30,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.4.3.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Diagnostics\Code.cs" />
+    <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Library\Library.csproj">
+    <ProjectReference Include="..\..\..\Library\Library.csproj">
       <Project>{F881754A-FAC3-4250-AD43-00DD15C95465}</Project>
       <Name>Library</Name>
     </ProjectReference>
