@@ -10,19 +10,21 @@ using VS.Library.Generics.Diagnostics;
 
 namespace Test
 {
+    public class SimpleCodeTracker : Code<string> { };
+
     public class CodeTracer
     {
         public static void Activate()
         {
-            CodeTracker.Instance.CodeBlockEnter += BlockStarted;
-            CodeTracker.Instance.CodeBlockExit += BlockFinished;
+            SimpleCodeTracker.Instance.CodeBlockEnter += BlockStarted;
+            SimpleCodeTracker.Instance.CodeBlockExit += BlockFinished;
             Trace.WriteLine("============= Tracing Activated ===========");
         }
 
         public static void DeActivate()
         {
-            CodeTracker.Instance.CodeBlockEnter -= BlockStarted;
-            CodeTracker.Instance.CodeBlockExit -= BlockFinished;
+            SimpleCodeTracker.Instance.CodeBlockEnter -= BlockStarted;
+            SimpleCodeTracker.Instance.CodeBlockExit -= BlockFinished;
             Trace.WriteLine("=============  Tracing DeActivated  ===========");
         }
 
@@ -41,34 +43,43 @@ namespace Test
         }
         #endregion
 
-        private static string GetFormatedBlockName(StaticCodeBlockInfo info)
+        private static string GetFormatedBlockName(int blockId, object instance, MethodBase method, string tag)
         {
-            if (info == null || info.IsAnonymous)
+            if (method == null)
             {
-                return "<anonymous block>";
+                return String.Format("<anonymous block, id={0}>", blockId);
             }
             string pattern = "{0}() [tag: {1}]";
 
             return (
                 String.Format(
                     pattern,
-                    info.Method == null ? "<unknown>" : info.Method.DeclaringType.Name + '.' + info.Method.Name,
-                    info.Tag == null ? "<empty>" : info.Tag
+                    method == null ? "<unknown>" : method.DeclaringType.Name + '.' + method.Name,
+                    String.IsNullOrEmpty(tag) ? "<empty>" : tag
                     )
                  );
         }
 
         private static Dictionary<int, long> tickStorage = new Dictionary<int,long>();
-        private static void BlockStarted(int pinId, StaticCodeBlockInfo context)
+        private static void BlockStarted(int blockId, CodeEventArgs<string> args)
         {
-            Trace.WriteLine(GetFormatedBlockName(context) + " Begin");
-            tickStorage.Add(pinId, DateTime.Now.Ticks);
+            Trace.WriteLine(
+                GetFormatedBlockName(blockId, args.Instance, args.Method, args.Context)
+                + " Begin"
+            );
+            tickStorage.Add(blockId, DateTime.Now.Ticks);
         }
 
-        private static void BlockFinished(int pinId, StaticCodeBlockInfo context)
+        private static void BlockFinished(int blockId, CodeEventArgs<string> args)
         {
-            long ticks = (DateTime.Now.Ticks - tickStorage[pinId]);
-            Trace.WriteLine(String.Format(GetFormatedBlockName(context) + " End. Took {0} ms", ticks / 10000.0));
+            long ticks = (DateTime.Now.Ticks - tickStorage[blockId]);
+            Trace.WriteLine(
+                String.Format(
+                    GetFormatedBlockName(blockId, args.Instance, args.Method, args.Context)
+                    + " End. Took {0} ms"
+                    , ticks / 10000.0
+               )
+            );
         }
     }
 }
