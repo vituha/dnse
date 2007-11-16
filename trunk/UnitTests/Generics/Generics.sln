@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generics", "Generics.csproj
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testables", "Testables", "{A189CB8C-5669-4D8E-9032-9D2CB9890DAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library", "..\..\..\Library\Library.csproj", "{F881754A-FAC3-4250-AD43-00DD15C95465}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library", "..\..\Library\Library.csproj", "{F881754A-FAC3-4250-AD43-00DD15C95465}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
