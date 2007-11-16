@@ -2,28 +2,28 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
-using VS.Library.Generics.Diagnostics;
+using VS.Library.Diagnostics;
 using System.Reflection;
 
-namespace VS.Generics.UT.Diagnostics
+namespace VS.Library.UT.Diagnostics
 {
     [TestFixture]
-    public class Code
+    public class CodeFixture
     {
         Dictionary<string, int> blocks = new Dictionary<string, int>();
 
         [SetUp]
         public void Init()
         {
-            Code<string>.Instance.CodeBlockEnter += OnBlockStart;
-            Code<string>.Instance.CodeBlockExit += OnBlockEnd;
+            Code.Instance.CodeBlockEnter += OnBlockStart;
+            Code.Instance.CodeBlockExit += OnBlockEnd;
         }
 
         [TearDown]
         public void DeInit()
         {
-            Code<string>.Instance.CodeBlockEnter -= OnBlockStart;
-            Code<string>.Instance.CodeBlockExit -= OnBlockEnd;
+            Code.Instance.CodeBlockEnter -= OnBlockStart;
+            Code.Instance.CodeBlockExit -= OnBlockEnd;
             this.blocks.Clear();
         }
 
@@ -32,7 +32,7 @@ namespace VS.Generics.UT.Diagnostics
         {
             string blockName = "simple code block";
             blocks.Add(blockName, 0);
-            using(Code<string>.Track(this, MethodBase.GetCurrentMethod(), blockName))
+            using(Code.Track(this, MethodBase.GetCurrentMethod(), blockName))
             {
                 for (int i = 0; i < 1000; i++)
                 {
@@ -43,18 +43,18 @@ namespace VS.Generics.UT.Diagnostics
             blocks.Remove(blockName);
         }
 
-        public void OnBlockStart(int blockId, CodeEventArgs<string> args)
+        public void OnBlockStart(object context, CodeEventArgs args)
         {
-            blocks[args.Context]++;
+            blocks[(string)context]++;
             Console.WriteLine("Entered block {0}", 
-                FormatBlockName(blockId, args.Instance, args.Method, args.Context));
+                FormatBlockName(args.BlockId, args.Instance, args.Method, (string)context));
         }
 
-        public void OnBlockEnd(int blockId, CodeEventArgs<string> args)
+        public void OnBlockEnd(object context, CodeEventArgs args)
         {
-            blocks[args.Context]++;
+            blocks[(string)context]++;
             Console.WriteLine("Exited block {0}", 
-                FormatBlockName(blockId, args.Instance, args.Method, args.Context));
+                FormatBlockName(args.BlockId, args.Instance, args.Method, (string)context));
         }
 
         public string FormatBlockName(int blockId, object instance, MethodBase method, string context)
