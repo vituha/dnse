@@ -8,7 +8,7 @@ namespace CodeDemo
 {
     public class Demo
     {
-        public static void Main()
+        private static void Main()
         {
             (new Demo()).Run();
             Console.ReadKey();
@@ -39,18 +39,18 @@ namespace CodeDemo
        
         }
 
-        public void OnBlockStart(object context, CodeEventArgs args)
+        private void OnBlockStart(object context, CodeEventArgs args)
         {
             Console.WriteLine("Entered block {0}",
                 FormatBlockName(args.BlockId, args.Instance, args.Method, (string)context));
         }
 
-        public void OnBlockEnd(object context, CodeEventArgs args)
+        private void OnBlockEnd(object context, CodeEventArgs args)
         {
             Console.WriteLine("Exited block {0}",
                 FormatBlockName(args.BlockId, args.Instance, args.Method, (string)context));
         }
-        public string FormatBlockName(int blockId, object instance, MethodBase method, string context)
+        private string FormatBlockName(int blockId, object instance, MethodBase method, string context)
         {
             return String.Format(
                     "{0}, instance={1}, method={2}, context={3}",
