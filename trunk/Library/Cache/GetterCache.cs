@@ -5,16 +5,26 @@ using System.Text;
 using VS.Library.Generics.Common;
 using VS.Library.Generics.Common.Delegates;
 using VS.Library.Generics.Cache;
+using System.Collections;
 
 namespace VS.Library.Cache
 {
     public static class GetterCache
     {
-        private static CacheBase<object, object> cacheInstance = new CacheBase<object, object>();
-        
+        private static SortedDictionary<int, object> cacheInstance = new SortedDictionary<int, object>();
+
         public static TValue Get<TValue>(D0<TValue> getter)
         {
-            return (TValue)cacheInstance.Get(getter, (D0<object>) delegate { return getter(); });
+            object value;
+            int key = getter.GetHashCode();
+            if(cacheInstance.TryGetValue(key, out value))
+                return (TValue)value;
+            TValue tvalue = getter();
+            lock ((cacheInstance as ICollection).SyncRoot) 
+            {
+                cacheInstance.Add(key, tvalue);
+            }
+            return tvalue;
         }
     }
 }

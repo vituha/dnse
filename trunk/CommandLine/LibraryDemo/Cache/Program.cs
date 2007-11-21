@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using VS.Library.Generics.Cache;
 using VS.Library.Diagnostics;
+using VS.Library.Cache;
 
 namespace Cache
 {
@@ -15,7 +16,7 @@ namespace Cache
 
             using (Code.Track("normal access"))
             {
-                for (int i = 0; i < 1000; i++)
+                for (int i = 0; i < 100000; i++)
                 {
                     s = NonCachedProp;
                 }
@@ -23,7 +24,7 @@ namespace Cache
 
             using (Code.Track("cached access"))
             {
-                for (int i = 0; i < 1000; i++)
+                for (int i = 0; i < 100000; i++)
                 {
                     s = CachedProp;
                 }
@@ -34,12 +35,10 @@ namespace Cache
             Console.ReadKey();
         }
 
-        static GetterCache<string> getterCache = new GetterCache<string>();
-
         static string CalcCachedPropValue()
         {
             string res = "*";
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 10; i++)
 			{
 			    res += "*";
 			}
@@ -50,7 +49,7 @@ namespace Cache
         {
             get
             {
-                return getterCache.Get(CalcCachedPropValue);
+                return GetterCache.Get<string>(CalcCachedPropValue);
             }
         }
 
