@@ -38,7 +38,7 @@ namespace VS.Library.Generics.Cache
             return Get(key, (D0<TValue>)delegate { return getter(key); });
         }
 
-        public TValue Get(TKey key, TValue defaultValue)
+        public TValue GetDefault(TKey key, TValue defaultValue)
         {
             TValue value;
             if (!TryGetValue(key, out value))

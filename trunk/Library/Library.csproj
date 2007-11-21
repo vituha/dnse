@@ -34,7 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Generics\Cache\CacheBase.cs" />
-    <Compile Include="Generics\Cache\GetterCache.cs" />
+    <Compile Include="Cache\GetterCache.cs" />
     <Compile Include="Generics\Cache\ICache.cs" />
     <Compile Include="Generics\Cache\LimitedCache.cs" />
     <Compile Include="Generics\Common\Delegates.cs" />
