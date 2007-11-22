@@ -11,6 +11,7 @@ namespace VS.Library.Generics.Cache
 {
     public class CacheBase<TKey, TValue>: ICache<TKey, TValue>
     {
+
         private Dictionary<TKey, TValue> cache = new Dictionary<TKey, TValue>();
         protected Dictionary<TKey, TValue> Storage
         {
