@@ -16,7 +16,7 @@ namespace Cache
 
             using (Code.Track("normal access"))
             {
-                for (int i = 0; i < 100000; i++)
+                for (int i = 0; i < 1000000; i++)
                 {
                     s = NonCachedProp;
                 }
@@ -24,7 +24,7 @@ namespace Cache
 
             using (Code.Track("cached access"))
             {
-                for (int i = 0; i < 100000; i++)
+                for (int i = 0; i < 1000000; i++)
                 {
                     s = CachedProp;
                 }
@@ -38,7 +38,7 @@ namespace Cache
         static string CalcCachedPropValue()
         {
             string res = "*";
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 3; i++)
 			{
 			    res += "*";
 			}

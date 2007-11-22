@@ -11,18 +11,18 @@ namespace VS.Library.Cache
 {
     public static class GetterCache
     {
-        private static SortedDictionary<int, object> cacheInstance = new SortedDictionary<int, object>();
+        // TODO make something
+        private static Dictionary<Delegate, object> cacheInstance = new Dictionary<Delegate, object>();
 
         public static TValue Get<TValue>(D0<TValue> getter)
         {
             object value;
-            int key = getter.GetHashCode();
-            if(cacheInstance.TryGetValue(key, out value))
+            if(cacheInstance.TryGetValue(getter, out value))
                 return (TValue)value;
             TValue tvalue = getter();
             lock ((cacheInstance as ICollection).SyncRoot) 
             {
-                cacheInstance.Add(key, tvalue);
+                cacheInstance.Add(getter, tvalue);
             }
             return tvalue;
         }
