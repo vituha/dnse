@@ -9,10 +9,11 @@ using System.Collections;
 
 namespace VS.Library.Cache
 {
+    using GetterCacheBackend = Dictionary<Delegate, object>;
     public static class GetterCache
     {
         // TODO make something
-        private static Dictionary<Delegate, object> cacheInstance = new Dictionary<Delegate, object>();
+        private static GetterCacheBackend cacheInstance = new GetterCacheBackend();
 
         public static TValue Get<TValue>(D0<TValue> getter)
         {
@@ -25,6 +26,11 @@ namespace VS.Library.Cache
                 cacheInstance.Add(getter, tvalue);
             }
             return tvalue;
+        }
+
+        public static bool Remove<TValue>(D0<TValue> getter)
+        {
+            return cacheInstance.Remove(getter);
         }
     }
 }
