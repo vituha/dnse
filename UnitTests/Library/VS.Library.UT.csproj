@@ -39,7 +39,7 @@
   <ItemGroup>
     <Compile Include="Cache\LimitedCache.cs" />
     <Compile Include="Cache\GetterCache.cs" />
-    <Compile Include="Diagnostics\Code.cs" />
+    <Compile Include="Diagnostics\CodeBlockSpy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

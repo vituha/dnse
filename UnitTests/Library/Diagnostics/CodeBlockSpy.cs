@@ -2,28 +2,29 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
-using VS.Library.Diagnostics;
 using System.Reflection;
+
+using FixtNS = VS.Library.Diagnostics;
 
 namespace VS.Library.UT.Diagnostics
 {
     [TestFixture]
-    public class CodeFixture
+    public class CodeBlockSpy
     {
         Dictionary<string, int> blocks = new Dictionary<string, int>();
 
         [SetUp]
         public void Init()
         {
-            Code.Instance.CodeBlockEnter += OnBlockStart;
-            Code.Instance.CodeBlockExit += OnBlockEnd;
+            FixtNS.CodeBlockSpy.Default.CodeBlockEnter += OnBlockStart;
+            FixtNS.CodeBlockSpy.Default.CodeBlockExit += OnBlockEnd;
         }
 
         [TearDown]
         public void DeInit()
         {
-            Code.Instance.CodeBlockEnter -= OnBlockStart;
-            Code.Instance.CodeBlockExit -= OnBlockEnd;
+            FixtNS.CodeBlockSpy.Default.CodeBlockEnter -= OnBlockStart;
+            FixtNS.CodeBlockSpy.Default.CodeBlockExit -= OnBlockEnd;
             this.blocks.Clear();
         }
 
@@ -32,7 +33,7 @@ namespace VS.Library.UT.Diagnostics
         {
             string blockName = "simple code block";
             blocks.Add(blockName, 0);
-            using(Code.Track(this, MethodBase.GetCurrentMethod(), blockName))
+            using (FixtNS.CodeBlockSpy.DefaultSpy(this, MethodBase.GetCurrentMethod(), blockName))
             {
                 for (int i = 0; i < 1000; i++)
                 {
@@ -43,14 +44,14 @@ namespace VS.Library.UT.Diagnostics
             blocks.Remove(blockName);
         }
 
-        public void OnBlockStart(object context, CodeEventArgs args)
+        public void OnBlockStart(object context, FixtNS.CodeBlockSpyEventArgs args)
         {
             blocks[(string)context]++;
             Console.WriteLine("Entered block {0}", 
                 FormatBlockName(args.BlockId, args.Instance, args.Method, (string)context));
         }
 
-        public void OnBlockEnd(object context, CodeEventArgs args)
+        public void OnBlockEnd(object context, FixtNS.CodeBlockSpyEventArgs args)
         {
             blocks[(string)context]++;
             Console.WriteLine("Exited block {0}", 

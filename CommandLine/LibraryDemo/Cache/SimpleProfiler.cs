@@ -10,26 +10,26 @@ namespace Cache
     {
         public static void Activate()
         {
-            Code.Instance.CodeBlockEnter += OnBlockStart;
-            Code.Instance.CodeBlockExit += OnBlockEnd;
+            CodeBlockSpy.Default.CodeBlockEnter += OnBlockStart;
+            CodeBlockSpy.Default.CodeBlockExit += OnBlockEnd;
         }
 
         public static void Deactivate()
         {
-            Code.Instance.CodeBlockEnter -= OnBlockStart;
-            Code.Instance.CodeBlockExit -= OnBlockEnd;
+            CodeBlockSpy.Default.CodeBlockEnter -= OnBlockStart;
+            CodeBlockSpy.Default.CodeBlockExit -= OnBlockEnd;
         }
 
         static long ticks;
 
-        private static void OnBlockStart(object context, CodeEventArgs args)
+        private static void OnBlockStart(object context, CodeBlockSpyEventArgs args)
         {
             Console.WriteLine("Entered block {0}",
                 FormatBlockName(args.BlockId, args.Instance, args.Method, (string)context));
             ticks = DateTime.Now.Ticks;
         }
 
-        private static void OnBlockEnd(object context, CodeEventArgs args)
+        private static void OnBlockEnd(object context, CodeBlockSpyEventArgs args)
         {
             ticks = DateTime.Now.Ticks - ticks;
             Console.WriteLine("Exited block {0}. Took {1} ms",
