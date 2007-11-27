@@ -8,11 +8,12 @@ using System.IO;
 using System.Diagnostics;
 
 using FixtNS = VS.Library.Cache;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace VS.Library.UT.Cache
 {
     [TestFixture]
-    public class GetterCache
+    public class GetterCache : AssertionHelper
     {
         private int getterCallCounter;
         private int propertyCallCounter;
@@ -36,9 +37,11 @@ namespace VS.Library.UT.Cache
         {
             getterCallCounter = 0;
             propertyCallCounter = 0;
-            Assert.AreEqual(@"C:\MyProduct\MyApp\MyApp.config", SettingsPath);
-            Assert.AreEqual(@"C:\MyProduct", ProductPath);
-            Assert.AreEqual(@"C:\MyProduct\MyApp", AppPath);
+
+            Assert.That(SettingsPath, Is.EqualTo(@"C:\MyProduct\MyApp\MyApp.config"));
+            Assert.That(ProductPath, Is.EqualTo(@"C:\MyProduct"));
+            Assert.That(AppPath, Is.EqualTo(@"C:\MyProduct\MyApp"));
+
             Console.WriteLine(String.Format("Property call count: {0}", propertyCallCounter));
             Console.WriteLine(String.Format("Getters call count: {0}", getterCallCounter));
         }
