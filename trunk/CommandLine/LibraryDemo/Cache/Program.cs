@@ -14,7 +14,7 @@ namespace Cache
             SimpleProfiler.Activate();
             string s;
 
-            using (Code.Track("normal access"))
+            using (CodeBlockSpy.DefaultSpy("normal access"))
             {
                 for (int i = 0; i < 1000000; i++)
                 {
@@ -22,7 +22,7 @@ namespace Cache
                 }
             }
 
-            using (Code.Track("cached access"))
+            using (CodeBlockSpy.DefaultSpy("cached access"))
             {
                 for (int i = 0; i < 1000000; i++)
                 {
@@ -37,11 +37,7 @@ namespace Cache
 
         static string CalcCachedPropValue()
         {
-            string res = "*";
-            for (int i = 0; i < 5; i++)
-			{
-			    res += "*";
-			}
+            string res = String.Format("Hello, {0} and {1}!", "World", "All");
             return res;
         }
 

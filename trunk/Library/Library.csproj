@@ -33,13 +33,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Diagnostics\CodeBlockSpyBase.cs" />
     <Compile Include="Generics\Cache\CacheBase.cs" />
     <Compile Include="Cache\GetterCache.cs" />
     <Compile Include="Generics\Cache\ICache.cs" />
     <Compile Include="Generics\Cache\LimitedCache.cs" />
     <Compile Include="Generics\Common\Delegates.cs" />
     <Compile Include="Generics\Comparison\CustomComparer.cs" />
-    <Compile Include="Diagnostics\Code.cs" />
+    <Compile Include="Diagnostics\CodeBlockSpy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
