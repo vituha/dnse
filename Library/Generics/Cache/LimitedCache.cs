@@ -7,6 +7,7 @@ using System.Diagnostics;
 using VS.Library.Generics.Common;
 using VS.Library.Generics.Comparison;
 using VS.Library.Generics.Common.Delegates;
+using VS.Library.Cache;
 
 namespace VS.Library.Generics.Cache
 {
@@ -15,27 +16,38 @@ namespace VS.Library.Generics.Cache
         public static T Value;
     }
 
-    public class LimitedCache<TKey, TValue> : CacheBase<TKey, LimitedCache<TKey, TValue>.CacheItem>, ICache<TKey, TValue>
+    public class LimitedCache<TKey, TValue> : ICache<TKey, TValue>
     {
-        public struct CacheItem
+        private class CacheItem
         {
-            public DateTime Created;
-            public TKey Key;
-            public TValue Object;
-
-            public CacheItem(TKey key, TValue item)
+            private LinkedListNode<CacheItem> node;
+            public LinkedListNode<CacheItem> Node
             {
-                this.Key = key;
-                this.Object = item;
-                this.Created = DateTime.Now;
+                get { return node; }
             }
 
-            public TValue ValueGetter()
+            private TKey key;
+            public TKey Key
             {
-                return this.Object;
+                get { return key; }
+            }
+
+            private TValue value;
+            public TValue Value
+            {
+                get { return this.value; }
+            }
+
+            public CacheItem(LinkedListNode<CacheItem> node, TKey key, TValue value)
+            {
+                this.node = node;
+                this.key = key;
+                this.value = value;
             }
         }
 
+        private LinkedList<CacheItem> bubbleQueue = new LinkedList<CacheItem>();
+        private Dictionary<TKey, CacheItem> realCache = new Dictionary<TKey, CacheItem>();
         private int upperLimit;
 
         public LimitedCache(int upperLimit)
@@ -43,41 +55,87 @@ namespace VS.Library.Generics.Cache
             this.upperLimit = upperLimit;
         }
 
-        protected override void Add(TKey key, CacheItem value)
+        private CacheItem Add(TKey key, TValue value)
         {
-            base.Add(key, value);
-            if (this.Storage.Count > this.upperLimit)
+            LinkedListNode<CacheItem> newNode = new LinkedListNode<CacheItem>(null);
+            CacheItem newItem = new CacheItem(newNode, key, value);
+            newNode.Value = newItem;
+
+            if (this.bubbleQueue.Count >= this.upperLimit)
             {
-                Pack();
+                CacheItem last = this.bubbleQueue.Last.Value;
+                this.bubbleQueue.RemoveLast();
+                this.realCache.Remove(last.Key);
             }
+
+            this.bubbleQueue.AddFirst(newItem);
+            this.realCache.Add(key, newItem);
+
+            return newItem;
         }
 
-        protected virtual void Add(TKey key, TValue value)
+        private void Accessed(CacheItem item)
         {
-            Add(key, new CacheItem(key, value));
+            // bubble the item
+            this.bubbleQueue.Remove(item);
+            this.bubbleQueue.AddFirst(item);
+        }
+
+        #region ICache<TKey,TValue> Members
+
+        public ICollection<TKey> Keys
+        {
+            get { return this.realCache.Keys; }
         }
 
         public TValue Get(TKey key, D0<TValue> getter)
         {
-            return base.Get(key, delegate() { return new CacheItem(key, getter()); }).Object;
+            CacheItem item;
+            if (this.realCache.TryGetValue(key, out item))
+            {
+                Accessed(item);
+            }
+            else
+            { 
+                item = Add(key, getter());
+            }
+            return item.Value;
         }
 
         public TValue Get(TKey key, D1<TValue, TKey> getter)
         {
-            return Get(key, delegate() { return getter(key); });
+            CacheItem item;
+            if (this.realCache.TryGetValue(key, out item))
+            {
+                Accessed(item);
+            }
+            else
+            {
+                item = Add(key, getter(key));
+            }
+            return item.Value;
         }
 
         public TValue GetDefault(TKey key, TValue defaultValue)
         {
-            return base.Get(key, delegate(){ return new CacheItem(key, defaultValue); }).Object;
+            CacheItem item;
+            if (this.realCache.TryGetValue(key, out item))
+            {
+                Accessed(item);
+            }
+            else
+            {
+                item = Add(key, defaultValue);
+            }
+            return item.Value;
         }
 
         public bool TryGetValue(TKey key, out TValue value)
         {
             CacheItem item;
-            if (base.TryGetValue(key, out item))
+            if (realCache.TryGetValue(key, out item))
             {
-                value = item.Object;
+                value = item.Value;
                 return true;
             }
             else
@@ -85,29 +143,27 @@ namespace VS.Library.Generics.Cache
                 value = Default<TValue>.Value;
                 return false;
             }
+
         }
-        
-        protected virtual void Pack()
+
+        #endregion
+
+        #region IEnumerable<TKey> Members
+
+        public IEnumerator<TKey> GetEnumerator()
         {
-            int itemsToDelete = this.Storage.Count / 2;
-            ArrayList items = new ArrayList(this.Storage.Values);
-            List<SortKey<CacheItem>> keys = new List<SortKey<CacheItem>>();
-            keys.Add(
-                new SortKey<CacheItem>(
-                    delegate (CacheItem item) { return item.Created; }, true
-                )
-            );
-            ComplexComparer<CacheItem> comparer = new ComplexComparer<CacheItem>();
-            comparer.Keys = keys;
-            items.Sort(comparer);
-            //items.Sort(new FieldComparer<CacheItem, DateTime>("Created"));
-            for (int i = 0; i < itemsToDelete; i++)
-            {
-                CacheItem item = (CacheItem)items[i];
-                this.Storage.Remove(item.Key);
-                // Trace.WriteLine(String.Format("Removing item with date {0}", item.Created.Ticks));
-            }
-            Trace.WriteLine(String.Format("Packed to {0}", this.Storage.Count));
+            return this.realCache.Keys.GetEnumerator();
         }
+
+        #endregion
+
+        #region IEnumerable Members
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.realCache.Keys.GetEnumerator();
+        }
+
+        #endregion
     }
 }

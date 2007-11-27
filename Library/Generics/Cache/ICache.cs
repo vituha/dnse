@@ -7,7 +7,7 @@ using VS.Library.Generics.Common.Delegates;
 
 namespace VS.Library.Generics.Cache
 {
-    public interface ICache<TKey, TValue>
+    public interface ICache<TKey, TValue>: IEnumerable<TKey>
     {
         ICollection<TKey> Keys { get; }
         TValue Get(TKey key, D0<TValue> getter);
