@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using VS.Library.Diagnostics;
 using System.Reflection;
+using VS.Library.Diagnostics;
 
 namespace Cache
 {

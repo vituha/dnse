@@ -1,10 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Reflection;
-using System.Collections;
-using VS.Library.Generics.Common.Delegates;
 using System.Diagnostics;
+using VS.Library.Generics.Common.Delegates;
 
 namespace VS.Library.Generics.Comparison
 {
