@@ -15,8 +15,22 @@ namespace csharp
         {
             bool[] solution = new bool[n];
 
-            new Program().Solve(solution);
+            Program p = new Program();
+            p.Solve(solution);
 
+            StringBuilder sb = new StringBuilder();
+
+            for(int i = 0; i < solution.Length; i++)
+            {
+                bool f = solution[i];
+                if (f)
+                {
+                    sb.Append(i.ToString() + ",");
+                }
+            }
+            Console.WriteLine(sb.ToString());
+            Console.WriteLine(p.p);
+            Console.ReadKey();
         }
 
         bool[] solution = new bool[n];
