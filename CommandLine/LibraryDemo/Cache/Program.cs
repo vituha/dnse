@@ -9,22 +9,24 @@ namespace Cache
         static void Main(string[] args)
         {
             SimpleProfiler.Activate();
-            string s;
+            string s = String.Empty;
 
-            using (CodeBlockSpy.DefaultSpy("normal access"))
+            using (CodeBlockSpy.DoSpy("normal access"))
             {
                 for (int i = 0; i < 1000000; i++)
                 {
                     s = NonCachedProp;
                 }
+                Console.WriteLine(s);
             }
 
-            using (CodeBlockSpy.DefaultSpy("cached access"))
+            using (CodeBlockSpy.DoSpy("cached access"))
             {
                 for (int i = 0; i < 1000000; i++)
                 {
                     s = CachedProp;
                 }
+                Console.WriteLine(s);
             }
 
             SimpleProfiler.Deactivate();

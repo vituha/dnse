@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Microsoft Sans Serif" Size="8.25" />
+  <Class Name="VS.Library.Diagnostics.CodeBlockSpyEventArgs">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Diagnostics\CodeBlockSpy.cs</FileName>
+      <HashCode>AAAAAAAAAAAAACAAAABgAAAAQABAAAAAQAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VS.Library.Diagnostics.CodeBlockSpy">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Diagnostics\CodeBlockSpy.cs</FileName>
+      <HashCode>ABAAAAAAAwAQAAAAAAAAMAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <NestedTypes>
+      <Delegate Name="VS.Library.Diagnostics.CodeBlockSpy.CodeTrackerEventHandler" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Diagnostics\CodeBlockSpy.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+  </Class>
+  <Class Name="VS.Library.Diagnostics.CodeBlockSpyBase">
+    <Position X="2.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Diagnostics\CodeBlockSpyBase.cs</FileName>
+      <HashCode>AAAAAAAAAwAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="VS.Library.Diagnostics.CodeBlockSpyBase.Pin">
+        <TypeIdentifier>
+          <NewMemberFileName>Diagnostics\CodeBlockSpyBase.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+    </NestedTypes>
+  </Class>
+</ClassDiagram>
