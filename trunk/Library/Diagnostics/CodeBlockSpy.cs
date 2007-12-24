@@ -41,24 +41,24 @@ namespace VS.Library.Diagnostics
             get { return _default; }
         }
 
-        public static IDisposable DefaultSpy()
+        public static IDisposable DoSpy()
         {
-            return (Default as CodeBlockSpyBase).Spy(null, null, null);
+            return (Default as CodeBlockSpyBase).DoSpy(null, null, null);
         }
 
-        public static IDisposable DefaultSpy(object context)
+        public static IDisposable DoSpy(object context)
         {
-            return (Default as CodeBlockSpyBase).Spy(null, null, context);
+            return (Default as CodeBlockSpyBase).DoSpy(null, null, context);
         }
 
-        public static IDisposable DefaultSpy(MethodBase method, object context)
+        public static IDisposable DoSpy(MethodBase method, object context)
         {
-            return (Default as CodeBlockSpyBase).Spy(null, method, context);
+            return (Default as CodeBlockSpyBase).DoSpy(null, method, context);
         }
 
-        public static IDisposable DefaultSpy(object instance, MethodBase method, object context)
+        public static IDisposable DoSpy(object instance, MethodBase method, object context)
         {
-            return (Default as CodeBlockSpyBase).Spy(instance, method, context);
+            return (Default as CodeBlockSpyBase).DoSpy(instance, method, context);
         }
 
         public delegate void CodeTrackerEventHandler(object context, CodeBlockSpyEventArgs args);

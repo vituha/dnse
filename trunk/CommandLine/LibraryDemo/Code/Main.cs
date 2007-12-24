@@ -18,19 +18,19 @@ namespace CodeDemo
             CodeBlockSpy.Default.CodeBlockExit += OnBlockEnd;
 
             Console.WriteLine("\nLet's try a simple tracking first");
-            using (CodeBlockSpy.DefaultSpy("block 1"))
+            using (CodeBlockSpy.DoSpy("block 1"))
             {
                 Console.WriteLine("This is a block 1");
             }
 
             Console.WriteLine("\nNow let's supply method parameter");
-            using (CodeBlockSpy.DefaultSpy(MethodBase.GetCurrentMethod(), "block 2"))
+            using (CodeBlockSpy.DoSpy(MethodBase.GetCurrentMethod(), "block 2"))
             {
                 Console.WriteLine("This is a block 2");
             }
 
             Console.WriteLine("\nNow let's also add instance parameter");
-            using (CodeBlockSpy.DefaultSpy(this, MethodBase.GetCurrentMethod(), "block 3"))
+            using (CodeBlockSpy.DoSpy(this, MethodBase.GetCurrentMethod(), "block 3"))
             {
                 Console.WriteLine("This is a block 3");
             }

@@ -52,7 +52,7 @@ namespace VS.Library.Diagnostics
             #endregion
         }
 
-        public IDisposable Spy(object instance, MethodBase method, object context)
+        public IDisposable DoSpy(object instance, MethodBase method, object context)
         {
             Pin pin = new Pin(this, instance, method, context);
             DoBlockEntered(pin);
