@@ -1,5 +1,0 @@
-obj\Debug\ResolveAssemblyReference.cache
-bin\Debug\csharp.exe
-bin\Debug\csharp.pdb
-obj\Debug\csharp.exe
-obj\Debug\csharp.pdb
