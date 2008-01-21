@@ -33,7 +33,7 @@ namespace VS.Library.UT.Diagnostics
         {
             string blockName = "simple code block";
             blocks.Add(blockName, 0);
-            using (FixtNS.CodeBlockSpy.DefaultSpy(this, MethodBase.GetCurrentMethod(), blockName))
+            using (FixtNS.CodeBlockSpy.DoSpy(this, MethodBase.GetCurrentMethod(), blockName))
             {
                 for (int i = 0; i < 1000; i++)
                 {

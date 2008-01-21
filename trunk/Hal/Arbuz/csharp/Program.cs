@@ -6,10 +6,10 @@ namespace csharp
 {
     class Program
     {
-        const int n = 5;
+        const int n = 10;
         const int w = 60;
-        int[] b = new int[n] { 17, 20, 20, 20, 15 };
-        int[] c = new int[n] { 35, 10, 30, 15, 25 };
+        int[] b = new int[n] { 17, 20, 20, 20, 15, 17, 20, 20, 20, 15 };
+        int[] c = new int[n] { 35, 10, 30, 15, 25, 35, 10, 30, 15, 25 };
 
         static void Main(string[] args)
         {
@@ -38,11 +38,16 @@ namespace csharp
 
         private void Solve(bool[] solution)
         {
+            callsCnt = 0;
             p = P(n - 1, w, solution);
+            Console.WriteLine("Calls count: " + callsCnt.ToString());
         }
+
+        private static int callsCnt;
 
         private int P(int i, int w, bool[] sol)
         {
+            callsCnt++;
             if (i >= 0 && w > 0)
             {
                 int p1, p2;
