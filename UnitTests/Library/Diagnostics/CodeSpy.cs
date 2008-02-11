@@ -9,22 +9,22 @@ using FixtNS = VS.Library.Diagnostics;
 namespace VS.Library.UT.Diagnostics
 {
     [TestFixture]
-    public class CodeBlockSpy
+    public class CodeSpy
     {
         Dictionary<string, int> blocks = new Dictionary<string, int>();
 
         [SetUp]
         public void Init()
         {
-            FixtNS.CodeBlockSpy.Default.CodeBlockEnter += OnBlockStart;
-            FixtNS.CodeBlockSpy.Default.CodeBlockExit += OnBlockEnd;
+            FixtNS.CodeSpy.Default.CodeBlockEnter += OnBlockStart;
+            FixtNS.CodeSpy.Default.CodeBlockExit += OnBlockEnd;
         }
 
         [TearDown]
         public void DeInit()
         {
-            FixtNS.CodeBlockSpy.Default.CodeBlockEnter -= OnBlockStart;
-            FixtNS.CodeBlockSpy.Default.CodeBlockExit -= OnBlockEnd;
+            FixtNS.CodeSpy.Default.CodeBlockEnter -= OnBlockStart;
+            FixtNS.CodeSpy.Default.CodeBlockExit -= OnBlockEnd;
             this.blocks.Clear();
         }
 
@@ -33,7 +33,7 @@ namespace VS.Library.UT.Diagnostics
         {
             string blockName = "simple code block";
             blocks.Add(blockName, 0);
-            using (FixtNS.CodeBlockSpy.DoSpy(this, MethodBase.GetCurrentMethod(), blockName))
+            using (FixtNS.CodeSpy.DoSpy(this, MethodBase.GetCurrentMethod(), blockName))
             {
                 for (int i = 0; i < 1000; i++)
                 {
@@ -44,14 +44,14 @@ namespace VS.Library.UT.Diagnostics
             blocks.Remove(blockName);
         }
 
-        public void OnBlockStart(object context, FixtNS.CodeBlockSpyEventArgs args)
+        public void OnBlockStart(object context, FixtNS.CodeSpyEventArgs args)
         {
             blocks[(string)context]++;
             Console.WriteLine("Entered block {0}", 
                 FormatBlockName(args.BlockId, args.Instance, args.Method, (string)context));
         }
 
-        public void OnBlockEnd(object context, FixtNS.CodeBlockSpyEventArgs args)
+        public void OnBlockEnd(object context, FixtNS.CodeSpyEventArgs args)
         {
             blocks[(string)context]++;
             Console.WriteLine("Exited block {0}", 
