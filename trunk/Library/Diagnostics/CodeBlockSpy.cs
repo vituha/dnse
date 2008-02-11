@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace VS.Library.Diagnostics
 {
-    public class CodeBlockSpyEventArgs: EventArgs
+    public class CodeSpyEventArgs: EventArgs
     {
         private object instance;
 
@@ -24,7 +24,7 @@ namespace VS.Library.Diagnostics
             get { return blockId; }
         }
 
-        internal CodeBlockSpyEventArgs(object instance, MethodBase method, int blockId)
+        internal CodeSpyEventArgs(object instance, MethodBase method, int blockId)
         {
             this.instance = instance;
             this.method = method;
@@ -32,49 +32,49 @@ namespace VS.Library.Diagnostics
         }
     }
 
-    public class CodeBlockSpy: CodeBlockSpyBase
+    public class CodeSpy: CodeSpyBase
     {
 
-        private static CodeBlockSpy _default = new CodeBlockSpy();
-        public static CodeBlockSpy Default
+        private static CodeSpy _default = new CodeSpy();
+        public static CodeSpy Default
         {
             get { return _default; }
         }
 
         public static IDisposable DoSpy()
         {
-            return (Default as CodeBlockSpyBase).DoSpy(null, null, null);
+            return (Default as CodeSpyBase).BeginSpy(null, null, null);
         }
 
         public static IDisposable DoSpy(object context)
         {
-            return (Default as CodeBlockSpyBase).DoSpy(null, null, context);
+            return (Default as CodeSpyBase).BeginSpy(null, null, context);
         }
 
         public static IDisposable DoSpy(MethodBase method, object context)
         {
-            return (Default as CodeBlockSpyBase).DoSpy(null, method, context);
+            return (Default as CodeSpyBase).BeginSpy(null, method, context);
         }
 
         public static IDisposable DoSpy(object instance, MethodBase method, object context)
         {
-            return (Default as CodeBlockSpyBase).DoSpy(instance, method, context);
+            return (Default as CodeSpyBase).BeginSpy(instance, method, context);
         }
 
-        public delegate void CodeTrackerEventHandler(object context, CodeBlockSpyEventArgs args);
-        public event CodeTrackerEventHandler CodeBlockEnter;
-        public event CodeTrackerEventHandler CodeBlockExit;
+        public delegate void CodeSpyEventHandler(object context, CodeSpyEventArgs args);
+        public event CodeSpyEventHandler CodeBlockEnter;
+        public event CodeSpyEventHandler CodeBlockExit;
 
         protected override void DoBlockEntered(Pin pin)
         {
             if (this.CodeBlockEnter != null)
-                CodeBlockEnter(pin.Context, new CodeBlockSpyEventArgs(pin.Instance, pin.Method, pin.GetHashCode()));
+                CodeBlockEnter(pin.Context, new CodeSpyEventArgs(pin.Instance, pin.Method, pin.GetHashCode()));
         }
 
         protected override void DoBlockExited(Pin pin)
         {
             if (this.CodeBlockExit != null)
-                CodeBlockExit(pin.Context, new CodeBlockSpyEventArgs(pin.Instance, pin.Method, pin.GetHashCode()));
+                CodeBlockExit(pin.Context, new CodeSpyEventArgs(pin.Instance, pin.Method, pin.GetHashCode()));
         }
     }
 }

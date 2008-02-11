@@ -11,7 +11,7 @@ namespace Cache
             SimpleProfiler.Activate();
             string s = String.Empty;
 
-            using (CodeBlockSpy.DoSpy("normal access"))
+            using (CodeSpy.DoSpy("normal access"))
             {
                 for (int i = 0; i < 1000000; i++)
                 {
@@ -20,7 +20,7 @@ namespace Cache
                 Console.WriteLine(s);
             }
 
-            using (CodeBlockSpy.DoSpy("cached access"))
+            using (CodeSpy.DoSpy("cached access"))
             {
                 for (int i = 0; i < 1000000; i++)
                 {
