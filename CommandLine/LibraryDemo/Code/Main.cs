@@ -14,36 +14,36 @@ namespace CodeDemo
 
         private void Run()
         {
-            CodeBlockSpy.Default.CodeBlockEnter += OnBlockStart;
-            CodeBlockSpy.Default.CodeBlockExit += OnBlockEnd;
+            CodeSpy.Default.CodeBlockEnter += OnBlockStart;
+            CodeSpy.Default.CodeBlockExit += OnBlockEnd;
 
             Console.WriteLine("\nLet's try a simple tracking first");
-            using (CodeBlockSpy.DoSpy("block 1"))
+            using (CodeSpy.DoSpy("block 1"))
             {
                 Console.WriteLine("This is a block 1");
             }
 
             Console.WriteLine("\nNow let's supply method parameter");
-            using (CodeBlockSpy.DoSpy(MethodBase.GetCurrentMethod(), "block 2"))
+            using (CodeSpy.DoSpy(MethodBase.GetCurrentMethod(), "block 2"))
             {
                 Console.WriteLine("This is a block 2");
             }
 
             Console.WriteLine("\nNow let's also add instance parameter");
-            using (CodeBlockSpy.DoSpy(this, MethodBase.GetCurrentMethod(), "block 3"))
+            using (CodeSpy.DoSpy(this, MethodBase.GetCurrentMethod(), "block 3"))
             {
                 Console.WriteLine("This is a block 3");
             }
        
         }
 
-        private void OnBlockStart(object context, CodeBlockSpyEventArgs args)
+        private void OnBlockStart(object context, CodeSpyEventArgs args)
         {
             Console.WriteLine("Entered block {0}",
                 FormatBlockName(args.BlockId, args.Instance, args.Method, (string)context));
         }
 
-        private void OnBlockEnd(object context, CodeBlockSpyEventArgs args)
+        private void OnBlockEnd(object context, CodeSpyEventArgs args)
         {
             Console.WriteLine("Exited block {0}",
                 FormatBlockName(args.BlockId, args.Instance, args.Method, (string)context));

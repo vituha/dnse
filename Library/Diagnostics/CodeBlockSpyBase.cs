@@ -4,11 +4,11 @@ using System.Reflection;
 
 namespace VS.Library.Diagnostics
 {
-    public abstract class CodeBlockSpyBase
+    public abstract class CodeSpyBase
     {
         protected internal class Pin : IDisposable
         {
-            private CodeBlockSpyBase CodeSpyBase;
+            private CodeSpyBase CodeSpyBase;
 
             private object instance;
 
@@ -30,7 +30,7 @@ namespace VS.Library.Diagnostics
             }
             
             private bool disposed = false;
-            public Pin(CodeBlockSpyBase CodeSpyBase, object instance, MethodBase method, object context)
+            public Pin(CodeSpyBase CodeSpyBase, object instance, MethodBase method, object context)
             {
                 Debug.Assert(CodeSpyBase != null);
                 this.CodeSpyBase = CodeSpyBase;
@@ -52,7 +52,7 @@ namespace VS.Library.Diagnostics
             #endregion
         }
 
-        public IDisposable DoSpy(object instance, MethodBase method, object context)
+        public IDisposable BeginSpy(object instance, MethodBase method, object context)
         {
             Pin pin = new Pin(this, instance, method, context);
             DoBlockEntered(pin);
