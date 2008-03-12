@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache\ObjectHolder.cs" />
     <Compile Include="Diagnostics\CodeSpy.cs" />
     <Compile Include="Diagnostics\CodeSpyBase.cs" />
     <Compile Include="Generics\Cache\CacheBase.cs" />
