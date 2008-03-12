@@ -1,6 +1,8 @@
 using System;
 using System.Reflection;
 using VS.Library.Diagnostics;
+using System.Text;
+using VS.Library.Cache;
 
 namespace CodeDemo
 {
@@ -12,8 +14,66 @@ namespace CodeDemo
             Console.ReadKey();
         }
 
+        private Demo()
+        {
+            mySbHolder = new ObjectHolder<LockHolderMock>(delegate {return new LockHolderMock();});
+        }
+
         private void Run()
         {
+            CodeSpyDemo();
+            LockHolderDemo();
+        }
+
+        public class LockHolderMock
+        {
+            ~ LockHolderMock()
+            {
+                Console.WriteLine("In mock destructor");
+            }
+        }
+
+        private ObjectHolder<LockHolderMock> mySbHolder;
+        public ObjectHolder<LockHolderMock> MySbHolder
+        {
+            get
+            {
+                return mySbHolder;
+            }
+        }
+
+        private void LockHolderDemo()
+        {
+            MySbHolder.CacheHold();
+
+            {
+                LockHolderMock m1 = MySbHolder.Hold();
+                Console.WriteLine("Entering sub");
+                LockHolderDemoInt();
+                Console.WriteLine("Exited sub");
+                MySbHolder.Release();
+
+                {
+                    LockHolderMock m3 = MySbHolder.Hold();
+                    MySbHolder.Release();
+                };
+            }
+
+            MySbHolder.Release();
+
+            Console.WriteLine(MySbHolder.RefCount.ToString());
+        }
+
+        private void LockHolderDemoInt()
+        {
+            LockHolderMock m2 = MySbHolder.Hold();
+            MySbHolder.Release();
+        }
+
+        private void CodeSpyDemo()
+        {
+            Console.WriteLine(">>> CodeSpy Demo <<<");
+
             CodeSpy.Default.CodeBlockEnter += OnBlockStart;
             CodeSpy.Default.CodeBlockExit += OnBlockEnd;
 
@@ -34,7 +94,9 @@ namespace CodeDemo
             {
                 Console.WriteLine("This is a block 3");
             }
-       
+
+            CodeSpy.Default.CodeBlockEnter -= OnBlockStart;
+            CodeSpy.Default.CodeBlockExit -= OnBlockEnd;
         }
 
         private void OnBlockStart(object context, CodeSpyEventArgs args)
