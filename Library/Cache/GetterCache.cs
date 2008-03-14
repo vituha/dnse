@@ -32,6 +32,7 @@ namespace VS.Library.Cache
 	public static class GetterCache
 	{
 		private static BackendCollection cacheInstance = new BackendCollection();
+		private static object syncRoot = (cacheInstance as ICollection).SyncRoot;
 
 		/// <summary>
 		/// Get the value associated with the given getter
@@ -45,7 +46,8 @@ namespace VS.Library.Cache
 			if(cacheInstance.TryGetValue(getter, out value))
 				return (TValue)value;
 			TValue tvalue = getter();
-			lock ((cacheInstance as ICollection).SyncRoot) 
+
+			lock (syncRoot) 
 			{
 				cacheInstance.Add(getter, tvalue);
 			}
