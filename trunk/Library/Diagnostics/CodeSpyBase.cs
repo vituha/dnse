@@ -4,63 +4,63 @@ using System.Reflection;
 
 namespace VS.Library.Diagnostics
 {
-    public abstract class CodeSpyBase
-    {
-        protected internal class Pin : IDisposable
-        {
-            private CodeSpyBase CodeSpyBase;
+	public abstract class CodeSpyBase
+	{
+		protected internal class Pin : IDisposable
+		{
+			private CodeSpyBase CodeSpyBase;
 
-            private object instance;
+			private object instance;
 
-            public object Instance
-            {
-                get { return instance; }
-            }
-            private MethodBase method;
+			public object Instance
+			{
+				get { return instance; }
+			}
+			private MethodBase method;
 
-            public MethodBase Method
-            {
-                get { return method; }
-            }
-            private object context;
+			public MethodBase Method
+			{
+				get { return method; }
+			}
+			private object context;
 
-            public object Context
-            {
-                get { return context; }
-            }
-            
-            private bool disposed = false;
-            public Pin(CodeSpyBase CodeSpyBase, object instance, MethodBase method, object context)
-            {
-                Debug.Assert(CodeSpyBase != null);
-                this.CodeSpyBase = CodeSpyBase;
-                this.instance = instance;
-                this.method = method;
-                this.context = context;
-            }
+			public object Context
+			{
+				get { return context; }
+			}
+			
+			private bool disposed = false;
+			public Pin(CodeSpyBase CodeSpyBase, object instance, MethodBase method, object context)
+			{
+				Debug.Assert(CodeSpyBase != null);
+				this.CodeSpyBase = CodeSpyBase;
+				this.instance = instance;
+				this.method = method;
+				this.context = context;
+			}
 
-            #region IDisposable Members
+			#region IDisposable Members
 
-            public void Dispose()
-            {
-                if (!disposed)
-                {
-                    CodeSpyBase.DoBlockExited(this);
-                    this.disposed = true;
-                }
-            }
-            #endregion
-        }
+			public void Dispose()
+			{
+				if (!disposed)
+				{
+					CodeSpyBase.DoBlockExited(this);
+					this.disposed = true;
+				}
+			}
+			#endregion
+		}
 
-        public IDisposable BeginSpy(object instance, MethodBase method, object context)
-        {
-            Pin pin = new Pin(this, instance, method, context);
-            DoBlockEntered(pin);
-            return pin;
-        }
+		public IDisposable BeginSpy(object instance, MethodBase method, object context)
+		{
+			Pin pin = new Pin(this, instance, method, context);
+			DoBlockEntered(pin);
+			return pin;
+		}
 
-        protected abstract void DoBlockEntered(Pin pin);
+		protected abstract void DoBlockEntered(Pin pin);
 
-        protected abstract void DoBlockExited(Pin pin);
-    }
+		protected abstract void DoBlockExited(Pin pin);
+	}
 }
