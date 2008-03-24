@@ -42,7 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cache\Accessor.cs" />
+    <Compile Include="Cache\Lob.cs" />
     <Compile Include="Diagnostics\CodeSpy.cs" />
     <Compile Include="Diagnostics\CodeSpyBase.cs" />
     <Compile Include="Diagnostics\ExceptionHub.cs" />

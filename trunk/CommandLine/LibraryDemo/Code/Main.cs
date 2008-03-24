@@ -16,7 +16,7 @@ namespace CodeDemo
 
 		private Demo()
 		{
-			mySbHolder = new Accessor<LockHolderMock>(delegate {return new LockHolderMock();});
+			mySbHolder = new Lom<LockHolderMock>(delegate {return new LockHolderMock();});
 		}
 
 		private void Run()
@@ -34,8 +34,8 @@ namespace CodeDemo
 			}
 		}
 
-		private Accessor<LockHolderMock> mySbHolder;
-		public Accessor<LockHolderMock> MySbHolder
+		private Lom<LockHolderMock> mySbHolder;
+		public Lom<LockHolderMock> MySbHolder
 		{
 			get
 			{
@@ -45,31 +45,31 @@ namespace CodeDemo
 
 		private void LockHolderDemo()
 		{
-			MySbHolder.BeginCache();
+			MySbHolder.Ensure();
 
 			{
-				LockHolderMock m1 = MySbHolder.GetLock();
+				LockHolderMock m1 = MySbHolder.Get();
 				Console.WriteLine("Entering sub");
 				LockHolderDemoInt();
 				Console.WriteLine("Exited sub");
-				MySbHolder.UnLock();
+				MySbHolder.Release();
 
 				using(MySbHolder.Use())
 				{
-					LockHolderMock m3 = MySbHolder.GetLock();
-					MySbHolder.UnLock();
+					LockHolderMock m3 = MySbHolder.Get();
+					MySbHolder.Release();
 				};
 			}
 
-			MySbHolder.EndCache();
+			MySbHolder.Release();
 
 			Console.WriteLine(MySbHolder.RefCount.ToString());
 		}
 
 		private void LockHolderDemoInt()
 		{
-			LockHolderMock m2 = MySbHolder.GetLock();
-			MySbHolder.UnLock();
+			LockHolderMock m2 = MySbHolder.Get();
+			MySbHolder.Release();
 		}
 
 		private void CodeSpyDemo()

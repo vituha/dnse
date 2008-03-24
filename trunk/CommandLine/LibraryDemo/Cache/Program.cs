@@ -29,18 +29,18 @@ namespace Cache
 				Console.WriteLine(s);
 			}
 
-			using (CodeSpy.DoSpy("'accessed' access"))
+			using (CodeSpy.DoSpy("'LOM' access"))
 			{
 				//using (PropAccessor.Use())
-				PropAccessor.BeginCache();
+				PropLom.Ensure();
 				{
 					for (int i = 0; i < 1000000; i++)
 					{
-						s = PropAccessor.GetLock();
-						PropAccessor.UnLock();
+						s = PropLom.Get();
+						PropLom.Release();
 					}
 				}
-				PropAccessor.EndCache();
+				PropLom.Release();
 				Console.WriteLine(s);
 			}
 
@@ -74,14 +74,14 @@ namespace Cache
 			}
 		}
 
-		static Accessor<string> PropAccessor
+		static Lom<string> PropLom
 		{
 			get
 			{
-				return accessor;
+				return propLom;
 			}
 		}
-		static private Accessor<string> accessor = new Accessor<string>(CalcCachedPropValue);  
+		static private Lom<string> propLom = new Lom<string>(CalcCachedPropValue);  
 
 	}
 }

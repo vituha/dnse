@@ -1,5 +1,5 @@
 
-namespace VS.Library.Generics.Common.Delegates
+namespace VS.Library.Generics.Common
 {
 	public delegate void D();
 
