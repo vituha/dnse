@@ -1,5 +1,5 @@
 using System;
-using VS.Library.Generics.Common.Delegates;
+using VS.Library.Generics.Common;
 using System.Diagnostics;
 using VS.Library.Diagnostics;
 
@@ -14,39 +14,34 @@ namespace VS.Library.Cache
 	/// Note, that GC is not used by this implementation, so client code is free to call GC whenever needed 
 	/// </summary>
 	/// <typeparam name="T">Type of LOB</typeparam>
-	public class Accessor<T>
+	public class Lom<T>
 		where T : class
 	{
-		private T _object;
-		private D0<T> fabricDelegate;
-		private ushort refCount;
+		protected T _object;
+		protected D0<T> fabric;
+		private ushort counter;
 
 		/// <summary>
 		/// Constructs class instance.
 		/// Note, that in order for LOB to be freed in correct time(s), 
 		/// LOB instance reference should not be stored anywhere outside 
-		/// the outermost Lock/Unlock or BeginAccess/EndAccess call pair.
+		/// the outermost Get/Release or Ensure/Release call pair.
 		/// </summary>
 		/// <param name="fabricDelegate">Fabric delegate to create/initialize the LOB instance</param>
-		public Accessor(D0<T> fabricDelegate)
+		public Lom(D0<T> fabric)
 		{
-			if (fabricDelegate == null)
+			if (fabric == null)
 			{
 				ExceptionHub.Throw(new NullReferenceException("getter must not be null"));
 			}
 			this._object = null;
-			this.fabricDelegate = fabricDelegate;
-			this.refCount = 0;
+			this.fabric = fabric;
+			this.counter = 0;
 		}
 
-		~Accessor()
+		~Lom()
 		{
-			this._object = null;
-			this.fabricDelegate = null;
-			if (this.refCount > 0)
-			{
-				Trace.TraceWarning("too few releases. {0} more expected.", this.refCount);
-			}
+			Cleanup();
 		}
 
 		/// <summary>
@@ -56,44 +51,35 @@ namespace VS.Library.Cache
 		{
 			get
 			{
-				return this.refCount;
+				return this.counter;
 			}
 		}
 
-		#region Locking
 		/// <summary>
 		/// Gets object reference. Increments refcounter
 		/// </summary>
 		/// <returns>Object's reference</returns>
 		/// <exception cref="OverflowException" />
 		/// <exception cref="ApplicationException" />
-		public virtual T GetLock()
+		public virtual T Get()
 		{
-			// Overflow check
-			if (this.refCount == ushort.MaxValue)
-			{
-				ExceptionHub.Throw(new OverflowException("Too many calls"));
-			}
-			else
-			{
-				this.refCount++;
+			Ensure(); // increment counter
 
-				if (this._object == null) // LOB not yet created
+			if (this._object == null) // LOB not yet created
+			{
+				if (this.fabric == null) // Can create LOB?
 				{
-					if (this.fabricDelegate == null) // Can create LOB?
+					ExceptionHub.Throw(new ApplicationException("This instance cannot be used because cleanup has already been done"));
+				}
+				else
+				{
+					try
 					{
-						ExceptionHub.Throw(new ApplicationException("This instance cannot be used because cleanup has already been done"));
+						this._object = this.fabric(); // LOB creation
 					}
-					else
+					catch (Exception e)
 					{
-						try
-						{
-							this._object = this.fabricDelegate(); // LOB creation
-						}
-						catch (Exception e)
-						{
-							ExceptionHub.Throw(new ApplicationException("Fabric method threw exception", e));
-						}
+						ExceptionHub.Throw(new ApplicationException("Fabric method threw exception", e));
 					}
 				}
 			}
@@ -102,19 +88,17 @@ namespace VS.Library.Cache
 		/// <summary>
 		/// Decrements refcounter and releases object when zero
 		/// </summary>
-		public void UnLock()
+		public void Release()
 		{
-			if (this.refCount == 0)
+			if (this.counter == 0)
 			{
-				Trace.TraceWarning("too many unlocks");
+				Trace.TraceWarning("too many Releases");
 				return;
 			}
-			if (--this.refCount == 0)
+			if (--this.counter == 0)
 				this._object = null; // free LOB
 		}
-		#endregion
 
-		#region Caching
 		/// <summary>
 		/// Only increments refcounter. No LOB instance is being created. 
 		/// This method protects the LOB instance from being freed accross non-intersecting code parts.
@@ -130,53 +114,56 @@ namespace VS.Library.Cache
 		/// can be shared between non-intersecting code parts
 		/// <code>
 		/// accessor.BeginAccess();
-		/// object o1 = accessor.GetLock();
-		/// object o1 = accessor.UnLock(); // object is not destroyed here because of <see cref="BeginAccess" />
-		/// object o2 = accessor.GetLock();	// the object is re-used instead of re-obtained from getter
-		/// object o2 = accessor.UnLock();
+		/// object o1 = accessor.Get();
+		/// object o1 = accessor.Release(); // object is not destroyed here because of <see cref="BeginAccess" />
+		/// object o2 = accessor.Get();	// the object is re-used instead of re-obtained from getter
+		/// object o2 = accessor.Release();
 		/// accessor.EndAccess();
 		/// </code>
 		/// </example>
-		public void BeginCache()
+		public void Ensure()
 		{
-			this.refCount++;
+			// Overflow check
+			if (this.counter == ushort.MaxValue)
+			{
+				ExceptionHub.Throw(new OverflowException("Too many calls"));
+			}
+			else
+			{
+				this.counter++;
+			}
 		}
-		/// <summary>
-		/// Decrements the counter and frees the lob if necessary. Synonym to <see cref="Release"/>. 
-		/// Intended to be used in pair with <see cref="BeginAccess" />
-		/// </summary>
-		public void EndCache()
-		{
-			UnLock();
-		}
-		#endregion
 
 		/// <summary>
 		/// This is for forced freeing of the held object and should normally be the last call to this instance
-		/// Any call to <see cref="GetLock"/> behind this point will throw <see cref="NullReferenceException"/>
+		/// Any call to <see cref="Get"/> behind this point will throw <see cref="NullReferenceException"/>
 		/// </summary>
 		public void Cleanup()
 		{
-			this.refCount = 0;
 			this._object = null;
-			this.fabricDelegate = null; // Releasing the link to fabric. No more GetLock() calls!
+			this.fabric = null; // Releasing the link to fabric. No more Get() calls!
+			if (this.counter > 0)
+			{
+				Trace.TraceWarning("too few releases. {0} more expected.", this.counter);
+				this.counter = 0;
+			}
 		}
 
 		#region IDisposable and using related
 		private class Disposer : IDisposable
 		{
-			private Accessor<T> accessor;
+			private Lom<T> lom;
 
-			public Disposer(Accessor<T> accessor)
+			public Disposer(Lom<T> lom)
 			{
-				this.accessor = accessor;
-				accessor.BeginCache();
+				this.lom = lom;
+				lom.Ensure();
 			}
 
 			void IDisposable.Dispose()
 			{
-				accessor.EndCache();
-				accessor = null;
+				lom.Release();
+				lom = null;
 			}
 		}
 
@@ -188,6 +175,14 @@ namespace VS.Library.Cache
 		public IDisposable Use()
 		{
 			return new Disposer(this);
+		}
+
+		public D0<T> reuse(D0<T> fabric)
+		{
+			D0<T> result = this.fabric;
+			Cleanup();
+			this.fabric = fabric;
+			return result;
 		}
 		#endregion
 	}

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
-using VS.Library.Generics.Common.Delegates;
+using VS.Library.Generics.Common;
 
 namespace VS.Library.Generics.Comparison
 {
