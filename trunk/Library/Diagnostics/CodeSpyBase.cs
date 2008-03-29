@@ -29,11 +29,10 @@ namespace VS.Library.Diagnostics
 				get { return context; }
 			}
 			
-			private bool disposed = false;
-			public Pin(CodeSpyBase CodeSpyBase, object instance, MethodBase method, object context)
+			public Pin(CodeSpyBase codeSpyBase, object instance, MethodBase method, object context)
 			{
-				Debug.Assert(CodeSpyBase != null);
-				this.CodeSpyBase = CodeSpyBase;
+				Debug.Assert(codeSpyBase != null);
+				this.CodeSpyBase = codeSpyBase;
 				this.instance = instance;
 				this.method = method;
 				this.context = context;
@@ -43,10 +42,19 @@ namespace VS.Library.Diagnostics
 
 			public void Dispose()
 			{
-				if (!disposed)
+				Dispose(true);
+				GC.SuppressFinalize(this);
+			}
+
+			protected virtual void Dispose(bool disposing)
+			{
+				if (disposing)
 				{
-					CodeSpyBase.DoBlockExited(this);
-					this.disposed = true;
+					if (CodeSpyBase != null)
+					{
+						CodeSpyBase.DoBlockExited(this);
+						this.CodeSpyBase = null;
+					}
 				}
 			}
 			#endregion

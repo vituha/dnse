@@ -4,7 +4,7 @@ using VS.Library.Generics.Common;
 
 namespace VS.Library.Generics.Cache
 {
-	public class CacheBase<TKey, TValue>: ICache<TKey, TValue>
+	public class CacheBase<TKey, TValue>: ICachedItemsCollection<TKey, TValue>
 	{
 
 		private Dictionary<TKey, TValue> storage = new Dictionary<TKey, TValue>();
@@ -19,10 +19,10 @@ namespace VS.Library.Generics.Cache
 			get { return this.storage.Keys; }
 		}
 
-		public TValue Get(TKey key, D0<TValue> getter)
+		public TValue GetItem(TKey key, D0<TValue> getter)
 		{
 			TValue value;
-			if (TryGetValue(key, out value))
+			if (TryGetItem(key, out value))
 			{
 				AfterGet(key, value);
 			}
@@ -34,15 +34,15 @@ namespace VS.Library.Generics.Cache
 			return value;
 		}
 
-		public TValue Get(TKey key, D1<TValue, TKey> getter)
+		public TValue GetItem(TKey key, D1<TValue, TKey> getter)
 		{
-			return Get(key, (D0<TValue>)delegate { return getter(key); });
+			return GetItem(key, (D0<TValue>)delegate { return getter(key); });
 		}
 
-		public TValue GetDefault(TKey key, TValue defaultValue)
+		public TValue GetItemOrDefault(TKey key, TValue defaultValue)
 		{
 			TValue value;
-			if (TryGetValue(key, out value))
+			if (TryGetItem(key, out value))
 			{
 				AfterGet(key, value);
 			}
@@ -54,7 +54,7 @@ namespace VS.Library.Generics.Cache
 			return value;
 		}
 
-		public bool TryGetValue(TKey key, out TValue value)
+		public bool TryGetItem(TKey key, out TValue value)
 		{ 
 			return this.storage.TryGetValue(key, out value);
 		}

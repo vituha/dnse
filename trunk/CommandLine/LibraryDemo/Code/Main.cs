@@ -48,7 +48,7 @@ namespace CodeDemo
 			MySbHolder.Ensure();
 
 			{
-				LockHolderMock m1 = MySbHolder.Get();
+				LockHolderMock m1 = MySbHolder.Access();
 				Console.WriteLine("Entering sub");
 				LockHolderDemoInt();
 				Console.WriteLine("Exited sub");
@@ -56,7 +56,7 @@ namespace CodeDemo
 
 				using(MySbHolder.Use())
 				{
-					LockHolderMock m3 = MySbHolder.Get();
+					LockHolderMock m3 = MySbHolder.Access();
 					MySbHolder.Release();
 				};
 			}
@@ -68,7 +68,7 @@ namespace CodeDemo
 
 		private void LockHolderDemoInt()
 		{
-			LockHolderMock m2 = MySbHolder.Get();
+			LockHolderMock m2 = MySbHolder.Access();
 			MySbHolder.Release();
 		}
 

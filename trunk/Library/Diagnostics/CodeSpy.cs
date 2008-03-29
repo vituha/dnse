@@ -61,9 +61,8 @@ namespace VS.Library.Diagnostics
 			return (Default as CodeSpyBase).BeginSpy(instance, method, context);
 		}
 
-		public delegate void CodeSpyEventHandler(object context, CodeSpyEventArgs args);
-		public event CodeSpyEventHandler CodeBlockEnter;
-		public event CodeSpyEventHandler CodeBlockExit;
+		public event EventHandler<CodeSpyEventArgs> CodeBlockEnter;
+		public event EventHandler<CodeSpyEventArgs> CodeBlockExit;
 
 		protected override void DoBlockEntered(Pin pin)
 		{

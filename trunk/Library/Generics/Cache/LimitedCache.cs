@@ -4,31 +4,35 @@ using VS.Library.Generics.Common;
 
 namespace VS.Library.Generics.Cache
 {
-	public class Default<T>
-	{
-		public static T Value;
-	}
-
-	public class LimitedCache<TKey, TValue> : ICache<TKey, TValue>
+	public class LimitedCache<TKey, TValue> : ICachedItemsCollection<TKey, TValue>
 	{
 		private class CacheItem
 		{
 			private LinkedListNode<CacheItem> node;
 			public LinkedListNode<CacheItem> Node
 			{
-				get { return node; }
+				get
+				{
+					return node;
+				}
 			}
 
 			private TKey key;
 			public TKey Key
 			{
-				get { return key; }
+				get
+				{
+					return key;
+				}
 			}
 
 			private TValue value;
 			public TValue Value
 			{
-				get { return this.value; }
+				get
+				{
+					return this.value;
+				}
 			}
 
 			public CacheItem(LinkedListNode<CacheItem> node, TKey key, TValue value)
@@ -78,10 +82,13 @@ namespace VS.Library.Generics.Cache
 
 		public ICollection<TKey> Keys
 		{
-			get { return this.realCache.Keys; }
+			get
+			{
+				return this.realCache.Keys;
+			}
 		}
 
-		public TValue Get(TKey key, D0<TValue> getter)
+		public TValue GetItem(TKey key, D0<TValue> getter)
 		{
 			CacheItem item;
 			if (this.realCache.TryGetValue(key, out item))
@@ -89,13 +96,13 @@ namespace VS.Library.Generics.Cache
 				Accessed(item);
 			}
 			else
-			{ 
+			{
 				item = Add(key, getter());
 			}
 			return item.Value;
 		}
 
-		public TValue Get(TKey key, D1<TValue, TKey> getter)
+		public TValue GetItem(TKey key, D1<TValue, TKey> getter)
 		{
 			CacheItem item;
 			if (this.realCache.TryGetValue(key, out item))
@@ -109,7 +116,7 @@ namespace VS.Library.Generics.Cache
 			return item.Value;
 		}
 
-		public TValue GetDefault(TKey key, TValue defaultValue)
+		public TValue GetItemOrDefault(TKey key, TValue defaultValue)
 		{
 			CacheItem item;
 			if (this.realCache.TryGetValue(key, out item))
@@ -123,7 +130,7 @@ namespace VS.Library.Generics.Cache
 			return item.Value;
 		}
 
-		public bool TryGetValue(TKey key, out TValue value)
+		public bool TryGetItem(TKey key, out TValue value)
 		{
 			CacheItem item;
 			if (realCache.TryGetValue(key, out item))
@@ -133,7 +140,7 @@ namespace VS.Library.Generics.Cache
 			}
 			else
 			{
-				value = Default<TValue>.Value;
+				value = default(TValue);
 				return false;
 			}
 
