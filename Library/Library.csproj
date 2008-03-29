@@ -52,6 +52,7 @@
     <Compile Include="Cache\GetterCache.cs" />
     <Compile Include="Generics\Common\Delegates.cs" />
     <Compile Include="Generics\Comparison\CustomComparer.cs" />
+    <Compile Include="Patterns\DisposePattern.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Strings\Joiner.cs" />
   </ItemGroup>

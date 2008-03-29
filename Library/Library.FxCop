@@ -109,15 +109,6 @@
      </Message>
     </Messages>
    </Namespace>
-   <Namespace Name="VS.Library.Generics.Cache">
-    <Messages>
-     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2008-03-29 01:28:54Z">
-      <Issue>
-       <Item>VS.Library.Generics.Cache</Item>
-      </Issue>
-     </Message>
-    </Messages>
-   </Namespace>
    <Namespace Name="VS.Library.Generics.Comparison">
     <Messages>
      <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2008-03-29 01:28:54Z">
@@ -142,34 +133,56 @@
     <Modules>
      <Module Name="vs.library.dll">
       <Namespaces>
-       <Namespace Name="VS.Library.Cache">
+       <Namespace Name="Cache">
         <Types>
-         <Type Name="ActionBase">
+         <Type Name="DisposePatternBase">
           <Members>
-           <Member Name="#Dispose()">
+           <Member Name="#CheckDisposed()">
             <Messages>
-             <Message TypeName="CallGCSuppressFinalizeCorrectly" Category="Microsoft.Usage" CheckId="CA1816" Created="2008-03-29 01:28:54Z">
-              <Issue Name="NotCalled">
-               <Item>'ActionBase.Dispose()'</Item>
-               <Item>'GC.SuppressFinalize(object)'</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Created="2008-03-29 01:28:54Z">
-              <Issue Name="DisposeImplementation">
-               <Item>'ActionBase.Dispose()'</Item>
-              </Issue>
-              <Issue Name="DisposeSignature">
-               <Item>'ActionBase.Dispose()'</Item>
+             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2008-03-29 04:23:14Z">
+              <Issue>
+               <Item>'DisposePatternBase.CheckDisposed()'</Item>
               </Issue>
              </Message>
             </Messages>
            </Member>
-           <Member Name="#Respawn()">
+           <Member Name="#Disposed">
+            <Accessors>
+             <Accessor Name="#get_Disposed()">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2008-03-29 04:23:14Z">
+                <Issue>
+                 <Item>'DisposePatternBase.Disposed.get()'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="DisposePatternDerived">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Created="2008-03-29 04:23:14Z">
+            <Issue>
+             <Item>'DisposePatternDerived'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="VS.Library.Cache">
+        <Types>
+         <Type Name="ActionBase">
+          <Members>
+           <Member Name="#ReSpawn()">
             <Messages>
-             <Message Id="Respawn" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z">
+             <Message Id="Re" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2008-03-29 02:34:24Z">
               <Issue Name="Member">
-               <Item>Respawn</Item>
-               <Item>'ActionBase.Respawn()'</Item>
+               <Item>Re</Item>
+               <Item>'ActionBase.ReSpawn()'</Item>
+               <Item>RE</Item>
               </Issue>
              </Message>
             </Messages>
@@ -182,11 +195,6 @@
                <Item>'ApplicationException'</Item>
               </Issue>
              </Message>
-             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2008-03-29 01:28:54Z" FixCategory="NonBreaking">
-              <Issue>
-               <Item>'ActionBase.ThrowDetachedException()'</Item>
-              </Issue>
-             </Message>
             </Messages>
            </Member>
            <Member Name="#ThrowDetachStartedException()">
@@ -197,114 +205,19 @@
                <Item>'ApplicationException'</Item>
               </Issue>
              </Message>
-             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2008-03-29 01:28:54Z" FixCategory="NonBreaking">
-              <Issue>
-               <Item>'ActionBase.ThrowDetachStartedException()'</Item>
-              </Issue>
-             </Message>
             </Messages>
            </Member>
           </Members>
          </Type>
-         <Type Name="IAsyncAction">
+         <Type Name="LazyAction">
           <Members>
-           <Member Name="#Stop()">
+           <Member Name="#ReSpawn(VS.Library.Generics.Common.D,VS.Library.Generics.Common.D)">
             <Messages>
-             <Message Id="Stop" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Created="2008-03-29 01:28:54Z">
+             <Message Id="Re" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2008-03-29 02:34:57Z">
               <Issue Name="Member">
-               <Item>'IAsyncAction.Stop()'</Item>
-               <Item>Stop</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="LasyAction">
-          <Messages>
-           <Message Id="Lasy" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z">
-            <Issue Name="Type">
-             <Item>Lasy</Item>
-             <Item>'LasyAction'</Item>
-            </Issue>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#.ctor()">
-            <Messages>
-             <Message TypeName="DoNotInitializeUnnecessarily" Category="Microsoft.Performance" CheckId="CA1805" Created="2008-03-29 01:28:54Z">
-              <Issue>
-               <Item>'LasyAction.LasyAction()'</Item>
-               <Item>'LasyAction.endDelegate'</Item>
-               <Item>'D'</Item>
-               <Item>null</Item>
-              </Issue>
-              <Issue>
-               <Item>'LasyAction.LasyAction()'</Item>
-               <Item>'LasyAction.startDelegate'</Item>
-               <Item>'D'</Item>
-               <Item>null</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#.ctor(VS.Library.Generics.Common.D,VS.Library.Generics.Common.D)">
-            <Messages>
-             <Message TypeName="DoNotInitializeUnnecessarily" Category="Microsoft.Performance" CheckId="CA1805" Created="2008-03-29 01:28:54Z">
-              <Issue>
-               <Item>'LasyAction.LasyAction(D, D)'</Item>
-               <Item>'LasyAction.endDelegate'</Item>
-               <Item>'D'</Item>
-               <Item>null</Item>
-              </Issue>
-              <Issue>
-               <Item>'LasyAction.LasyAction(D, D)'</Item>
-               <Item>'LasyAction.startDelegate'</Item>
-               <Item>'D'</Item>
-               <Item>null</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#Dispose()">
-            <Messages>
-             <Message TypeName="CallGCSuppressFinalizeCorrectly" Category="Microsoft.Usage" CheckId="CA1816" Created="2008-03-29 01:28:54Z">
-              <Issue Name="NotCalled">
-               <Item>'LasyAction.Dispose()'</Item>
-               <Item>'GC.SuppressFinalize(object)'</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Created="2008-03-29 01:28:54Z">
-              <Issue Name="DisposeImplementation">
-               <Item>'LasyAction.Dispose()'</Item>
-              </Issue>
-              <Issue Name="DisposeSignature">
-               <Item>'LasyAction.Dispose()'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#Respawn(VS.Library.Generics.Common.D,VS.Library.Generics.Common.D)">
-            <Messages>
-             <Message Id="Respawn" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z">
-              <Issue Name="Member">
-               <Item>Respawn</Item>
-               <Item>'LasyAction.Respawn(D, D)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#ValidateDelegate(VS.Library.Generics.Common.D)">
-            <Messages>
-             <Message TypeName="DoNotRaiseReservedExceptionTypes" Category="Microsoft.Usage" CheckId="CA2201" Created="2008-03-29 01:28:54Z">
-              <Issue Name="Reserved">
-               <Item>'LasyAction.ValidateDelegate(D)'</Item>
-               <Item>'NullReferenceException'</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2008-03-29 01:28:54Z" FixCategory="NonBreaking">
-              <Issue>
-               <Item>'LasyAction.ValidateDelegate(D)'</Item>
+               <Item>Re</Item>
+               <Item>'LazyAction.ReSpawn(D, D)'</Item>
+               <Item>RE</Item>
               </Issue>
              </Message>
             </Messages>
@@ -313,7 +226,7 @@
          </Type>
          <Type Name="Lom`1">
           <Messages>
-           <Message Id="Lom" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z">
+           <Message Id="Lom" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 01:28:54Z">
             <Issue Name="Type">
              <Item>Lom</Item>
              <Item>'Lom&lt;T&gt;'</Item>
@@ -331,280 +244,17 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="#_object">
+           <Member Name="#Access()">
             <Messages>
-             <Message TypeName="DoNotDeclareVisibleInstanceFields" Category="Microsoft.Design" CheckId="CA1051" Created="2008-03-29 01:28:54Z">
-              <Issue>
-               <Item>'Lom&lt;T&gt;._object'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#fabric">
-            <Messages>
-             <Message TypeName="DoNotDeclareVisibleInstanceFields" Category="Microsoft.Design" CheckId="CA1051" Created="2008-03-29 01:28:54Z">
-              <Issue>
-               <Item>'Lom&lt;T&gt;.fabric'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#Get()">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2008-03-29 01:28:54Z">
-              <Issue>
-               <Item>'Lom&lt;T&gt;.Get()'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="DoNotRaiseReservedExceptionTypes" Category="Microsoft.Usage" CheckId="CA2201" Created="2008-03-29 01:28:54Z">
-              <Issue Name="TooGeneric">
-               <Item>'Lom&lt;T&gt;.Get()'</Item>
-               <Item>'ApplicationException'</Item>
-              </Issue>
-              <Issue Name="TooGeneric">
-               <Item>'Lom&lt;T&gt;.Get()'</Item>
-               <Item>'ApplicationException'</Item>
-              </Issue>
-             </Message>
-             <Message Id="Get" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Created="2008-03-29 01:28:54Z">
-              <Issue Name="Member">
-               <Item>'Lom&lt;T&gt;.Get()'</Item>
-               <Item>Get</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#reuse(VS.Library.Generics.Common.D0`1&lt;!0&gt;)">
-            <Messages>
-             <Message Id="reuse" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2008-03-29 01:28:54Z">
-              <Issue Name="Member">
-               <Item>reuse</Item>
-               <Item>'Lom&lt;T&gt;.reuse(D0&lt;T&gt;)'</Item>
-               <Item>Reuse</Item>
+             <Message TypeName="DoNotRaiseReservedExceptionTypes" Category="Microsoft.Usage" CheckId="CA2201" Created="2008-03-29 04:23:14Z">
+              <Issue Name="Reserved">
+               <Item>'Lom&lt;T&gt;.Access()'</Item>
+               <Item>'NullReferenceException'</Item>
               </Issue>
              </Message>
             </Messages>
            </Member>
           </Members>
-         </Type>
-         <Type Name="Lom`1+Disposer">
-          <Members>
-           <Member Name="#System.IDisposable.Dispose()">
-            <Messages>
-             <Message TypeName="CallGCSuppressFinalizeCorrectly" Category="Microsoft.Usage" CheckId="CA1816" Created="2008-03-29 01:28:54Z">
-              <Issue Name="NotCalled">
-               <Item>'Lom&lt;T&gt;.Disposer.IDisposable.Dispose()'</Item>
-               <Item>'GC.SuppressFinalize(object)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-        </Types>
-       </Namespace>
-       <Namespace Name="VS.Library.Diagnostics">
-        <Types>
-         <Type Name="CodeSpy">
-          <Members>
-           <Member Name="#CodeBlockEnter" Kind="Event">
-            <Messages>
-             <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Created="2008-03-29 01:28:54Z">
-              <Issue Name="First">
-               <Item>'CodeSpy.CodeSpyEventHandler'</Item>
-              </Issue>
-              <Issue Name="Second">
-               <Item>'CodeSpy.CodeSpyEventHandler'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#CodeBlockExit" Kind="Event">
-            <Messages>
-             <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Created="2008-03-29 01:28:54Z">
-              <Issue Name="First">
-               <Item>'CodeSpy.CodeSpyEventHandler'</Item>
-              </Issue>
-              <Issue Name="Second">
-               <Item>'CodeSpy.CodeSpyEventHandler'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="CodeSpy+CodeSpyEventHandler">
-          <Messages>
-           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Created="2008-03-29 01:28:54Z">
-            <Issue>
-             <Item>'CodeSpy.CodeSpyEventHandler'</Item>
-            </Issue>
-           </Message>
-           <Message TypeName="UseGenericEventHandlerInstances" Category="Microsoft.Design" CheckId="CA1003" Created="2008-03-29 01:28:54Z">
-            <Issue>
-             <Item>'CodeSpy.CodeSpyEventHandler'</Item>
-            </Issue>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="CodeSpyBase+Pin">
-          <Messages>
-           <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Created="2008-03-29 01:28:54Z">
-            <Issue Name="ProvideDisposeBool">
-             <Item>'CodeSpyBase.Pin'</Item>
-            </Issue>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#.ctor(VS.Library.Diagnostics.CodeSpyBase,System.Object,System.Reflection.MethodBase,System.Object)">
-            <Messages>
-             <Message TypeName="DoNotInitializeUnnecessarily" Category="Microsoft.Performance" CheckId="CA1805" Created="2008-03-29 01:28:54Z">
-              <Issue>
-               <Item>'CodeSpyBase.Pin.Pin(CodeSpyBase, object, MethodBase, object)'</Item>
-               <Item>'CodeSpyBase.Pin.disposed'</Item>
-               <Item>'bool'</Item>
-               <Item>false</Item>
-              </Issue>
-             </Message>
-             <Message Id="Code" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2008-03-29 01:28:54Z">
-              <Issue Name="MemberParameter">
-               <Item>'CodeSpyBase.Pin.Pin(CodeSpyBase, object, MethodBase, object)'</Item>
-               <Item>Code</Item>
-               <Item>'CodeSpyBase'</Item>
-               <Item>code</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#Dispose()">
-            <Messages>
-             <Message TypeName="CallGCSuppressFinalizeCorrectly" Category="Microsoft.Usage" CheckId="CA1816" Created="2008-03-29 01:28:54Z">
-              <Issue Name="NotCalled">
-               <Item>'CodeSpyBase.Pin.Dispose()'</Item>
-               <Item>'GC.SuppressFinalize(object)'</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Created="2008-03-29 01:28:54Z">
-              <Issue Name="DisposeImplementation">
-               <Item>'CodeSpyBase.Pin.Dispose()'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="ExceptionHub">
-          <Members>
-           <Member Name="#DoThrow(System.Exception)">
-            <Messages>
-             <Message Id="e" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z">
-              <Issue Name="MemberParameterMoreMeaningfulName">
-               <Item>'ExceptionHub.DoThrow(Exception)'</Item>
-               <Item>'e'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#Throw(System.Exception)">
-            <Messages>
-             <Message Id="e" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z">
-              <Issue Name="MemberParameterMoreMeaningfulName">
-               <Item>'ExceptionHub.Throw(Exception)'</Item>
-               <Item>'e'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-        </Types>
-       </Namespace>
-       <Namespace Name="VS.Library.Generics.Cache">
-        <Types>
-         <Type Name="CacheBase`2">
-          <Messages>
-           <Message TypeName="IdentifiersShouldHaveCorrectSuffix" Category="Microsoft.Naming" CheckId="CA1710" Created="2008-03-29 01:28:54Z">
-            <Issue>
-             <Item>'CacheBase&lt;TKey, TValue&gt;'</Item>
-             <Item>Collection</Item>
-            </Issue>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="Default`1">
-          <Messages>
-           <Message Id="Default" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Created="2008-03-29 01:28:54Z">
-            <Issue Name="Type">
-             <Item>'Default&lt;T&gt;'</Item>
-             <Item>Default</Item>
-            </Issue>
-           </Message>
-           <Message TypeName="StaticHolderTypesShouldNotHaveConstructors" Category="Microsoft.Design" CheckId="CA1053" Created="2008-03-29 01:28:54Z">
-            <Issue>
-             <Item>'Default&lt;T&gt;'</Item>
-            </Issue>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#Value">
-            <Messages>
-             <Message TypeName="DoNotDeclareStaticMembersOnGenericTypes" Category="Microsoft.Design" CheckId="CA1000" Created="2008-03-29 01:28:54Z">
-              <Issue>
-               <Item>'Default&lt;T&gt;.Value'</Item>
-               <Item>'Default&lt;T&gt;'</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2008-03-29 01:28:54Z">
-              <Issue>
-               <Item>'Default&lt;T&gt;.Value'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="ICache`2">
-          <Messages>
-           <Message TypeName="IdentifiersShouldHaveCorrectSuffix" Category="Microsoft.Naming" CheckId="CA1710" Created="2008-03-29 01:28:54Z">
-            <Issue>
-             <Item>'ICache&lt;TKey, TValue&gt;'</Item>
-             <Item>Collection</Item>
-            </Issue>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#Get(!0,VS.Library.Generics.Common.D0`1&lt;!1&gt;)">
-            <Messages>
-             <Message Id="Get" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Created="2008-03-29 01:28:54Z">
-              <Issue Name="Member">
-               <Item>'ICache&lt;TKey, TValue&gt;.Get(TKey, D0&lt;TValue&gt;)'</Item>
-               <Item>Get</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#Get(!0,VS.Library.Generics.Common.D1`2&lt;!1,!0&gt;)">
-            <Messages>
-             <Message Id="Get" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Created="2008-03-29 01:28:54Z">
-              <Issue Name="Member">
-               <Item>'ICache&lt;TKey, TValue&gt;.Get(TKey, D1&lt;TValue, TKey&gt;)'</Item>
-               <Item>Get</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="LimitedCache`2">
-          <Messages>
-           <Message TypeName="IdentifiersShouldHaveCorrectSuffix" Category="Microsoft.Naming" CheckId="CA1710" Created="2008-03-29 01:28:54Z">
-            <Issue>
-             <Item>'LimitedCache&lt;TKey, TValue&gt;'</Item>
-             <Item>Collection</Item>
-            </Issue>
-           </Message>
-          </Messages>
          </Type>
         </Types>
        </Namespace>
@@ -612,43 +262,25 @@
         <Types>
          <Type Name="D">
           <Messages>
-           <Message Id="D" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z">
+           <Message Id="D" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 01:28:54Z">
             <Issue Name="TypeMoreMeaningfulName">
              <Item>'D'</Item>
             </Issue>
            </Message>
           </Messages>
          </Type>
-         <Type Name="D0`1">
-          <Messages>
-           <Message Id="Val" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z" FixCategory="NonBreaking">
-            <Issue Name="TypeTypeParameter">
-             <Item>'D0&lt;TRetVal&gt;'</Item>
-             <Item>Val</Item>
-             <Item>'TRetVal'</Item>
-            </Issue>
-           </Message>
-          </Messages>
-         </Type>
          <Type Name="D1`2">
           <Messages>
-           <Message Id="Parm" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z" FixCategory="NonBreaking">
+           <Message Id="Param" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 02:31:11Z" FixCategory="NonBreaking">
             <Issue Name="TypeTypeParameter">
-             <Item>'D1&lt;TRetVal, TParm1&gt;'</Item>
-             <Item>Parm</Item>
-             <Item>'TParm1'</Item>
+             <Item>'D1&lt;TResult, TParam1&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam1'</Item>
             </Issue>
            </Message>
-           <Message Id="Val" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z" FixCategory="NonBreaking">
-            <Issue Name="TypeTypeParameter">
-             <Item>'D1&lt;TRetVal, TParm1&gt;'</Item>
-             <Item>Val</Item>
-             <Item>'TRetVal'</Item>
-            </Issue>
-           </Message>
-           <Message Id="p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z">
+           <Message Id="p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 01:28:54Z">
             <Issue Name="DelegateParameter">
-             <Item>'D1&lt;TRetVal, TParm1&gt;'</Item>
+             <Item>'D1&lt;TResult, TParam1&gt;'</Item>
              <Item>p</Item>
              <Item>'p1'</Item>
             </Issue>
@@ -657,184 +289,145 @@
          </Type>
          <Type Name="D2`3">
           <Messages>
-           <Message Id="Parm" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z" FixCategory="NonBreaking">
-            <Issue Name="TypeTypeParameter">
-             <Item>'D2&lt;TRetVal, TParm1, TParm2&gt;'</Item>
-             <Item>Parm</Item>
-             <Item>'TParm1'</Item>
-            </Issue>
-            <Issue Name="TypeTypeParameter">
-             <Item>'D2&lt;TRetVal, TParm1, TParm2&gt;'</Item>
-             <Item>Parm</Item>
-             <Item>'TParm2'</Item>
+           <Message TypeName="AvoidExcessiveParametersOnGenericTypes" Category="Microsoft.Design" CheckId="CA1005" Status="Excluded" Created="2008-03-29 01:28:54Z">
+            <Issue>
+             <Item>'D2&lt;TResult, TParam1, TParam2&gt;'</Item>
             </Issue>
            </Message>
-           <Message Id="Val" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z" FixCategory="NonBreaking">
+           <Message Id="Param" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 02:31:11Z" FixCategory="NonBreaking">
             <Issue Name="TypeTypeParameter">
-             <Item>'D2&lt;TRetVal, TParm1, TParm2&gt;'</Item>
-             <Item>Val</Item>
-             <Item>'TRetVal'</Item>
+             <Item>'D2&lt;TResult, TParam1, TParam2&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam1'</Item>
+            </Issue>
+            <Issue Name="TypeTypeParameter">
+             <Item>'D2&lt;TResult, TParam1, TParam2&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam2'</Item>
             </Issue>
            </Message>
-           <Message Id="p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z">
+           <Message Id="p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 01:28:54Z">
             <Issue Name="DelegateParameter">
-             <Item>'D2&lt;TRetVal, TParm1, TParm2&gt;'</Item>
+             <Item>'D2&lt;TResult, TParam1, TParam2&gt;'</Item>
              <Item>p</Item>
              <Item>'p1'</Item>
             </Issue>
             <Issue Name="DelegateParameter">
-             <Item>'D2&lt;TRetVal, TParm1, TParm2&gt;'</Item>
+             <Item>'D2&lt;TResult, TParam1, TParam2&gt;'</Item>
              <Item>p</Item>
              <Item>'p2'</Item>
-            </Issue>
-           </Message>
-           <Message TypeName="AvoidExcessiveParametersOnGenericTypes" Category="Microsoft.Design" CheckId="CA1005" Status="Excluded" Created="2008-03-29 01:28:54Z">
-            <Issue>
-             <Item>'D2&lt;TRetVal, TParm1, TParm2&gt;'</Item>
             </Issue>
            </Message>
           </Messages>
          </Type>
          <Type Name="D3`4">
           <Messages>
-           <Message Id="Parm" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z" FixCategory="NonBreaking">
-            <Issue Name="TypeTypeParameter">
-             <Item>'D3&lt;TRetVal, TParm1, TParm2, TParm3&gt;'</Item>
-             <Item>Parm</Item>
-             <Item>'TParm1'</Item>
-            </Issue>
-            <Issue Name="TypeTypeParameter">
-             <Item>'D3&lt;TRetVal, TParm1, TParm2, TParm3&gt;'</Item>
-             <Item>Parm</Item>
-             <Item>'TParm2'</Item>
-            </Issue>
-            <Issue Name="TypeTypeParameter">
-             <Item>'D3&lt;TRetVal, TParm1, TParm2, TParm3&gt;'</Item>
-             <Item>Parm</Item>
-             <Item>'TParm3'</Item>
+           <Message TypeName="AvoidExcessiveParametersOnGenericTypes" Category="Microsoft.Design" CheckId="CA1005" Status="Excluded" Created="2008-03-29 01:28:54Z">
+            <Issue>
+             <Item>'D3&lt;TResult, TParam1, TParam2, TParam3&gt;'</Item>
             </Issue>
            </Message>
-           <Message Id="Val" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z" FixCategory="NonBreaking">
+           <Message Id="Param" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 02:31:11Z" FixCategory="NonBreaking">
             <Issue Name="TypeTypeParameter">
-             <Item>'D3&lt;TRetVal, TParm1, TParm2, TParm3&gt;'</Item>
-             <Item>Val</Item>
-             <Item>'TRetVal'</Item>
+             <Item>'D3&lt;TResult, TParam1, TParam2, TParam3&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam1'</Item>
+            </Issue>
+            <Issue Name="TypeTypeParameter">
+             <Item>'D3&lt;TResult, TParam1, TParam2, TParam3&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam2'</Item>
+            </Issue>
+            <Issue Name="TypeTypeParameter">
+             <Item>'D3&lt;TResult, TParam1, TParam2, TParam3&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam3'</Item>
             </Issue>
            </Message>
-           <Message Id="p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z">
+           <Message Id="p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 01:28:54Z">
             <Issue Name="DelegateParameter">
-             <Item>'D3&lt;TRetVal, TParm1, TParm2, TParm3&gt;'</Item>
+             <Item>'D3&lt;TResult, TParam1, TParam2, TParam3&gt;'</Item>
              <Item>p</Item>
              <Item>'p1'</Item>
             </Issue>
             <Issue Name="DelegateParameter">
-             <Item>'D3&lt;TRetVal, TParm1, TParm2, TParm3&gt;'</Item>
+             <Item>'D3&lt;TResult, TParam1, TParam2, TParam3&gt;'</Item>
              <Item>p</Item>
              <Item>'p2'</Item>
             </Issue>
             <Issue Name="DelegateParameter">
-             <Item>'D3&lt;TRetVal, TParm1, TParm2, TParm3&gt;'</Item>
+             <Item>'D3&lt;TResult, TParam1, TParam2, TParam3&gt;'</Item>
              <Item>p</Item>
              <Item>'p3'</Item>
-            </Issue>
-           </Message>
-           <Message TypeName="AvoidExcessiveParametersOnGenericTypes" Category="Microsoft.Design" CheckId="CA1005" Status="Excluded" Created="2008-03-29 01:28:54Z">
-            <Issue>
-             <Item>'D3&lt;TRetVal, TParm1, TParm2, TParm3&gt;'</Item>
             </Issue>
            </Message>
           </Messages>
          </Type>
          <Type Name="D4`5">
           <Messages>
-           <Message Id="Parm" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z" FixCategory="NonBreaking">
-            <Issue Name="TypeTypeParameter">
-             <Item>'D4&lt;TRetVal, TParm1, TParm2, TParm3, TParm4&gt;'</Item>
-             <Item>Parm</Item>
-             <Item>'TParm1'</Item>
-            </Issue>
-            <Issue Name="TypeTypeParameter">
-             <Item>'D4&lt;TRetVal, TParm1, TParm2, TParm3, TParm4&gt;'</Item>
-             <Item>Parm</Item>
-             <Item>'TParm2'</Item>
-            </Issue>
-            <Issue Name="TypeTypeParameter">
-             <Item>'D4&lt;TRetVal, TParm1, TParm2, TParm3, TParm4&gt;'</Item>
-             <Item>Parm</Item>
-             <Item>'TParm3'</Item>
-            </Issue>
-            <Issue Name="TypeTypeParameter">
-             <Item>'D4&lt;TRetVal, TParm1, TParm2, TParm3, TParm4&gt;'</Item>
-             <Item>Parm</Item>
-             <Item>'TParm4'</Item>
+           <Message TypeName="AvoidExcessiveParametersOnGenericTypes" Category="Microsoft.Design" CheckId="CA1005" Status="Excluded" Created="2008-03-29 01:28:54Z">
+            <Issue>
+             <Item>'D4&lt;TResult, TParam1, TParam2, TParam3, TParam4&gt;'</Item>
             </Issue>
            </Message>
-           <Message Id="Val" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z" FixCategory="NonBreaking">
+           <Message Id="Param" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 02:31:11Z" FixCategory="NonBreaking">
             <Issue Name="TypeTypeParameter">
-             <Item>'D4&lt;TRetVal, TParm1, TParm2, TParm3, TParm4&gt;'</Item>
-             <Item>Val</Item>
-             <Item>'TRetVal'</Item>
+             <Item>'D4&lt;TResult, TParam1, TParam2, TParam3, TParam4&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam1'</Item>
+            </Issue>
+            <Issue Name="TypeTypeParameter">
+             <Item>'D4&lt;TResult, TParam1, TParam2, TParam3, TParam4&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam2'</Item>
+            </Issue>
+            <Issue Name="TypeTypeParameter">
+             <Item>'D4&lt;TResult, TParam1, TParam2, TParam3, TParam4&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam3'</Item>
+            </Issue>
+            <Issue Name="TypeTypeParameter">
+             <Item>'D4&lt;TResult, TParam1, TParam2, TParam3, TParam4&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam4'</Item>
             </Issue>
            </Message>
-           <Message Id="p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z">
+           <Message Id="p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 01:28:54Z">
             <Issue Name="DelegateParameter">
-             <Item>'D4&lt;TRetVal, TParm1, TParm2, TParm3, TParm4&gt;'</Item>
+             <Item>'D4&lt;TResult, TParam1, TParam2, TParam3, TParam4&gt;'</Item>
              <Item>p</Item>
              <Item>'p1'</Item>
             </Issue>
             <Issue Name="DelegateParameter">
-             <Item>'D4&lt;TRetVal, TParm1, TParm2, TParm3, TParm4&gt;'</Item>
+             <Item>'D4&lt;TResult, TParam1, TParam2, TParam3, TParam4&gt;'</Item>
              <Item>p</Item>
              <Item>'p2'</Item>
             </Issue>
             <Issue Name="DelegateParameter">
-             <Item>'D4&lt;TRetVal, TParm1, TParm2, TParm3, TParm4&gt;'</Item>
+             <Item>'D4&lt;TResult, TParam1, TParam2, TParam3, TParam4&gt;'</Item>
              <Item>p</Item>
              <Item>'p3'</Item>
             </Issue>
             <Issue Name="DelegateParameter">
-             <Item>'D4&lt;TRetVal, TParm1, TParm2, TParm3, TParm4&gt;'</Item>
+             <Item>'D4&lt;TResult, TParam1, TParam2, TParam3, TParam4&gt;'</Item>
              <Item>p</Item>
              <Item>'p4'</Item>
-            </Issue>
-           </Message>
-           <Message TypeName="AvoidExcessiveParametersOnGenericTypes" Category="Microsoft.Design" CheckId="CA1005" Status="Excluded" Created="2008-03-29 01:28:54Z">
-            <Issue>
-             <Item>'D4&lt;TRetVal, TParm1, TParm2, TParm3, TParm4&gt;'</Item>
-            </Issue>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="DP0`1">
-          <Messages>
-           <Message Id="Val" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z" FixCategory="NonBreaking">
-            <Issue Name="TypeTypeParameter">
-             <Item>'DP0&lt;TRetVal&gt;'</Item>
-             <Item>Val</Item>
-             <Item>'TRetVal'</Item>
             </Issue>
            </Message>
           </Messages>
          </Type>
          <Type Name="DP1`2">
           <Messages>
-           <Message Id="Parm" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z" FixCategory="NonBreaking">
+           <Message Id="Param" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 02:31:11Z" FixCategory="NonBreaking">
             <Issue Name="TypeTypeParameter">
-             <Item>'DP1&lt;TRetVal, TParm1&gt;'</Item>
-             <Item>Parm</Item>
-             <Item>'TParm1'</Item>
+             <Item>'DP1&lt;TResult, TParam1&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam1'</Item>
             </Issue>
            </Message>
-           <Message Id="Val" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z" FixCategory="NonBreaking">
-            <Issue Name="TypeTypeParameter">
-             <Item>'DP1&lt;TRetVal, TParm1&gt;'</Item>
-             <Item>Val</Item>
-             <Item>'TRetVal'</Item>
-            </Issue>
-           </Message>
-           <Message Id="p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z">
+           <Message Id="p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 01:28:54Z">
             <Issue Name="DelegateParameter">
-             <Item>'DP1&lt;TRetVal, TParm1&gt;'</Item>
+             <Item>'DP1&lt;TResult, TParam1&gt;'</Item>
              <Item>p</Item>
              <Item>'p1'</Item>
             </Issue>
@@ -843,110 +436,79 @@
          </Type>
          <Type Name="DP2`3">
           <Messages>
-           <Message Id="Parm" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z" FixCategory="NonBreaking">
-            <Issue Name="TypeTypeParameter">
-             <Item>'DP2&lt;TRetVal, TParm1, TParm2&gt;'</Item>
-             <Item>Parm</Item>
-             <Item>'TParm1'</Item>
-            </Issue>
-            <Issue Name="TypeTypeParameter">
-             <Item>'DP2&lt;TRetVal, TParm1, TParm2&gt;'</Item>
-             <Item>Parm</Item>
-             <Item>'TParm2'</Item>
+           <Message TypeName="AvoidExcessiveParametersOnGenericTypes" Category="Microsoft.Design" CheckId="CA1005" Status="Excluded" Created="2008-03-29 01:28:54Z">
+            <Issue>
+             <Item>'DP2&lt;TResult, TParam1, TParam2&gt;'</Item>
             </Issue>
            </Message>
-           <Message Id="Val" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z" FixCategory="NonBreaking">
+           <Message Id="Param" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 02:31:11Z" FixCategory="NonBreaking">
             <Issue Name="TypeTypeParameter">
-             <Item>'DP2&lt;TRetVal, TParm1, TParm2&gt;'</Item>
-             <Item>Val</Item>
-             <Item>'TRetVal'</Item>
+             <Item>'DP2&lt;TResult, TParam1, TParam2&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam1'</Item>
+            </Issue>
+            <Issue Name="TypeTypeParameter">
+             <Item>'DP2&lt;TResult, TParam1, TParam2&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam2'</Item>
             </Issue>
            </Message>
-           <Message Id="p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z">
+           <Message Id="p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 01:28:54Z">
             <Issue Name="DelegateParameter">
-             <Item>'DP2&lt;TRetVal, TParm1, TParm2&gt;'</Item>
+             <Item>'DP2&lt;TResult, TParam1, TParam2&gt;'</Item>
              <Item>p</Item>
              <Item>'p1'</Item>
             </Issue>
             <Issue Name="DelegateParameter">
-             <Item>'DP2&lt;TRetVal, TParm1, TParm2&gt;'</Item>
+             <Item>'DP2&lt;TResult, TParam1, TParam2&gt;'</Item>
              <Item>p</Item>
              <Item>'p2'</Item>
-            </Issue>
-           </Message>
-           <Message TypeName="AvoidExcessiveParametersOnGenericTypes" Category="Microsoft.Design" CheckId="CA1005" Status="Excluded" Created="2008-03-29 01:28:54Z">
-            <Issue>
-             <Item>'DP2&lt;TRetVal, TParm1, TParm2&gt;'</Item>
             </Issue>
            </Message>
           </Messages>
          </Type>
          <Type Name="DP3`4">
           <Messages>
-           <Message Id="Parm" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z" FixCategory="NonBreaking">
-            <Issue Name="TypeTypeParameter">
-             <Item>'DP3&lt;TRetVal, TParm1, TParm2, TParm3&gt;'</Item>
-             <Item>Parm</Item>
-             <Item>'TParm1'</Item>
-            </Issue>
-            <Issue Name="TypeTypeParameter">
-             <Item>'DP3&lt;TRetVal, TParm1, TParm2, TParm3&gt;'</Item>
-             <Item>Parm</Item>
-             <Item>'TParm2'</Item>
-            </Issue>
-            <Issue Name="TypeTypeParameter">
-             <Item>'DP3&lt;TRetVal, TParm1, TParm2, TParm3&gt;'</Item>
-             <Item>Parm</Item>
-             <Item>'TParm3'</Item>
+           <Message TypeName="AvoidExcessiveParametersOnGenericTypes" Category="Microsoft.Design" CheckId="CA1005" Status="Excluded" Created="2008-03-29 01:28:54Z">
+            <Issue>
+             <Item>'DP3&lt;TResult, TParam1, TParam2, TParam3&gt;'</Item>
             </Issue>
            </Message>
-           <Message Id="Val" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z" FixCategory="NonBreaking">
+           <Message Id="Param" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 02:31:11Z" FixCategory="NonBreaking">
             <Issue Name="TypeTypeParameter">
-             <Item>'DP3&lt;TRetVal, TParm1, TParm2, TParm3&gt;'</Item>
-             <Item>Val</Item>
-             <Item>'TRetVal'</Item>
+             <Item>'DP3&lt;TResult, TParam1, TParam2, TParam3&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam1'</Item>
+            </Issue>
+            <Issue Name="TypeTypeParameter">
+             <Item>'DP3&lt;TResult, TParam1, TParam2, TParam3&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam2'</Item>
+            </Issue>
+            <Issue Name="TypeTypeParameter">
+             <Item>'DP3&lt;TResult, TParam1, TParam2, TParam3&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam3'</Item>
             </Issue>
            </Message>
-           <Message Id="p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2008-03-29 01:28:54Z">
+           <Message Id="p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 01:28:54Z">
             <Issue Name="DelegateParameter">
-             <Item>'DP3&lt;TRetVal, TParm1, TParm2, TParm3&gt;'</Item>
+             <Item>'DP3&lt;TResult, TParam1, TParam2, TParam3&gt;'</Item>
              <Item>p</Item>
              <Item>'p1'</Item>
             </Issue>
             <Issue Name="DelegateParameter">
-             <Item>'DP3&lt;TRetVal, TParm1, TParm2, TParm3&gt;'</Item>
+             <Item>'DP3&lt;TResult, TParam1, TParam2, TParam3&gt;'</Item>
              <Item>p</Item>
              <Item>'p2'</Item>
             </Issue>
             <Issue Name="DelegateParameter">
-             <Item>'DP3&lt;TRetVal, TParm1, TParm2, TParm3&gt;'</Item>
+             <Item>'DP3&lt;TResult, TParam1, TParam2, TParam3&gt;'</Item>
              <Item>p</Item>
              <Item>'p3'</Item>
             </Issue>
            </Message>
-           <Message TypeName="AvoidExcessiveParametersOnGenericTypes" Category="Microsoft.Design" CheckId="CA1005" Status="Excluded" Created="2008-03-29 01:28:54Z">
-            <Issue>
-             <Item>'DP3&lt;TRetVal, TParm1, TParm2, TParm3&gt;'</Item>
-            </Issue>
-           </Message>
           </Messages>
-         </Type>
-        </Types>
-       </Namespace>
-       <Namespace Name="VS.Library.Strings">
-        <Types>
-         <Type Name="Joiner">
-          <Members>
-           <Member Name="#.cctor()">
-            <Messages>
-             <Message TypeName="InitializeReferenceTypeStaticFieldsInline" Category="Microsoft.Performance" CheckId="CA1810" Created="2008-03-29 01:28:54Z">
-              <Issue>
-               <Item>'Joiner'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
          </Type>
         </Types>
        </Namespace>
@@ -962,24 +524,11 @@
    <Rule TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020">
     <Resolution Name="Default">Consider merging the types defined in '{0}' with another namespace.</Resolution>
    </Rule>
-   <Rule TypeName="CallGCSuppressFinalizeCorrectly" Category="Microsoft.Usage" CheckId="CA1816">
-    <Resolution Name="NotCalled">Change {0} to call {1}. This will prevent unnecessary finalization of the object once it has been disposed and it has fallen out of scope.</Resolution>
+   <Rule TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811">
+    <Resolution Name="Default">{0} appears to have no upstream public or protected callers.</Resolution>
    </Rule>
-   <Rule TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009">
-    <Resolution Name="First">Declare the first parameter of {0} as an object named 'sender'.</Resolution>
-    <Resolution Name="Second">Declare the second parameter of {0} as an EventArgs, or an instance of a type that extends EventArgs, named 'e'.</Resolution>
-   </Rule>
-   <Rule TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031">
-    <Resolution Name="Default">Modify {0} to catch a more specific exception than {1} or rethrow the exception.</Resolution>
-   </Rule>
-   <Rule TypeName="DoNotDeclareStaticMembersOnGenericTypes" Category="Microsoft.Design" CheckId="CA1000">
-    <Resolution Name="Default">Remove {0} from {1} or make it an instance member.</Resolution>
-   </Rule>
-   <Rule TypeName="DoNotDeclareVisibleInstanceFields" Category="Microsoft.Design" CheckId="CA1051">
-    <Resolution Name="Default">Because field {0} is visible outside of its declaring type, change its accessibility to private and add a property, with the same accessibility as the field has currently, to provide access to it.</Resolution>
-   </Rule>
-   <Rule TypeName="DoNotInitializeUnnecessarily" Category="Microsoft.Performance" CheckId="CA1805">
-    <Resolution Name="Default">{0} initializes field {1} of type {2} to {3}. Remove this initialization because it will be done automatically by the runtime.</Resolution>
+   <Rule TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812">
+    <Resolution Name="Default">{0} is an internal class that is apparently never instantiated. If so, remove the code from the assembly. If this class is intended to contain only static methods, consider adding a private constructor to prevent the compiler from generating a default constructor.</Resolution>
    </Rule>
    <Rule TypeName="DoNotRaiseReservedExceptionTypes" Category="Microsoft.Usage" CheckId="CA2201">
     <Resolution Name="Reserved">{0} creates an exception of type {1}, an exception type that is reserved by the runtime and should never be raised by managed code. If this exception instance might be thrown, use a different exception type.</Resolution>
@@ -987,45 +536,12 @@
    </Rule>
    <Rule TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709">
     <Resolution Name="Member">Correct the casing of '{0}' in member name {1} by changing it to '{2}'.</Resolution>
-    <Resolution Name="MemberParameter">In member {0}, correct the casing of '{1}' in parameter name {2} by changing it to '{3}'.</Resolution>
    </Rule>
    <Rule TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704">
     <Resolution Name="DelegateParameter">In delegate {0}, correct the spelling of '{1}' in parameter name {2} or remove it entirely if it represents any sort of Hungarian notation.</Resolution>
-    <Resolution Name="Member">Correct the spelling of '{0}' in member name {1} or remove it entirely if it represents any sort of Hungarian notation.</Resolution>
-    <Resolution Name="MemberParameterMoreMeaningfulName">In method {0}, consider providing a more meaningful name than parameter name {1}.</Resolution>
     <Resolution Name="Type">Correct the spelling of '{0}' in type name {1}.</Resolution>
     <Resolution Name="TypeMoreMeaningfulName">Consider providing a more meaningful name than type name {0}.</Resolution>
     <Resolution Name="TypeTypeParameter">On type {0}, correct the spelling of '{1}' in generic type parameter name {2}.</Resolution>
-   </Rule>
-   <Rule TypeName="IdentifiersShouldHaveCorrectSuffix" Category="Microsoft.Naming" CheckId="CA1710">
-    <Resolution Name="Default">Rename {0} to end in '{1}'.</Resolution>
-   </Rule>
-   <Rule TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716">
-    <Resolution Name="Member">Rename virtual/interface member {0} so that it no longer conflicts with the reserved language keyword '{1}'. Using a reserved keyword as the name of a virtual/interface member makes it harder for consumers in other languages to override/implement the member.</Resolution>
-    <Resolution Name="Type">Rename type {0} so that it no longer conflicts with the reserved language keyword '{1}'. Using a reserved keyword as the name of a type makes it harder for consumers in other languages to use the type.</Resolution>
-   </Rule>
-   <Rule TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063">
-    <Resolution Name="DisposeImplementation">Modify {0} so that it calls Dispose(true), then calls GC.SuppressFinalize on the current object instance ('this' or 'Me' in Visual Basic), and then returns.</Resolution>
-    <Resolution Name="DisposeSignature">Ensure that {0} is declared as public and sealed.</Resolution>
-    <Resolution Name="ProvideDisposeBool">Provide an overridable implementation of Dispose(bool) on {0} or mark the type as sealed. A call to Dispose(false) should only clean up native resources. A call to Dispose(true) should clean up both managed and native resources.</Resolution>
-   </Rule>
-   <Rule TypeName="InitializeReferenceTypeStaticFieldsInline" Category="Microsoft.Performance" CheckId="CA1810">
-    <Resolution Name="Default">Initialize all static fields in {0} when those fields are declared and remove the explicit static constructor.</Resolution>
-   </Rule>
-   <Rule TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822">
-    <Resolution Name="Default">The 'this' parameter (or 'Me' in Visual Basic) of {0} is never used. Mark the member as static (or Shared in Visual Basic) or use 'this'/'Me' in the method body or at least one property accessor, if appropriate.</Resolution>
-   </Rule>
-   <Rule TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034">
-    <Resolution Name="Default">Do not nest type {0}. Alternatively, change its accessibility so that it is not externally visible.</Resolution>
-   </Rule>
-   <Rule TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211">
-    <Resolution Name="Default">Consider making {0} non-public or a constant.</Resolution>
-   </Rule>
-   <Rule TypeName="StaticHolderTypesShouldNotHaveConstructors" Category="Microsoft.Design" CheckId="CA1053">
-    <Resolution Name="Default">Remove the public constructors from {0}.</Resolution>
-   </Rule>
-   <Rule TypeName="UseGenericEventHandlerInstances" Category="Microsoft.Design" CheckId="CA1003">
-    <Resolution Name="Default">Remove {0} and replace its usage with EventHandler&lt;T&gt;</Resolution>
    </Rule>
   </Rules>
  </FxCopReport>
