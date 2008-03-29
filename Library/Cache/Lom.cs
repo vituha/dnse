@@ -17,8 +17,8 @@ namespace VS.Library.Cache
 	public class Lom<T>
 		where T : class
 	{
-		protected T _object;
-		protected D0<T> fabric;
+		private T _object;
+		private D0<T> fabric;
 		private ushort counter;
 
 		/// <summary>
@@ -32,7 +32,7 @@ namespace VS.Library.Cache
 		{
 			if (fabric == null)
 			{
-				ExceptionHub.Throw(new NullReferenceException("getter must not be null"));
+				ExceptionHub.Handle(new NullReferenceException("getter must not be null"));
 			}
 			this._object = null;
 			this.fabric = fabric;
@@ -61,7 +61,7 @@ namespace VS.Library.Cache
 		/// <returns>Object's reference</returns>
 		/// <exception cref="OverflowException" />
 		/// <exception cref="ApplicationException" />
-		public virtual T Get()
+		public virtual T Access()
 		{
 			Ensure(); // increment counter
 
@@ -69,7 +69,7 @@ namespace VS.Library.Cache
 			{
 				if (this.fabric == null) // Can create LOB?
 				{
-					ExceptionHub.Throw(new ApplicationException("This instance cannot be used because cleanup has already been done"));
+					ExceptionHub.Handle(new NullReferenceException("This instance cannot be used because cleanup has already been done"));
 				}
 				else
 				{
@@ -77,9 +77,10 @@ namespace VS.Library.Cache
 					{
 						this._object = this.fabric(); // LOB creation
 					}
-					catch (Exception e)
+					catch (ApplicationException e)
 					{
-						ExceptionHub.Throw(new ApplicationException("Fabric method threw exception", e));
+						if (!ExceptionHub.Handle(e))
+							throw;
 					}
 				}
 			}
@@ -126,7 +127,7 @@ namespace VS.Library.Cache
 			// Overflow check
 			if (this.counter == ushort.MaxValue)
 			{
-				ExceptionHub.Throw(new OverflowException("Too many calls"));
+				ExceptionHub.Handle(new OverflowException("Too many calls"));
 			}
 			else
 			{
@@ -160,11 +161,23 @@ namespace VS.Library.Cache
 				lom.Ensure();
 			}
 
-			void IDisposable.Dispose()
+			#region - Dispose Pattern -
+			public void Dispose()
 			{
-				lom.Release();
-				lom = null;
+				Dispose(true);
+				GC.SuppressFinalize(this);
 			}
+
+			protected virtual void Dispose(bool disposing)
+			{
+				if (disposing)
+				{
+					lom.Release();
+					lom = null;
+				}
+			}
+			#endregion
+
 		}
 
 		/// <summary>
@@ -177,7 +190,7 @@ namespace VS.Library.Cache
 			return new Disposer(this);
 		}
 
-		public D0<T> reuse(D0<T> fabric)
+		public D0<T> Reuse(D0<T> fabric)
 		{
 			D0<T> result = this.fabric;
 			Cleanup();

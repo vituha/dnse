@@ -23,14 +23,14 @@ namespace VS.Library.Diagnostics
 		}
 		private static ExceptionHub instance;
 
-		public static void Throw(Exception e)
+		public static bool Handle(Exception exception)
 		{
-			Instance.DoThrow(e);
+			return Instance.DoHandle(exception);
 		}
 
-		protected virtual void DoThrow(Exception e)
+		protected virtual bool DoHandle(Exception exception)
 		{
-			throw e;
+			return false;
 		}
 	}
 }

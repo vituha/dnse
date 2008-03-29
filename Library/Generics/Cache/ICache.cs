@@ -4,12 +4,12 @@ using VS.Library.Generics.Common;
 
 namespace VS.Library.Generics.Cache
 {
-	public interface ICache<TKey, TValue>: IEnumerable<TKey>
+	public interface ICachedItemsCollection<TKey, TValue>: IEnumerable<TKey>
 	{
 		ICollection<TKey> Keys { get; }
-		TValue Get(TKey key, D0<TValue> getter);
-		TValue Get(TKey key, D1<TValue, TKey> getter);
-		TValue GetDefault(TKey key, TValue defaultValue);
-		bool TryGetValue(TKey key, out TValue value);
+		TValue GetItem(TKey key, D0<TValue> getter);
+		TValue GetItem(TKey key, D1<TValue, TKey> getter);
+		TValue GetItemOrDefault(TKey key, TValue defaultValue);
+		bool TryGetItem(TKey key, out TValue value);
 	}
 }

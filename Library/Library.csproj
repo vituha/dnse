@@ -27,9 +27,9 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -42,14 +42,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cache\Lob.cs" />
+    <Compile Include="Cache\LazyAction.cs" />
+    <Compile Include="Cache\ActionBase.cs" />
+    <Compile Include="Cache\Lom.cs" />
     <Compile Include="Diagnostics\CodeSpy.cs" />
     <Compile Include="Diagnostics\CodeSpyBase.cs" />
     <Compile Include="Diagnostics\ExceptionHub.cs" />
-    <Compile Include="Generics\Cache\CacheBase.cs" />
+    <Compile Include="Diagnostics\Exceptions.cs" />
     <Compile Include="Cache\GetterCache.cs" />
-    <Compile Include="Generics\Cache\ICache.cs" />
-    <Compile Include="Generics\Cache\LimitedCache.cs" />
     <Compile Include="Generics\Common\Delegates.cs" />
     <Compile Include="Generics\Comparison\CustomComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -57,6 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Diagnostics\CodeSpy.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Generics\Cache\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

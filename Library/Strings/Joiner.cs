@@ -10,16 +10,9 @@ namespace VS.Library.Strings
 	/// </summary>
 	public static class Joiner
 	{
-		private static string defaultJoinPrefix;
-		private static string defaultJoinSuffix;
-		private static string defaultJoinDelimiter;
-
-		static Joiner()
-		{
-			defaultJoinDelimiter = ",";
-			defaultJoinPrefix = String.Empty;
-			defaultJoinSuffix = String.Empty;
-		}
+		private static string defaultJoinPrefix = ",";
+		private static string defaultJoinSuffix = String.Empty;
+		private static string defaultJoinDelimiter = String.Empty;
 
 		/// <summary>
 		/// Joins given objects by adding prefix and suffix only if object list contains at least one object

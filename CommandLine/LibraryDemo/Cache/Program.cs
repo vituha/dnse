@@ -1,6 +1,7 @@
 using System;
 using VS.Library.Cache;
 using VS.Library.Diagnostics;
+using System.IO;
 
 namespace Cache
 {
@@ -36,7 +37,7 @@ namespace Cache
 				{
 					for (int i = 0; i < 1000000; i++)
 					{
-						s = PropLom.Get();
+						s = PropLom.Access();
 						PropLom.Release();
 					}
 				}
@@ -48,7 +49,28 @@ namespace Cache
 
 			SimpleProfiler.Deactivate();
 
+			using (IAsyncAction indent = new LazyAction(Indent, UnIndent))
+			{
+				for (int i = 1; i < 5; i++)
+				{
+					if (i % 10 == 0)
+					{
+						indent.StartAction();
+					}
+				}
+			}
+
 			Console.ReadKey();
+		}
+
+		static void Indent()
+		{
+			Console.WriteLine("==>>");
+		}
+
+		static void UnIndent()
+		{
+			Console.WriteLine("<<==");
 		}
 
 		static string CalcCachedPropValue()
@@ -81,7 +103,7 @@ namespace Cache
 				return propLom;
 			}
 		}
-		static private Lom<string> propLom = new Lom<string>(CalcCachedPropValue);  
+		static private Lom<string> propLom = new Lom<string>(CalcCachedPropValue);
 
 	}
 }
