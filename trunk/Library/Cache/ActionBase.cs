@@ -53,6 +53,7 @@ namespace VS.Library.Cache
 		protected abstract void DoEndAction();
 
 		#region - Dispose Pattern -
+
 		private bool disposed;
 		protected bool Disposed
 		{
