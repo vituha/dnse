@@ -4,7 +4,8 @@ using System.Text;
 
 namespace Cache
 {
-	class DisposePatternDerived : DisposePatternBase
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses")]
+    class DisposePatternDerived : DisposePatternBase
 	{
 		#region - Dispose Pattern -
 		protected override void Dispose(bool disposing)
@@ -40,14 +41,16 @@ namespace Cache
 		/// </summary>
  
 		private bool disposed;
-		protected bool Disposed
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        protected bool Disposed
 		{
 			get
 			{
 				return disposed;
 			}
 		}
-		protected void CheckDisposed()
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        protected void CheckDisposed()
 		{
 			if (Disposed)
 			{
@@ -70,5 +73,4 @@ namespace Cache
 		}
 		#endregion
 	}
-
 }
