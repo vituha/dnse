@@ -6,15 +6,15 @@ using VS.Library.Diagnostics;
 namespace VS.Library.Cache
 {
     /// <summary>
-    /// Provides a way to share given Large Object (LOB) instance among multiple clients
+    /// Provides a way to share given Large Object (LO) instance among multiple clients
     /// as well as properly destroy the instance when no longer used or out of using operator scope.
-    /// Can be used as a replacement for property exposing LOB
-    /// Usage of this pattern may give performace improvements when LOB creation is costly
-    /// and/or LOB disposal needs to be done as soon as it is no longer used
+    /// Can be used as a replacement for property exposing LO
+    /// Usage of this pattern may give performace improvements when LO creation is costly
+    /// and/or LO disposal needs to be done as soon as it is no longer used
     /// Note, that GC is not used by this implementation, so client code is free to call GC whenever needed 
     /// </summary>
-    /// <typeparam name="T">Type of LOB</typeparam>
-    public class LobManager<T>
+    /// <typeparam name="T">Type of LO</typeparam>
+    public class LoManager<T>
         where T : class
     {
         private T _object;
@@ -23,12 +23,12 @@ namespace VS.Library.Cache
 
         /// <summary>
         /// Constructs class instance.
-        /// Note, that in order for LOB to be freed in correct time(s), 
-        /// LOB instance reference should not be stored anywhere outside 
+        /// Note, that in order for LO to be freed in correct time(s), 
+        /// LO instance reference should not be stored anywhere outside 
         /// the outermost BeginAccess/EndAccess or Preserve/Release call pair.
         /// </summary>
-        /// <param name="fabricDelegate">Fabric delegate to create/initialize the LOB instance</param>
-        public LobManager(D0<T> fabric)
+        /// <param name="fabricDelegate">Fabric delegate to create/initialize the LO instance</param>
+        public LoManager(D0<T> fabric)
         {
             Initialize(fabric);
         }
@@ -44,7 +44,7 @@ namespace VS.Library.Cache
             this.counter = 0;
         }
 
-        ~LobManager()
+        ~LoManager()
         {
             Cleanup();
         }
@@ -70,17 +70,17 @@ namespace VS.Library.Cache
         {
             Preserve(); // increment counter
 
-            if (this._object == null) // LOB not yet created
+            if (this._object == null) // LO not yet created
             {
                 try
                 {
-                    if (this.fabric == null) // Can create LOB?
+                    if (this.fabric == null) // Can create LO?
                     {
                         throw new NullReferenceException("This instance cannot be used because cleanup has already been done");
                     }
                     else
                     {
-                        this._object = this.fabric(); // LOB creation
+                        this._object = this.fabric(); // LO creation
                     }
                 }
                 catch (ApplicationException e)
@@ -102,7 +102,7 @@ namespace VS.Library.Cache
                 return;
             }
             if (--this.counter == 0)
-                this._object = null; // free LOB
+                this._object = null; // free LO
         }
 
         public void Release()
@@ -111,17 +111,17 @@ namespace VS.Library.Cache
         }
 
         /// <summary>
-        /// Only increments refcounter. No LOB instance is being created. 
-        /// This method protects the LOB instance from being freed accross non-intersecting code parts.
+        /// Only increments refcounter. No LO instance is being created. 
+        /// This method protects the LO instance from being freed accross non-intersecting code parts.
         /// Use <see cref="Release" /> to allow it to be freed again.
         /// Note, that calls to this method are stackable, which means <see cref="EndAccess" /> must be called 
-        /// for each corresponding <see cref="BeginAccess" /> in order for LOB instance to be actually freed
+        /// for each corresponding <see cref="BeginAccess" /> in order for LO instance to be actually freed
         /// </summary>
         /// <returns>Object's reference</returns>
         /// <remarks>Use this method to define scope within which 
-        /// the LOB instance, once created by first call to <see cref="Lock"/>, will be cached</remarks>
+        /// the LO instance, once created by first call to <see cref="Lock"/>, will be cached</remarks>
         /// <example>
-        /// The following example demonstrates how the same LOB instance 
+        /// The following example demonstrates how the same LO instance 
         /// can be shared between non-intersecting code parts
         /// <code>
         /// accessor.Preserve();
@@ -166,9 +166,9 @@ namespace VS.Library.Cache
         #region IDisposable and using related
         private class Disposer : IDisposable
         {
-            private LobManager<T> lom;
+            private LoManager<T> lom;
 
-            public Disposer(LobManager<T> lom)
+            public Disposer(LoManager<T> lom)
             {
                 this.lom = lom;
                 lom.Preserve();

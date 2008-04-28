@@ -37,7 +37,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cache\LimitedCache.cs" />
     <Compile Include="Cache\GetterCache.cs" />
     <Compile Include="Diagnostics\CodeSpy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
