@@ -16,7 +16,7 @@ namespace CodeDemo
 
 		private Demo()
 		{
-			mySbHolder = new LobManager<LockHolderMock>(delegate {return new LockHolderMock();});
+			mySbHolder = new LoManager<LockHolderMock>(delegate {return new LockHolderMock();});
 		}
 
 		private void Run()
@@ -34,8 +34,8 @@ namespace CodeDemo
 			}
 		}
 
-		private LobManager<LockHolderMock> mySbHolder;
-		public LobManager<LockHolderMock> MySbHolder
+		private LoManager<LockHolderMock> mySbHolder;
+		public LoManager<LockHolderMock> MySbHolder
 		{
 			get
 			{

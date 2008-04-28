@@ -32,8 +32,7 @@ namespace Cache
 
             using (CodeSpy.DoSpy("'LOM' access"))
             {
-                //using (PropAccessor.Use())
-                PropLom.Preserve();
+                using (PropLom.Use())
                 {
                     for (int i = 0; i < 1000000; i++)
                     {
@@ -42,10 +41,10 @@ namespace Cache
                         {
                             Console.Write(s.Substring(0, 1));
                         }
+                        s = null;
                         PropLom.EndAccess();
                     }
                 }
-                PropLom.Release();
                 Console.WriteLine(s);
             }
 
@@ -53,8 +52,9 @@ namespace Cache
 
             SimpleProfiler.Deactivate();
 
-            /*
-             * This is experimental
+            
+            // * This is experimental
+            Console.WriteLine("Lazy action demo:");
             using (IAsyncAction indent = new LazyAction(Indent, UnIndent))
             {
                 for (int i = 1; i < 25; i++)
@@ -65,7 +65,6 @@ namespace Cache
                     }
                 }
             }
-             * */
 
             Console.ReadKey();
         }
@@ -83,7 +82,7 @@ namespace Cache
         static string CalcCachedPropValue()
         {
             getterCallCount++;
-            return String.Format("Hello, {0} and {1} {2}!", "World", "All", "and everybody");
+            return String.Format("Hello, {0} and {1} {2}!", "World", "All", "and Everybody");
         }
         private static int getterCallCount = 0;
 
@@ -103,14 +102,15 @@ namespace Cache
             }
         }
 
-        static LobManager<string> PropLom
+        static LoManager<string> PropLom
         {
             get
             {
                 return propLom;
             }
         }
-        static private LobManager<string> propLom = new LobManager<string>(CalcCachedPropValue);
+
+        static private LoManager<string> propLom = new LoManager<string>(CalcCachedPropValue);
 
         static string CachedProp2
         {
