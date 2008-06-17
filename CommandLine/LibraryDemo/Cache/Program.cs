@@ -37,10 +37,6 @@ namespace Cache
                     for (int i = 0; i < 1000000; i++)
                     {
                         s = PropLom.BeginAccess();
-                        if (i % 100000 == 0)
-                        {
-                            Console.Write(s.Substring(0, 1));
-                        }
                         s = null;
                         PropLom.EndAccess();
                     }
@@ -61,7 +57,7 @@ namespace Cache
                 {
                     if (i % 10 == 0)
                     {
-                        indent.StartAction();
+                        indent.Start();
                     }
                 }
             }
@@ -82,7 +78,7 @@ namespace Cache
         static string CalcCachedPropValue()
         {
             getterCallCount++;
-            return String.Format("Hello, {0} and {1} {2}!", "World", "All", "and Everybody");
+            return String.Format(Cache.Main.HelloMsg, "World", "All", "and Everybody");
         }
         private static int getterCallCount = 0;
 
@@ -109,19 +105,13 @@ namespace Cache
                 return propLom;
             }
         }
-
         static private LoManager<string> propLom = new LoManager<string>(CalcCachedPropValue);
 
         static string CachedProp2
         {
             get
             {
-                return GetterCache.Get<string>(
-                    delegate
-                    {
-                        return String.Format("Hello, {0} and {1} {2}!", "World", "All", "and everybody");
-                    }
-                );
+                return GetterCache.Get<string>(CalcCachedPropValue);
             }
         }
 

@@ -7,8 +7,8 @@ namespace VS.Library.Cache
 {
 	public interface IAsyncAction : IDisposable
 	{
-		void StartAction();
-		void StopAction();
+		void Start();
+		void Stop();
 	}
 
 	public abstract class ActionBase : IAsyncAction
@@ -29,7 +29,7 @@ namespace VS.Library.Cache
 
 		#region IDualAction Members
 
-		public virtual void StartAction()
+		public virtual void Start()
 		{
 			if (PrepareSwitchState(ActionState.Started))
 			{
@@ -38,7 +38,7 @@ namespace VS.Library.Cache
 			}
 		}
 
-		public void StopAction()
+		public void Stop()
 		{
 			if (PrepareSwitchState(ActionState.Stopped))
 			{
@@ -73,7 +73,7 @@ namespace VS.Library.Cache
 
 		protected virtual void Dispose(bool disposing)
 		{
-			StopAction();
+			Stop();
 			if (PrepareSwitchState(ActionState.Disposed))
 				actionState = ActionState.Disposed;
 		}

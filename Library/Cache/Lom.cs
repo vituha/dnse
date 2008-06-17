@@ -5,6 +5,8 @@ using VS.Library.Diagnostics;
 
 namespace VS.Library.Cache
 {
+    using CounterType = System.UInt16;
+    
     /// <summary>
     /// Provides a way to share given Large Object (LO) instance among multiple clients
     /// as well as properly destroy the instance when no longer used or out of using operator scope.
@@ -19,11 +21,11 @@ namespace VS.Library.Cache
     {
         private T _object;
         private D0<T> fabric;
-        private ushort counter;
+        private CounterType counter;
 
         /// <summary>
         /// Constructs class instance.
-        /// Note, that in order for LO to be freed in correct time(s), 
+        /// Note, that in order for LO to be freed at correct time(s), 
         /// LO instance reference should not be stored anywhere outside 
         /// the outermost BeginAccess/EndAccess or Preserve/Release call pair.
         /// </summary>
@@ -52,7 +54,7 @@ namespace VS.Library.Cache
         /// <summary>
         /// Current refcounter value
         /// </summary>
-        public ushort RefCount
+        public CounterType RefCount
         {
             get
             {
@@ -135,11 +137,11 @@ namespace VS.Library.Cache
         public void Preserve()
         {
             // Overflow check
-            if (this.counter == ushort.MaxValue)
+            if (this.counter == CounterType.MaxValue)
             {
-                ExceptionHub.Handle(new OverflowException("Too many calls"));
+                throw new OverflowException("Too many calls");
             }
-            else
+            else 
             {
                 this.counter++;
             }
@@ -167,10 +169,12 @@ namespace VS.Library.Cache
         private class Disposer : IDisposable
         {
             private LoManager<T> lom;
+            CounterType originalCounter;
 
             public Disposer(LoManager<T> lom)
             {
                 this.lom = lom;
+                this.originalCounter = lom.counter;
                 lom.Preserve();
             }
 
@@ -186,6 +190,14 @@ namespace VS.Library.Cache
                 if (disposing)
                 {
                     lom.EndAccess();
+                    if (lom.counter != this.originalCounter)
+                    {
+                        string msg = String.Format("conter does not match the original {0} != {1}"
+                              , lom.counter
+                              , this.originalCounter
+                            );
+                        Debug.Fail(msg);
+                    }
                     lom = null;
                 }
             }
