@@ -2,24 +2,27 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.Serialization;
-using VS.Library.Strings;
+using VS.Library.Text;
+
+using A = VS.Library;
 
 namespace VS.Library.Diagnostics.Exceptions
 {
     [Serializable]
     public class ObjectUnusableException : Exception
     {
-        public ObjectUnusableException() 
-            : base()
+        public ObjectUnusableException()
+            : base(FormatMessage())
         { }
 
-        public ObjectUnusableException(string message) 
-            : base(message)
+        public ObjectUnusableException(string symbol) 
+            : base(FormatMessage(symbol))
         { }
 
-        public ObjectUnusableException(string message, Exception innerException)
-            : base(message, innerException)
-        { }
+        public ObjectUnusableException(string symbol, Exception innerException)
+            : base(FormatMessage(symbol), innerException)
+        { 
+        }
 
         protected ObjectUnusableException(
             SerializationInfo info,
@@ -28,16 +31,16 @@ namespace VS.Library.Diagnostics.Exceptions
             : base(info, context)
         { }
 
-        public static ObjectUnusableException Create()
+        private static string FormatMessage()
         {
             string message = Messages.ObjectUnusable;
-            return new ObjectUnusableException(message);
+            return message;
         }
 
-        public static ObjectUnusableException Create(string symbol)
+        private static string FormatMessage(string symbol)
         {
-            string message = StringUtils.UserFormat(Messages.ObjectUnusable1, symbol);
-            return new ObjectUnusableException(message);
+            string message = A.Text.Formatter.UserFormat(Messages.ObjectUnusable1, symbol);
+            return message;
         }
     }
 }

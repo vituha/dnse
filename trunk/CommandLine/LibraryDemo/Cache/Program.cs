@@ -23,7 +23,7 @@ namespace Cache
 
             using (CodeSpy.DoSpy("cached access"))
             {
-                for (int i = 0; i < 1000000; i++)
+                for (int i = 0; i < 10000000; i++)
                 {
                     s = CachedProp;
                 }
@@ -34,11 +34,25 @@ namespace Cache
             {
                 using (PropLom.Use())
                 {
-                    for (int i = 0; i < 1000000; i++)
+                    for (int i = 0; i < 10000000; i++)
                     {
                         s = PropLom.BeginAccess();
                         s = null;
                         PropLom.EndAccess();
+                    }
+                }
+                Console.WriteLine(s);
+            }
+
+            using (CodeSpy.DoSpy("'LazyValue' access"))
+            {
+                using (new ActivatorUser(PropLazyValue))
+                {
+                    for (int i = 0; i < 10000000; i++)
+                    {
+                        PropLazyValue.Activate();
+                        s = PropLazyValue.Value;
+                        PropLazyValue.Deactivate();
                     }
                 }
                 Console.WriteLine(s);
@@ -92,6 +106,16 @@ namespace Cache
             }
         }
         static private LoManager<string> propLom = new LoManager<string>(CalcCachedPropValue);
+
+        static LazyValue<string> PropLazyValue
+        {
+            get
+            {
+                return propLazyValue;
+            }
+        }
+        static private LazyValue<string> propLazyValue = new LazyValue<string>(CalcCachedPropValue);
+
 
         static string CachedProp2
         {

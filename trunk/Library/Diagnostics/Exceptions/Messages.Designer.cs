@@ -61,6 +61,15 @@ namespace VS.Library.Diagnostics.Exceptions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Requested object is currently unavailable.
+        /// </summary>
+        internal static string ObjectUnavailable {
+            get {
+                return ResourceManager.GetString("ObjectUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Object is in unusable state.
         /// </summary>
         internal static string ObjectUnusable {

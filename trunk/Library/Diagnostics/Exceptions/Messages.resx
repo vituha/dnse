@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ObjectUnavailable" xml:space="preserve">
+    <value>Requested object is currently unavailable</value>
+  </data>
   <data name="ObjectUnusable" xml:space="preserve">
     <value>Object is in unusable state</value>
     <comment>Object is unusable because it has already been cleaned up or not yet initialized</comment>

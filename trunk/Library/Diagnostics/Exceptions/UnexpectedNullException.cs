@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.Serialization;
-using VS.Library.Strings;
+
+using A = VS.Library;
 
 namespace VS.Library.Diagnostics.Exceptions
 {
@@ -10,15 +11,15 @@ namespace VS.Library.Diagnostics.Exceptions
     public class UnexpectedNullException : Exception
     {
         public UnexpectedNullException() 
-            : base()
+            : base(FormatMessage())
         { }
 
-        public UnexpectedNullException(string message) 
-            : base(message)
+        public UnexpectedNullException(string symbol) 
+            : base(FormatMessage(symbol))
         { }
 
-        public UnexpectedNullException(string message, Exception innerException)
-            : base(message, innerException)
+        public UnexpectedNullException(string symbol, Exception innerException)
+            : base(FormatMessage(symbol), innerException)
         { }
 
         protected UnexpectedNullException(
@@ -28,16 +29,16 @@ namespace VS.Library.Diagnostics.Exceptions
             : base(info, context)
         { }
 
-        public static UnexpectedNullException Create()
+        private static string FormatMessage()
         {
             string message = Messages.UnexpectedNull;
-            return new UnexpectedNullException(message);
+            return message;
         }
 
-        public static UnexpectedNullException Create(string symbol)
+        private static string FormatMessage(string symbol)
         {
-            string message = StringUtils.UserFormat(Messages.UnexpectedNull1, symbol);
-            return new UnexpectedNullException(message);
+            string message = A.Text.Formatter.UserFormat(Messages.UnexpectedNull1, symbol);
+            return message;
         }
     }
 }
