@@ -18,15 +18,15 @@ namespace VS.Library.Pattern.Lifetime
         private CounterType counter;
         private bool active;
 
-        public LazyValue(D0<T> fabricMethod)
+        public LazyValue(D0<T> fabric)
         {
-            if (fabricMethod == null)
+            if (fabric == null)
             {
-                throw new UnexpectedNullException("fabricMethod");
+                throw new UnexpectedNullException("fabric");
             }
 
             this._object = null;
-            this.fabric = fabricMethod;
+            this.fabric = fabric;
             this.counter = 0;
         }
 
@@ -64,12 +64,12 @@ namespace VS.Library.Pattern.Lifetime
 
         public void Lock()
         {
-            IncrementCounter();
+            Activate();
         }
 
         public void Unlock()
         {
-            DecrementCounter();
+            Deactivate();
         }
 
         #endregion
@@ -79,6 +79,10 @@ namespace VS.Library.Pattern.Lifetime
         public void Activate()
         {
             IncrementCounter();
+            if (this.counter == 1)
+            {
+                this.active = true;
+            }
         }
 
         public bool Active
@@ -92,6 +96,7 @@ namespace VS.Library.Pattern.Lifetime
             if (this.counter == 0)
             {
                 FreeInstance();
+                this.active = false;
             }
         }
 
@@ -146,6 +151,15 @@ namespace VS.Library.Pattern.Lifetime
 
         #endregion
 
+        /// <summary>
+        /// This is a more readable but a much slower method of keeping value active
+        /// </summary>
+        /// <returns>Disposable that controls lifetime of the value</returns>
+        public IDisposable Use()
+        {
+            return new ActivatorUser(this);
+        }
+
         private void IncrementCounter()
         {
             // Overflow check
@@ -156,7 +170,6 @@ namespace VS.Library.Pattern.Lifetime
             else
             {
                 this.counter++;
-                this.active = true;
             }
         }
 

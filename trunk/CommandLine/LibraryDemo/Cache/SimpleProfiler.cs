@@ -36,11 +36,11 @@ namespace Cache
 		private static string FormatBlockName(int blockId, object instance, MethodBase method, string context)
 		{
 			return String.Format(
-					"{0}, instance={1}, method={2}, context={3}",
+					"{0}{1}{2}{3}",
 					blockId,
-					instance == null ? "null" : instance.ToString(),
-					method == null ? "null" : method.DeclaringType.Name + "." + method.Name,
-					String.IsNullOrEmpty(context) ? "<empty>" : context
+					instance == null ? String.Empty : ", instance=" + instance.ToString(),
+					method == null ? String.Empty : ", method=" + method.DeclaringType.Name + "." + method.Name,
+                    String.IsNullOrEmpty(context) ? String.Empty : ", context=" + context
 				);
 		}
 	}
