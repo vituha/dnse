@@ -70,7 +70,7 @@ namespace VS.Library.Diagnostics
 				CodeBlockEnter(pin.Context, new CodeSpyEventArgs(pin.Instance, pin.Method, pin.GetHashCode()));
 		}
 
-		protected override void DoBlockExited(Pin pin)
+		protected internal override void DoBlockExited(Pin pin)
 		{
 			if (this.CodeBlockExit != null)
 				CodeBlockExit(pin.Context, new CodeSpyEventArgs(pin.Instance, pin.Method, pin.GetHashCode()));

@@ -15,6 +15,8 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>VS.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,26 +45,38 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cache\LazyAction.cs" />
-    <Compile Include="Cache\ActionBase.cs" />
-    <Compile Include="Cache\Lom.cs" />
+    <Compile Include="Diagnostics\Exceptions\ObjectUnusableException.cs" />
+    <Compile Include="Pattern\Lifetime\IUsingScope.cs" />
+    <Compile Include="Pattern\Lifetime\Lom.cs" />
+    <Compile Include="Pattern\Lifetime\IScope.cs" />
     <Compile Include="Diagnostics\CodeSpy.cs" />
     <Compile Include="Diagnostics\CodeSpyBase.cs" />
     <Compile Include="Diagnostics\ExceptionHub.cs" />
-    <Compile Include="Diagnostics\Exceptions.cs" />
-    <Compile Include="Cache\GetterCache.cs" />
-    <Compile Include="Generics\Common\Delegates.cs" />
-    <Compile Include="Generics\Comparison\CustomComparer.cs" />
+    <Compile Include="Pattern\Lifetime\GetterCache.cs" />
+    <Compile Include="Diagnostics\Exceptions\Messages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Diagnostics\Exceptions\UnexpectedNullException.cs" />
+    <Compile Include="Common\Delegates.cs" />
+    <Compile Include="Operation\Comparison\CustomComparer.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Patterns\DisposePattern.cs" />
+    <Compile Include="Example\Pattern\DisposePattern.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Strings\Joiner.cs" />
+    <Compile Include="Type\String\Formatter.cs" />
+    <Compile Include="Type\String\Joiner.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Diagnostics\CodeSpy.cd" />
+    <None Include="VS.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Generics\Cache\" />
+    <EmbeddedResource Include="Diagnostics\Exceptions\Messages.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

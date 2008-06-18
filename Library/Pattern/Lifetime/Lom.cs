@@ -1,11 +1,13 @@
 using System;
-using VS.Library.Generics.Common;
+using VS.Library.Common;
 using System.Diagnostics;
 using VS.Library.Diagnostics;
 
-namespace VS.Library.Cache
+namespace VS.Library.Pattern.Lifetime
 {
-    using CounterType = System.UInt16;
+    using CounterType = System.Int16;
+    using VS.Library.Diagnostics.Exceptions;
+    using VS.Library.Strings;
     
     /// <summary>
     /// Provides a way to share given Large Object (LO) instance among multiple clients
@@ -35,14 +37,14 @@ namespace VS.Library.Cache
             Initialize(fabric);
         }
 
-        private void Initialize(D0<T> fabric)
+        private void Initialize(D0<T> fabricMethod)
         {
-            if (fabric == null)
+            if (fabricMethod == null)
             {
-                ExceptionHub.Handle(new NullReferenceException("getter must not be null"));
+                ExceptionHub.Handle(UnexpectedNullException.Create("fabricMethod"));
             }
             this._object = null;
-            this.fabric = fabric;
+            this.fabric = fabricMethod;
             this.counter = 0;
         }
 
@@ -78,7 +80,7 @@ namespace VS.Library.Cache
                 {
                     if (this.fabric == null) // Can create LO?
                     {
-                        throw new NullReferenceException("This instance cannot be used because cleanup has already been done");
+                        throw new ObjectUnusableException(Messages.ObjectUnusable_CleanedUp);
                     }
                     else
                     {
@@ -157,10 +159,8 @@ namespace VS.Library.Cache
             this.fabric = null; // Releasing the link to fabric. No more Get() calls!
             if (this.counter > 0)
             {
-                Debug.Fail(String.Format(
-                    "too few calls to Release/EndAccess. {0} more expected."
-                    , this.counter
-                ));
+                string message = StringUtils.UserFormat("too few calls to Release/EndAccess. {0} more expected.", this.counter);
+                Debug.Fail(message);
                 this.counter = 0;
             }
         }
@@ -192,11 +192,11 @@ namespace VS.Library.Cache
                     lom.EndAccess();
                     if (lom.counter != this.originalCounter)
                     {
-                        string msg = String.Format("conter does not match the original {0} != {1}"
+                        string message = StringUtils.UserFormat("conter does not match the original {0} != {1}"
                               , lom.counter
                               , this.originalCounter
                             );
-                        Debug.Fail(msg);
+                        Debug.Fail(message);
                     }
                     lom = null;
                 }

@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using VS.Library.Generics.Common;
+using VS.Library.Common;
 
-namespace VS.Library.Cache
+namespace VS.Library.Pattern.Lifetime
 {
 	using BackendCollection = Dictionary<Delegate, object>;
 	/// <summary>
