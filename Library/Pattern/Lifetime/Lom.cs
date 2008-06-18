@@ -2,12 +2,12 @@ using System;
 using VS.Library.Common;
 using System.Diagnostics;
 using VS.Library.Diagnostics;
+using VS.Library.Diagnostics.Exceptions;
+using VS.Library.Text;
 
 namespace VS.Library.Pattern.Lifetime
 {
     using CounterType = System.Int16;
-    using VS.Library.Diagnostics.Exceptions;
-    using VS.Library.Strings;
     
     /// <summary>
     /// Provides a way to share given Large Object (LO) instance among multiple clients
@@ -34,15 +34,15 @@ namespace VS.Library.Pattern.Lifetime
         /// <param name="fabricDelegate">Fabric delegate to create/initialize the LO instance</param>
         public LoManager(D0<T> fabric)
         {
+            if (fabric == null)
+            {
+                throw new UnexpectedNullException("fabricMethod");
+            }
             Initialize(fabric);
         }
 
         private void Initialize(D0<T> fabricMethod)
         {
-            if (fabricMethod == null)
-            {
-                ExceptionHub.Handle(UnexpectedNullException.Create("fabricMethod"));
-            }
             this._object = null;
             this.fabric = fabricMethod;
             this.counter = 0;
@@ -159,7 +159,7 @@ namespace VS.Library.Pattern.Lifetime
             this.fabric = null; // Releasing the link to fabric. No more Get() calls!
             if (this.counter > 0)
             {
-                string message = StringUtils.UserFormat("too few calls to Release/EndAccess. {0} more expected.", this.counter);
+                string message = Formatter.UserFormat("too few calls to Release/EndAccess. {0} more expected.", this.counter);
                 Debug.Fail(message);
                 this.counter = 0;
             }
@@ -192,7 +192,7 @@ namespace VS.Library.Pattern.Lifetime
                     lom.EndAccess();
                     if (lom.counter != this.originalCounter)
                     {
-                        string message = StringUtils.UserFormat("conter does not match the original {0} != {1}"
+                        string message = Formatter.UserFormat("conter does not match the original {0} != {1}"
                               , lom.counter
                               , this.originalCounter
                             );
