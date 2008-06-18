@@ -128,7 +128,7 @@
     <value>This instance cannot be used because cleanup has already been done</value>
   </data>
   <data name="ObjectUnusable1" xml:space="preserve">
-    <value>Object in '{0}' is in unusable state</value>
+    <value>Object '{0}' is in unusable state</value>
     <comment>Object is unusable because it has already been cleaned up or not yet initialized</comment>
   </data>
   <data name="UnexpectedNull" xml:space="preserve">

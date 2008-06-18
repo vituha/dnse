@@ -88,7 +88,7 @@ namespace VS.Library.Diagnostics.Exceptions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Object in &apos;{0}&apos; is in unusable state.
+        ///   Looks up a localized string similar to Object &apos;{0}&apos; is in unusable state.
         /// </summary>
         internal static string ObjectUnusable1 {
             get {
