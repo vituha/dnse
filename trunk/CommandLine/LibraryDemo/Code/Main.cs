@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using VS.Library.Diagnostics;
 using System.Text;
-using VS.Library.Cache;
+using VS.Library.Pattern.Lifetime;
 
 namespace CodeDemo
 {

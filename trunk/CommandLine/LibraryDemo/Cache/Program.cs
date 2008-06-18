@@ -1,5 +1,5 @@
 using System;
-using VS.Library.Cache;
+using VS.Library.Pattern.Lifetime;
 using VS.Library.Diagnostics;
 using System.IO;
 
@@ -47,20 +47,6 @@ namespace Cache
             Console.WriteLine("Getter called (times): " + getterCallCount.ToString());
 
             SimpleProfiler.Deactivate();
-
-            
-            // * This is experimental
-            Console.WriteLine("Lazy action demo:");
-            using (IAsyncAction indent = new LazyAction(Indent, UnIndent))
-            {
-                for (int i = 1; i < 25; i++)
-                {
-                    if (i % 10 == 0)
-                    {
-                        indent.Start();
-                    }
-                }
-            }
 
             Console.ReadKey();
         }
