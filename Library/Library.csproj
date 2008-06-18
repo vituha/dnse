@@ -51,7 +51,6 @@
     <Compile Include="Pattern\Lifetime\IManageableActivator.cs" />
     <Compile Include="Pattern\Lifetime\LazyValue.cs" />
     <Compile Include="Pattern\Lifetime\IManagedValue.cs" />
-    <Compile Include="Pattern\Lifetime\Lom.cs" />
     <Compile Include="Pattern\Lifetime\IActivator.cs" />
     <Compile Include="Diagnostics\CodeSpy.cs" />
     <Compile Include="Diagnostics\CodeSpyBase.cs" />

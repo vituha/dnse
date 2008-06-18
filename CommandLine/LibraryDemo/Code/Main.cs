@@ -16,60 +16,74 @@ namespace CodeDemo
 
 		private Demo()
 		{
-			mySbHolder = new LoManager<LockHolderMock>(delegate {return new LockHolderMock();});
+			mySb = new LazyValue<LockHolderMock>(delegate {return new LockHolderMock();});
 		}
 
 		private void Run()
 		{
 			CodeSpyDemo();
 			//sfgjsfhgfjsagfk
-			LockHolderDemo();
+			LazyValueDemo();
 		}
 
 		public class LockHolderMock
 		{
+            public LockHolderMock()
+            {
+                Console.WriteLine("In mock CONstructor");
+            }
+
 			~LockHolderMock()
 			{
-				Console.WriteLine("In mock destructor");
+				Console.WriteLine("In mock DEstructor");
 			}
 		}
 
-		private LoManager<LockHolderMock> mySbHolder;
-		public LoManager<LockHolderMock> MySbHolder
+		private LazyValue<LockHolderMock> mySb;
+		public LazyValue<LockHolderMock> MySb
 		{
 			get
 			{
-				return mySbHolder;
+				return mySb;
 			}
 		}
 
-		private void LockHolderDemo()
+		private void LazyValueDemo()
 		{
-			MySbHolder.Preserve();
-
+            Console.WriteLine("\nLazyValueDemo begin");
+			MySb.Lock();
 			{
-				LockHolderMock m1 = MySbHolder.BeginAccess();
+                MySb.Activate();
+                Console.WriteLine("Accessing value for the first time");
+                LockHolderMock m1 = MySb.Value;
 				Console.WriteLine("Entering sub");
 				LockHolderDemoInt();
 				Console.WriteLine("Exited sub");
-				MySbHolder.EndAccess();
+                m1 = null;
+				MySb.Deactivate();
 
-				using(MySbHolder.Use())
+				using(new ActivatorUser(MySb))
 				{
-					LockHolderMock m3 = MySbHolder.BeginAccess();
-					MySbHolder.EndAccess();
+                    MySb.Activate();
+                    LockHolderMock m3 = MySb.Value;
+                    m3 = null;
+					MySb.Deactivate();
 				};
 			}
 
-			MySbHolder.EndAccess();
-
-			Console.WriteLine(MySbHolder.RefCount.ToString());
-		}
+			MySb.Unlock();
+            Console.WriteLine("Calling garbage collection");
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            Console.WriteLine("Garbage collected!");
+            Console.WriteLine("LazyValueDemo end");
+        }
 
 		private void LockHolderDemoInt()
 		{
-			LockHolderMock m2 = MySbHolder.BeginAccess();
-			MySbHolder.EndAccess();
+            MySb.Activate();
+            LockHolderMock m2 = MySb.Value;
+			MySb.Deactivate();
 		}
 
 		private void CodeSpyDemo()

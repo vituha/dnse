@@ -9,70 +9,49 @@ namespace Cache
     {
         static void Main(string[] args)
         {
+            int testCount = 5000000;
             SimpleProfiler.Activate();
             string s = String.Empty;
 
-            using (CodeSpy.DoSpy("normal access"))
+            using (CodeSpy.DoSpy("'normal' access"))
             {
-                for (int i = 0; i < 1000000; i++)
+                for (int i = 0; i < testCount; i++)
                 {
                     s = NonCachedProp;
                 }
                 Console.WriteLine(s);
             }
+            Console.WriteLine();
 
-            using (CodeSpy.DoSpy("cached access"))
+            using (CodeSpy.DoSpy("'cached' access"))
             {
-                for (int i = 0; i < 10000000; i++)
+                for (int i = 0; i < testCount; i++)
                 {
                     s = CachedProp;
                 }
                 Console.WriteLine(s);
             }
-
-            using (CodeSpy.DoSpy("'LOM' access"))
-            {
-                using (PropLom.Use())
-                {
-                    for (int i = 0; i < 10000000; i++)
-                    {
-                        s = PropLom.BeginAccess();
-                        s = null;
-                        PropLom.EndAccess();
-                    }
-                }
-                Console.WriteLine(s);
-            }
+            Console.WriteLine();
 
             using (CodeSpy.DoSpy("'LazyValue' access"))
             {
-                using (new ActivatorUser(PropLazyValue))
+                PropLazyValue.Activate();
+                for (int i = 0; i < testCount; i++)
                 {
-                    for (int i = 0; i < 10000000; i++)
-                    {
-                        PropLazyValue.Activate();
-                        s = PropLazyValue.Value;
-                        PropLazyValue.Deactivate();
-                    }
+                    PropLazyValue.Activate();
+                    s = PropLazyValue.Value;
+                    PropLazyValue.Deactivate();
                 }
+                PropLazyValue.Deactivate();
                 Console.WriteLine(s);
             }
+            Console.WriteLine();
 
             Console.WriteLine("Getter called (times): " + getterCallCount.ToString());
 
             SimpleProfiler.Deactivate();
 
             Console.ReadKey();
-        }
-
-        static void Indent()
-        {
-            Console.WriteLine("==>>");
-        }
-
-        static void UnIndent()
-        {
-            Console.WriteLine("<<==");
         }
 
         static string CalcCachedPropValue()
@@ -98,15 +77,6 @@ namespace Cache
             }
         }
 
-        static LoManager<string> PropLom
-        {
-            get
-            {
-                return propLom;
-            }
-        }
-        static private LoManager<string> propLom = new LoManager<string>(CalcCachedPropValue);
-
         static LazyValue<string> PropLazyValue
         {
             get
@@ -115,17 +85,5 @@ namespace Cache
             }
         }
         static private LazyValue<string> propLazyValue = new LazyValue<string>(CalcCachedPropValue);
-
-
-        static string CachedProp2
-        {
-            get
-            {
-                return GetterCache.Get<string>(CalcCachedPropValue);
-            }
-        }
-
-
-
     }
 }
