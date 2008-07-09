@@ -3,6 +3,7 @@ using System.Reflection;
 using VS.Library.Diagnostics;
 using System.Text;
 using VS.Library.Pattern.Lifetime;
+using VS.Library.Pattern.Enumerable;
 
 namespace CodeDemo
 {
@@ -59,14 +60,14 @@ namespace CodeDemo
 				Console.WriteLine("Entering sub");
 				LockHolderDemoInt();
 				Console.WriteLine("Exited sub");
-                m1 = null;
+                m1 = null; // this is needed to force reference release
 				MySb.Deactivate();
 
 				using(new ActivatorUser(MySb))
 				{
                     MySb.Activate();
                     LockHolderMock m3 = MySb.Value;
-                    m3 = null;
+                    m3 = null; // this is needed to force reference release
 					MySb.Deactivate();
 				};
 			}
@@ -136,5 +137,25 @@ namespace CodeDemo
 					String.IsNullOrEmpty(context) ? "<empty>" : context
 				);
 		}
+
+        private void JoinerDemo()
+        { 
+        
+        }
 	}
+
+    internal class StringJoiner : EnumerationTracker<string>
+    { 
+        const string prefix = "var a[] = {";
+        const string suffix = "};";
+        const string delimiter = ", ";
+        private StringBuilder sb = new StringBuilder();
+
+
+        protected override void OnEnumerationEnded()
+        {
+            sb.Append(Current
+            base.OnEnumerationEnded();
+        }
+    }
 }
