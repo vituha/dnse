@@ -39,6 +39,7 @@
   <ItemGroup>
     <Compile Include="Cache\GetterCache.cs" />
     <Compile Include="Diagnostics\CodeSpy.cs" />
+    <Compile Include="Pattern\Enumerable\EnumeratorMonitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
