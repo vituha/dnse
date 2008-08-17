@@ -8,14 +8,14 @@ namespace VS.Library.Operation.Comparison
 	/// Provides a way to specify custom comparer as a method delegate
 	/// </summary>
 	/// <typeparam name="T">Type of objects to be compared</typeparam>
-	public class CustomComparer<T> : Comparer<T>
+	public class DelegateComparer<T> : Comparer<T>
 	{
-		private D2<int, T, T> comparerDelegate;
+		private Func2<int, T, T> comparerDelegate;
 
 		/// <summary>
 		/// Delegate for <see cref="Compare"/> method
 		/// </summary>
-		public D2<int, T, T> ComparerDelegate
+        public Func2<int, T, T> ComparerDelegate
 		{
 			get { return comparerDelegate; }
 			set
@@ -28,7 +28,7 @@ namespace VS.Library.Operation.Comparison
 		/// <summary>
 		/// Sets <see cref="ComparerDelegate"/> to always return 0 (considering all compared items as being equal)
 		/// </summary>
-		public CustomComparer()
+		public DelegateComparer()
 		{
 			this.comparerDelegate = delegate { return 0; };
 		}
@@ -37,7 +37,7 @@ namespace VS.Library.Operation.Comparison
 		/// Allows to specify a custom <see cref="ComparerDelegate"/>
 		/// </summary>
 		/// <param name="comparerDelegate">Value for <see cref="ComparerDelegate"/></param>
-		public CustomComparer(D2<int, T, T> comparerDelegate)
+        public DelegateComparer(Func2<int, T, T> comparerDelegate)
 		{
 			Debug.Assert(comparerDelegate != null);
 			this.comparerDelegate = comparerDelegate;
