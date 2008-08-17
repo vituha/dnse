@@ -40,7 +40,7 @@ namespace VS.Library.Pattern.Lifetime
 		/// <typeparam name="TValue">Type of value</typeparam>
 		/// <param name="getter">Getter delegate to be called for the value</param>
 		/// <returns>Associated value</returns>
-		public static TValue Get<TValue>(D0<TValue> getter)
+		public static TValue Get<TValue>(Func0<TValue> getter)
 		{
 			object value;
 			if(cacheInstance.TryGetValue(getter, out value))
@@ -60,7 +60,7 @@ namespace VS.Library.Pattern.Lifetime
 		/// <typeparam name="TValue">Type of value</typeparam>
 		/// <param name="getter">Getter delegate whose value we want to remove</param>
 		/// <returns>true if succeeded, false if the getter is not found in the cache</returns>
-		public static bool Remove<TValue>(D0<TValue> getter)
+		public static bool Remove<TValue>(Func0<TValue> getter)
 		{
 			return cacheInstance.Remove(getter);
 		}

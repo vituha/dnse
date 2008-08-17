@@ -2,24 +2,25 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using VS.Library.Diagnostics.Exceptions;
+using VS.Library.Common;
 
 namespace VS.Library.Pattern.Lifetime
 {
-    public class ActivatorUser: IDisposable
+    public class ActivableUser: IDisposable
     {
-        private IActivator activator;
+        private IActivable Activable;
 
-        public ActivatorUser(IActivator activator)
+        public ActivableUser(IActivable Activable)
         {
-            if (activator == null)
+            if (Activable == null)
             {
-                throw new UnexpectedNullException("activator");
+                throw new UnexpectedNullException("Activable");
             }
-            this.activator = activator;
-            activator.Activate();
+            this.Activable = Activable;
+            Activable.Activate();
         }
 
-        ~ActivatorUser()
+        ~ActivableUser()
         {
             Dispose(false);
         }
@@ -33,10 +34,10 @@ namespace VS.Library.Pattern.Lifetime
 
         protected virtual void Dispose(bool disposing)
         {
-            if (activator != null)
+            if (Activable != null)
             {
-                activator.Deactivate();
-                activator = null;
+                Activable.Deactivate();
+                Activable = null;
             }
         }
         #endregion    

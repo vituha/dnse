@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F881754A-FAC3-4250-AD43-00DD15C95465}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -37,6 +37,10 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PowerCollections, Version=1.0.3151.25675, Culture=neutral, PublicKeyToken=f2b3d08ba45507be, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rd party\Power Collections\PowerCollections.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -45,18 +49,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Booleans\CommonPredicates.cs" />
+    <Compile Include="Booleans\PredicateExtensions.cs" />
+    <Compile Include="Collections\CollectionExtensions.cs" />
+    <Compile Include="Collections\CollectionFactory.cs" />
+    <Compile Include="Collections\Delegates.cs" />
+    <Compile Include="Collections\EnumerableExtensions.cs" />
+    <Compile Include="Common\CommonDelegates.cs" />
+    <Compile Include="Common\CommonPropertyInterfaces.cs" />
+    <Compile Include="Common\Disposer.cs" />
+    <Compile Include="Common\IActivable.cs" />
+    <Compile Include="Common\IExternallyDisposable.cs" />
+    <Compile Include="Common\ISuspendable.cs" />
+    <Compile Include="Conversions\Comparer\DelegateComparer.cs" />
+    <Compile Include="Conversions\NullUtils.cs" />
     <Compile Include="Diagnostics\Exceptions\ObjectUnavailableException.cs" />
     <Compile Include="Diagnostics\Exceptions\ObjectUnusableException.cs" />
-    <Compile Include="Pattern\Enumerable\EnumeratorMonitor.cs" />
-    <Compile Include="Pattern\Lifetime\ActivatorUser.cs" />
-    <Compile Include="Pattern\Lifetime\IManageableActivator.cs" />
-    <Compile Include="Pattern\Lifetime\LazyValue.cs" />
-    <Compile Include="Pattern\Lifetime\IManagedValue.cs" />
-    <Compile Include="Pattern\Lifetime\IActivator.cs" />
     <Compile Include="Diagnostics\CodeSpy.cs" />
     <Compile Include="Diagnostics\CodeSpyBase.cs" />
     <Compile Include="Diagnostics\ExceptionHub.cs" />
-    <Compile Include="Pattern\Lifetime\GetterCache.cs" />
     <Compile Include="Diagnostics\Exceptions\Messages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -64,13 +75,21 @@
     </Compile>
     <Compile Include="Diagnostics\Exceptions\UnexpectedNullException.cs" />
     <Compile Include="Common\Delegates.cs" />
-    <Compile Include="Operation\Comparison\CustomComparer.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Example\Pattern\DisposePattern.cs" />
-    <Compile Include="Pattern\Process\IAction.cs" />
+    <Compile Include="Pattern\Lifetime\ActivatorUser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Pattern\Lifetime\GetterCache.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Pattern\Lifetime\LazyValue.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Text\Formatter.cs" />
     <Compile Include="Text\Joiner.cs" />
+    <Compile Include="Validators\ArgumentValidator.cs" />
+    <Compile Include="Validators\ValidationInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Diagnostics\CodeSpy.cd" />
@@ -84,6 +103,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Collections\Algorithms\" />
+    <Folder Include="Reflection\" />
     <Folder Include="Type\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
