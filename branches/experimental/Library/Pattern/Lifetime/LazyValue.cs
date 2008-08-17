@@ -11,14 +11,14 @@ namespace VS.Library.Pattern.Lifetime
 {
     using CounterType = System.Int32;
 
-    public class LazyValue<T> : IManagedValue<T>, IDisposable where T : class
+    public class LazyValue<T> : IWrapper<T>, ISuspendable, IActivableWithState, IDisposable where T : class
     {
         private T _object;
-        private D0<T> fabric;
+        private Func0<T> fabric;
         private CounterType counter;
         private bool active;
 
-        public LazyValue(D0<T> fabric)
+        public LazyValue(Func0<T> fabric)
         {
             if (fabric == null)
             {
@@ -45,7 +45,7 @@ namespace VS.Library.Pattern.Lifetime
         }
 #endif
 
-        #region IManageableActivator<T> Members
+        #region ISuspendable<T> Members
 
         public T Value
         {
@@ -62,32 +62,27 @@ namespace VS.Library.Pattern.Lifetime
             }
         }
 
-        public void Lock()
+        public void Suspend()
         {
             Activate();
         }
 
-        public void Unlock()
+        public void Resume()
         {
             Deactivate();
         }
 
         #endregion
 
-        #region IActivator Members
+        #region IActivableWithState Members
 
         public void Activate()
         {
             IncrementCounter();
             if (this.counter == 1)
             {
-                this.active = true;
+                Active = true;
             }
-        }
-
-        public bool Active
-        {
-            get { return this.active; }
         }
 
         public void Deactivate()
@@ -96,9 +91,33 @@ namespace VS.Library.Pattern.Lifetime
             if (this.counter == 0)
             {
                 FreeInstance();
-                this.active = false;
+                Active = false;
             }
         }
+
+        public bool Active
+        {
+            get { return this.active; }
+            private set
+            {
+                if (value != active)
+                {
+                    active = value;
+                    OnActiveChanged();
+                }
+            }
+        }
+
+        public event EventHandler ActiveChanged;
+
+        protected virtual void OnActiveChanged()
+        {
+            if (ActiveChanged != null)
+            {
+                ActiveChanged(this, EventArgs.Empty);
+            }
+        }
+
 
         #endregion
 
@@ -157,7 +176,7 @@ namespace VS.Library.Pattern.Lifetime
         /// <returns>Disposable that controls lifetime of the value</returns>
         public IDisposable Use()
         {
-            return new ActivatorUser(this);
+            return new ActivableUser(this);
         }
 
         private void IncrementCounter()
@@ -201,5 +220,6 @@ namespace VS.Library.Pattern.Lifetime
         {
             this._object = null;
         }
+
     }
 }
