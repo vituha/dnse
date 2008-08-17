@@ -75,6 +75,7 @@
     </Compile>
     <Compile Include="Diagnostics\Exceptions\UnexpectedNullException.cs" />
     <Compile Include="Common\Delegates.cs" />
+    <Compile Include="Examples\Patterns\DisposePattern.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Pattern\Lifetime\ActivatorUser.cs">
       <SubType>Code</SubType>
