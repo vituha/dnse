@@ -1,0 +1,548 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FxCopProject Version="1.36" Name="My FxCop Project">
+ <ProjectOptions>
+  <SharedProject>True</SharedProject>
+  <Stylesheet Apply="False">c:\program files\microsoft fxcop 1.36\Xml\FxCopReport.xsl</Stylesheet>
+  <SaveMessages>
+   <Project Status="Active, Excluded" NewOnly="False" />
+   <Report Status="Active" NewOnly="False" />
+  </SaveMessages>
+  <ProjectFile Compress="True" DefaultTargetCheck="True" DefaultRuleCheck="True" SaveByRuleGroup="" Deterministic="True" />
+  <EnableMultithreadedLoad>True</EnableMultithreadedLoad>
+  <EnableMultithreadedAnalysis>True</EnableMultithreadedAnalysis>
+  <SourceLookup>True</SourceLookup>
+  <AnalysisExceptionsThreshold>10</AnalysisExceptionsThreshold>
+  <RuleExceptionsThreshold>1</RuleExceptionsThreshold>
+  <Spelling Locale="en-US" />
+  <OverrideRuleVisibilities>False</OverrideRuleVisibilities>
+  <CustomDictionaries SearchFxCopDir="True" SearchUserProfile="True" SearchProjectDir="True" />
+  <SearchGlobalAssemblyCache>False</SearchGlobalAssemblyCache>
+  <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
+  <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
+ </ProjectOptions>
+ <Targets>
+  <Target Name="$(ProjectDir)/bin/Debug/VS.Library.dll" Analyze="True" AnalyzeAllChildren="True" />
+ </Targets>
+ <Rules>
+  <RuleFiles>
+   <RuleFile Name="$(FxCopDir)\Rules\DesignRules.dll" Enabled="True" AllRulesEnabled="False">
+    <Rule Name="AbstractTypesShouldNotHaveConstructors" Enabled="True" />
+    <Rule Name="AvoidEmptyInterfaces" Enabled="True" />
+    <Rule Name="AvoidExcessiveParametersOnGenericTypes" Enabled="True" />
+    <Rule Name="AvoidNamespacesWithFewTypes" Enabled="True" />
+    <Rule Name="AvoidOutParameters" Enabled="True" />
+    <Rule Name="CollectionsShouldImplementGenericInterface" Enabled="True" />
+    <Rule Name="ConsiderPassingBaseTypesAsParameters" Enabled="True" />
+    <Rule Name="DeclareEventHandlersCorrectly" Enabled="True" />
+    <Rule Name="DeclareTypesInNamespaces" Enabled="True" />
+    <Rule Name="DefaultParametersShouldNotBeUsed" Enabled="True" />
+    <Rule Name="DefineAccessorsForAttributeArguments" Enabled="True" />
+    <Rule Name="DoNotCatchGeneralExceptionTypes" Enabled="True" />
+    <Rule Name="DoNotDeclareProtectedMembersInSealedTypes" Enabled="True" />
+    <Rule Name="DoNotDeclareStaticMembersOnGenericTypes" Enabled="True" />
+    <Rule Name="DoNotDeclareVirtualMembersInSealedTypes" Enabled="True" />
+    <Rule Name="DoNotDeclareVisibleInstanceFields" Enabled="True" />
+    <Rule Name="DoNotExposeGenericLists" Enabled="True" />
+    <Rule Name="DoNotHideBaseClassMethods" Enabled="True" />
+    <Rule Name="DoNotNestGenericTypesInMemberSignatures" Enabled="True" />
+    <Rule Name="DoNotOverloadOperatorEqualsOnReferenceTypes" Enabled="True" />
+    <Rule Name="DoNotPassTypesByReference" Enabled="True" />
+    <Rule Name="DoNotRaiseExceptionsInUnexpectedLocations" Enabled="True" />
+    <Rule Name="EnumeratorsShouldBeStronglyTyped" Enabled="True" />
+    <Rule Name="EnumsShouldHaveZeroValue" Enabled="True" />
+    <Rule Name="EnumStorageShouldBeInt32" Enabled="True" />
+    <Rule Name="ExceptionsShouldBePublic" Enabled="True" />
+    <Rule Name="GenericMethodsShouldProvideTypeParameter" Enabled="True" />
+    <Rule Name="ICollectionImplementationsHaveStronglyTypedMembers" Enabled="True" />
+    <Rule Name="ImplementIDisposableCorrectly" Enabled="True" />
+    <Rule Name="ImplementStandardExceptionConstructors" Enabled="True" />
+    <Rule Name="IndexersShouldNotBeMultidimensional" Enabled="True" />
+    <Rule Name="InterfaceMethodsShouldBeCallableByChildTypes" Enabled="True" />
+    <Rule Name="ListsAreStronglyTyped" Enabled="True" />
+    <Rule Name="MarkAssembliesWithAssemblyVersion" Enabled="True" />
+    <Rule Name="MarkAssembliesWithComVisible" Enabled="True" />
+    <Rule Name="MarkAttributesWithAttributeUsage" Enabled="True" />
+    <Rule Name="MarkEnumsWithFlags" Enabled="True" />
+    <Rule Name="MembersShouldNotExposeCertainConcreteTypes" Enabled="True" />
+    <Rule Name="MovePInvokesToNativeMethodsClass" Enabled="True" />
+    <Rule Name="NestedTypesShouldNotBeVisible" Enabled="True" />
+    <Rule Name="OverloadOperatorEqualsOnOverloadingAddAndSubtract" Enabled="True" />
+    <Rule Name="OverrideMethodsOnComparableTypes" Enabled="True" />
+    <Rule Name="PropertiesShouldNotBeWriteOnly" Enabled="True" />
+    <Rule Name="ProvideObsoleteAttributeMessage" Enabled="True" />
+    <Rule Name="ReplaceRepetitiveArgumentsWithParamsArray" Enabled="True" />
+    <Rule Name="StaticHolderTypesShouldBeSealed" Enabled="True" />
+    <Rule Name="StaticHolderTypesShouldNotHaveConstructors" Enabled="True" />
+    <Rule Name="StringUriOverloadsCallSystemUriOverloads" Enabled="True" />
+    <Rule Name="TypesShouldNotExtendCertainBaseTypes" Enabled="True" />
+    <Rule Name="TypesThatOwnDisposableFieldsShouldBeDisposable" Enabled="True" />
+    <Rule Name="TypesThatOwnNativeResourcesShouldBeDisposable" Enabled="True" />
+    <Rule Name="UriParametersShouldNotBeStrings" Enabled="True" />
+    <Rule Name="UriPropertiesShouldNotBeStrings" Enabled="True" />
+    <Rule Name="UriReturnValuesShouldNotBeStrings" Enabled="True" />
+    <Rule Name="UseEventsWhereAppropriate" Enabled="True" />
+    <Rule Name="UseGenericEventHandlerInstances" Enabled="True" />
+    <Rule Name="UseGenericsWhereAppropriate" Enabled="True" />
+    <Rule Name="UseIntegralOrStringArgumentForIndexers" Enabled="True" />
+    <Rule Name="UsePropertiesWhereAppropriate" Enabled="True" />
+   </RuleFile>
+   <RuleFile Name="$(FxCopDir)\Rules\GlobalizationRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\InteroperabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\MobilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\NamingRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\PerformanceRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\PortabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\SecurityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\UsageRules.dll" Enabled="True" AllRulesEnabled="True" />
+  </RuleFiles>
+  <Groups />
+  <Settings />
+ </Rules>
+ <FxCopReport Version="1.36">
+  <Namespaces>
+   <Namespace Name="VS.Library.Diagnostics">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2008-03-29 01:28:54Z">
+      <Issue>
+       <Item>VS.Library.Diagnostics</Item>
+      </Issue>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="VS.Library.Generics.Comparison">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2008-03-29 01:28:54Z">
+      <Issue>
+       <Item>VS.Library.Generics.Comparison</Item>
+      </Issue>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="VS.Library.Strings">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2008-03-29 01:28:54Z">
+      <Issue>
+       <Item>VS.Library.Strings</Item>
+      </Issue>
+     </Message>
+    </Messages>
+   </Namespace>
+  </Namespaces>
+  <Targets>
+   <Target Name="$(ProjectDir)/bin/Debug/VS.Library.dll">
+    <Modules>
+     <Module Name="vs.library.dll">
+      <Namespaces>
+       <Namespace Name="Cache">
+        <Types>
+         <Type Name="DisposePatternBase">
+          <Members>
+           <Member Name="#CheckDisposed()">
+            <Messages>
+             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2008-03-29 04:23:14Z">
+              <Issue>
+               <Item>'DisposePatternBase.CheckDisposed()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Disposed">
+            <Accessors>
+             <Accessor Name="#get_Disposed()">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2008-03-29 04:23:14Z">
+                <Issue>
+                 <Item>'DisposePatternBase.Disposed.get()'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="DisposePatternDerived">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Created="2008-03-29 04:23:14Z">
+            <Issue>
+             <Item>'DisposePatternDerived'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="VS.Library.Cache">
+        <Types>
+         <Type Name="ActionBase">
+          <Members>
+           <Member Name="#ReSpawn()">
+            <Messages>
+             <Message Id="Re" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2008-03-29 02:34:24Z">
+              <Issue Name="Member">
+               <Item>Re</Item>
+               <Item>'ActionBase.ReSpawn()'</Item>
+               <Item>RE</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ThrowDetachedException()">
+            <Messages>
+             <Message TypeName="DoNotRaiseReservedExceptionTypes" Category="Microsoft.Usage" CheckId="CA2201" Created="2008-03-29 01:28:54Z">
+              <Issue Name="TooGeneric">
+               <Item>'ActionBase.ThrowDetachedException()'</Item>
+               <Item>'ApplicationException'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ThrowDetachStartedException()">
+            <Messages>
+             <Message TypeName="DoNotRaiseReservedExceptionTypes" Category="Microsoft.Usage" CheckId="CA2201" Created="2008-03-29 01:28:54Z">
+              <Issue Name="TooGeneric">
+               <Item>'ActionBase.ThrowDetachStartedException()'</Item>
+               <Item>'ApplicationException'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="LazyAction">
+          <Members>
+           <Member Name="#ReSpawn(VS.Library.Generics.Common.D,VS.Library.Generics.Common.D)">
+            <Messages>
+             <Message Id="Re" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2008-03-29 02:34:57Z">
+              <Issue Name="Member">
+               <Item>Re</Item>
+               <Item>'LazyAction.ReSpawn(D, D)'</Item>
+               <Item>RE</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Lom`1">
+          <Messages>
+           <Message Id="Lom" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 01:28:54Z">
+            <Issue Name="Type">
+             <Item>Lom</Item>
+             <Item>'Lom&lt;T&gt;'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#.ctor(VS.Library.Generics.Common.D0`1&lt;!0&gt;)">
+            <Messages>
+             <Message TypeName="DoNotRaiseReservedExceptionTypes" Category="Microsoft.Usage" CheckId="CA2201" Created="2008-03-29 01:28:54Z">
+              <Issue Name="Reserved">
+               <Item>'Lom&lt;T&gt;.Lom(D0&lt;T&gt;)'</Item>
+               <Item>'NullReferenceException'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Access()">
+            <Messages>
+             <Message TypeName="DoNotRaiseReservedExceptionTypes" Category="Microsoft.Usage" CheckId="CA2201" Created="2008-03-29 04:23:14Z">
+              <Issue Name="Reserved">
+               <Item>'Lom&lt;T&gt;.Access()'</Item>
+               <Item>'NullReferenceException'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="VS.Library.Generics.Common">
+        <Types>
+         <Type Name="D">
+          <Messages>
+           <Message Id="D" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 01:28:54Z">
+            <Issue Name="TypeMoreMeaningfulName">
+             <Item>'D'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="D1`2">
+          <Messages>
+           <Message Id="Param" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 02:31:11Z" FixCategory="NonBreaking">
+            <Issue Name="TypeTypeParameter">
+             <Item>'D1&lt;TResult, TParam1&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam1'</Item>
+            </Issue>
+           </Message>
+           <Message Id="p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 01:28:54Z">
+            <Issue Name="DelegateParameter">
+             <Item>'D1&lt;TResult, TParam1&gt;'</Item>
+             <Item>p</Item>
+             <Item>'p1'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="D2`3">
+          <Messages>
+           <Message TypeName="AvoidExcessiveParametersOnGenericTypes" Category="Microsoft.Design" CheckId="CA1005" Status="Excluded" Created="2008-03-29 01:28:54Z">
+            <Issue>
+             <Item>'D2&lt;TResult, TParam1, TParam2&gt;'</Item>
+            </Issue>
+           </Message>
+           <Message Id="Param" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 02:31:11Z" FixCategory="NonBreaking">
+            <Issue Name="TypeTypeParameter">
+             <Item>'D2&lt;TResult, TParam1, TParam2&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam1'</Item>
+            </Issue>
+            <Issue Name="TypeTypeParameter">
+             <Item>'D2&lt;TResult, TParam1, TParam2&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam2'</Item>
+            </Issue>
+           </Message>
+           <Message Id="p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 01:28:54Z">
+            <Issue Name="DelegateParameter">
+             <Item>'D2&lt;TResult, TParam1, TParam2&gt;'</Item>
+             <Item>p</Item>
+             <Item>'p1'</Item>
+            </Issue>
+            <Issue Name="DelegateParameter">
+             <Item>'D2&lt;TResult, TParam1, TParam2&gt;'</Item>
+             <Item>p</Item>
+             <Item>'p2'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="D3`4">
+          <Messages>
+           <Message TypeName="AvoidExcessiveParametersOnGenericTypes" Category="Microsoft.Design" CheckId="CA1005" Status="Excluded" Created="2008-03-29 01:28:54Z">
+            <Issue>
+             <Item>'D3&lt;TResult, TParam1, TParam2, TParam3&gt;'</Item>
+            </Issue>
+           </Message>
+           <Message Id="Param" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 02:31:11Z" FixCategory="NonBreaking">
+            <Issue Name="TypeTypeParameter">
+             <Item>'D3&lt;TResult, TParam1, TParam2, TParam3&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam1'</Item>
+            </Issue>
+            <Issue Name="TypeTypeParameter">
+             <Item>'D3&lt;TResult, TParam1, TParam2, TParam3&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam2'</Item>
+            </Issue>
+            <Issue Name="TypeTypeParameter">
+             <Item>'D3&lt;TResult, TParam1, TParam2, TParam3&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam3'</Item>
+            </Issue>
+           </Message>
+           <Message Id="p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 01:28:54Z">
+            <Issue Name="DelegateParameter">
+             <Item>'D3&lt;TResult, TParam1, TParam2, TParam3&gt;'</Item>
+             <Item>p</Item>
+             <Item>'p1'</Item>
+            </Issue>
+            <Issue Name="DelegateParameter">
+             <Item>'D3&lt;TResult, TParam1, TParam2, TParam3&gt;'</Item>
+             <Item>p</Item>
+             <Item>'p2'</Item>
+            </Issue>
+            <Issue Name="DelegateParameter">
+             <Item>'D3&lt;TResult, TParam1, TParam2, TParam3&gt;'</Item>
+             <Item>p</Item>
+             <Item>'p3'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="D4`5">
+          <Messages>
+           <Message TypeName="AvoidExcessiveParametersOnGenericTypes" Category="Microsoft.Design" CheckId="CA1005" Status="Excluded" Created="2008-03-29 01:28:54Z">
+            <Issue>
+             <Item>'D4&lt;TResult, TParam1, TParam2, TParam3, TParam4&gt;'</Item>
+            </Issue>
+           </Message>
+           <Message Id="Param" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 02:31:11Z" FixCategory="NonBreaking">
+            <Issue Name="TypeTypeParameter">
+             <Item>'D4&lt;TResult, TParam1, TParam2, TParam3, TParam4&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam1'</Item>
+            </Issue>
+            <Issue Name="TypeTypeParameter">
+             <Item>'D4&lt;TResult, TParam1, TParam2, TParam3, TParam4&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam2'</Item>
+            </Issue>
+            <Issue Name="TypeTypeParameter">
+             <Item>'D4&lt;TResult, TParam1, TParam2, TParam3, TParam4&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam3'</Item>
+            </Issue>
+            <Issue Name="TypeTypeParameter">
+             <Item>'D4&lt;TResult, TParam1, TParam2, TParam3, TParam4&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam4'</Item>
+            </Issue>
+           </Message>
+           <Message Id="p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 01:28:54Z">
+            <Issue Name="DelegateParameter">
+             <Item>'D4&lt;TResult, TParam1, TParam2, TParam3, TParam4&gt;'</Item>
+             <Item>p</Item>
+             <Item>'p1'</Item>
+            </Issue>
+            <Issue Name="DelegateParameter">
+             <Item>'D4&lt;TResult, TParam1, TParam2, TParam3, TParam4&gt;'</Item>
+             <Item>p</Item>
+             <Item>'p2'</Item>
+            </Issue>
+            <Issue Name="DelegateParameter">
+             <Item>'D4&lt;TResult, TParam1, TParam2, TParam3, TParam4&gt;'</Item>
+             <Item>p</Item>
+             <Item>'p3'</Item>
+            </Issue>
+            <Issue Name="DelegateParameter">
+             <Item>'D4&lt;TResult, TParam1, TParam2, TParam3, TParam4&gt;'</Item>
+             <Item>p</Item>
+             <Item>'p4'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="DP1`2">
+          <Messages>
+           <Message Id="Param" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 02:31:11Z" FixCategory="NonBreaking">
+            <Issue Name="TypeTypeParameter">
+             <Item>'DP1&lt;TResult, TParam1&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam1'</Item>
+            </Issue>
+           </Message>
+           <Message Id="p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 01:28:54Z">
+            <Issue Name="DelegateParameter">
+             <Item>'DP1&lt;TResult, TParam1&gt;'</Item>
+             <Item>p</Item>
+             <Item>'p1'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="DP2`3">
+          <Messages>
+           <Message TypeName="AvoidExcessiveParametersOnGenericTypes" Category="Microsoft.Design" CheckId="CA1005" Status="Excluded" Created="2008-03-29 01:28:54Z">
+            <Issue>
+             <Item>'DP2&lt;TResult, TParam1, TParam2&gt;'</Item>
+            </Issue>
+           </Message>
+           <Message Id="Param" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 02:31:11Z" FixCategory="NonBreaking">
+            <Issue Name="TypeTypeParameter">
+             <Item>'DP2&lt;TResult, TParam1, TParam2&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam1'</Item>
+            </Issue>
+            <Issue Name="TypeTypeParameter">
+             <Item>'DP2&lt;TResult, TParam1, TParam2&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam2'</Item>
+            </Issue>
+           </Message>
+           <Message Id="p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 01:28:54Z">
+            <Issue Name="DelegateParameter">
+             <Item>'DP2&lt;TResult, TParam1, TParam2&gt;'</Item>
+             <Item>p</Item>
+             <Item>'p1'</Item>
+            </Issue>
+            <Issue Name="DelegateParameter">
+             <Item>'DP2&lt;TResult, TParam1, TParam2&gt;'</Item>
+             <Item>p</Item>
+             <Item>'p2'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="DP3`4">
+          <Messages>
+           <Message TypeName="AvoidExcessiveParametersOnGenericTypes" Category="Microsoft.Design" CheckId="CA1005" Status="Excluded" Created="2008-03-29 01:28:54Z">
+            <Issue>
+             <Item>'DP3&lt;TResult, TParam1, TParam2, TParam3&gt;'</Item>
+            </Issue>
+           </Message>
+           <Message Id="Param" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 02:31:11Z" FixCategory="NonBreaking">
+            <Issue Name="TypeTypeParameter">
+             <Item>'DP3&lt;TResult, TParam1, TParam2, TParam3&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam1'</Item>
+            </Issue>
+            <Issue Name="TypeTypeParameter">
+             <Item>'DP3&lt;TResult, TParam1, TParam2, TParam3&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam2'</Item>
+            </Issue>
+            <Issue Name="TypeTypeParameter">
+             <Item>'DP3&lt;TResult, TParam1, TParam2, TParam3&gt;'</Item>
+             <Item>Param</Item>
+             <Item>'TParam3'</Item>
+            </Issue>
+           </Message>
+           <Message Id="p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-03-29 01:28:54Z">
+            <Issue Name="DelegateParameter">
+             <Item>'DP3&lt;TResult, TParam1, TParam2, TParam3&gt;'</Item>
+             <Item>p</Item>
+             <Item>'p1'</Item>
+            </Issue>
+            <Issue Name="DelegateParameter">
+             <Item>'DP3&lt;TResult, TParam1, TParam2, TParam3&gt;'</Item>
+             <Item>p</Item>
+             <Item>'p2'</Item>
+            </Issue>
+            <Issue Name="DelegateParameter">
+             <Item>'DP3&lt;TResult, TParam1, TParam2, TParam3&gt;'</Item>
+             <Item>p</Item>
+             <Item>'p3'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+  </Targets>
+  <Rules>
+   <Rule TypeName="AvoidExcessiveParametersOnGenericTypes" Category="Microsoft.Design" CheckId="CA1005">
+    <Resolution Name="Default">Consider a design where {0} has no more than 2 type parameters.</Resolution>
+   </Rule>
+   <Rule TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020">
+    <Resolution Name="Default">Consider merging the types defined in '{0}' with another namespace.</Resolution>
+   </Rule>
+   <Rule TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811">
+    <Resolution Name="Default">{0} appears to have no upstream public or protected callers.</Resolution>
+   </Rule>
+   <Rule TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812">
+    <Resolution Name="Default">{0} is an internal class that is apparently never instantiated. If so, remove the code from the assembly. If this class is intended to contain only static methods, consider adding a private constructor to prevent the compiler from generating a default constructor.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotRaiseReservedExceptionTypes" Category="Microsoft.Usage" CheckId="CA2201">
+    <Resolution Name="Reserved">{0} creates an exception of type {1}, an exception type that is reserved by the runtime and should never be raised by managed code. If this exception instance might be thrown, use a different exception type.</Resolution>
+    <Resolution Name="TooGeneric">{0} creates an exception of type {1}, an exception type that is not sufficiently specific and should never be raised by user code. If this exception instance might be thrown, use a different exception type.</Resolution>
+   </Rule>
+   <Rule TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709">
+    <Resolution Name="Member">Correct the casing of '{0}' in member name {1} by changing it to '{2}'.</Resolution>
+   </Rule>
+   <Rule TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704">
+    <Resolution Name="DelegateParameter">In delegate {0}, correct the spelling of '{1}' in parameter name {2} or remove it entirely if it represents any sort of Hungarian notation.</Resolution>
+    <Resolution Name="Type">Correct the spelling of '{0}' in type name {1}.</Resolution>
+    <Resolution Name="TypeMoreMeaningfulName">Consider providing a more meaningful name than type name {0}.</Resolution>
+    <Resolution Name="TypeTypeParameter">On type {0}, correct the spelling of '{1}' in generic type parameter name {2}.</Resolution>
+   </Rule>
+  </Rules>
+ </FxCopReport>
+</FxCopProject>

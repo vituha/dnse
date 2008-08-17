@@ -1,0 +1,97 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F881754A-FAC3-4250-AD43-00DD15C95465}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VS.Library</RootNamespace>
+    <AssemblyName>VS.Library</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>VS.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Diagnostics\Exceptions\ObjectUnavailableException.cs" />
+    <Compile Include="Diagnostics\Exceptions\ObjectUnusableException.cs" />
+    <Compile Include="Pattern\Enumerable\EnumeratorMonitor.cs" />
+    <Compile Include="Pattern\Lifetime\ActivatorUser.cs" />
+    <Compile Include="Pattern\Lifetime\IManageableActivator.cs" />
+    <Compile Include="Pattern\Lifetime\LazyValue.cs" />
+    <Compile Include="Pattern\Lifetime\IManagedValue.cs" />
+    <Compile Include="Pattern\Lifetime\IActivator.cs" />
+    <Compile Include="Diagnostics\CodeSpy.cs" />
+    <Compile Include="Diagnostics\CodeSpyBase.cs" />
+    <Compile Include="Diagnostics\ExceptionHub.cs" />
+    <Compile Include="Pattern\Lifetime\GetterCache.cs" />
+    <Compile Include="Diagnostics\Exceptions\Messages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Diagnostics\Exceptions\UnexpectedNullException.cs" />
+    <Compile Include="Common\Delegates.cs" />
+    <Compile Include="Operation\Comparison\CustomComparer.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Example\Pattern\DisposePattern.cs" />
+    <Compile Include="Pattern\Process\IAction.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Text\Formatter.cs" />
+    <Compile Include="Text\Joiner.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Diagnostics\CodeSpy.cd" />
+    <None Include="VS.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Diagnostics\Exceptions\Messages.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Type\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
