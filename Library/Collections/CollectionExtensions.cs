@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Collections;
+using VS.Library.Common;
 
 namespace VS.Library.Collections
 {
@@ -29,5 +31,21 @@ namespace VS.Library.Collections
                 targetCollection.Add(item);
             }
         }
+
+        public static bool IsNotEmpty(IEnumerable collection) {
+            Validator.NotNull(collection, "collection");
+            return collection.GetEnumerator().MoveNext();
+        }
+
+        public static bool IsNotEmpty(ICollection collection) {
+            Validator.NotNull(collection, "collection");
+            return collection.Count > 0;
+        }
+
+        public static bool IsNotEmpty<T>(ICollection<T> collection) {
+            Validator.NotNull(collection, "collection");
+            return collection.Count > 0;
+        }
+
     }
 }
