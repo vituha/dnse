@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F881754A-FAC3-4250-AD43-00DD15C95465}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -89,8 +89,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Text\Formatter.cs" />
     <Compile Include="Text\Joiner.cs" />
-    <Compile Include="Validators\ArgumentValidator.cs" />
-    <Compile Include="Validators\ValidationInfo.cs" />
+    <Compile Include="Validators\Validator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Diagnostics\CodeSpy.cd" />
