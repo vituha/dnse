@@ -4,11 +4,24 @@ using System.Linq;
 using System.Text;
 using VS.Library.Common;
 using Wintellect.PowerCollections;
+using System.Collections;
+using VS.Library.Validation;
 
 namespace VS.Library.Collections.Enumerable
 {
     public static class EnumerableExtensions
     {
+        /// <summary>
+        /// Checks whether collection has items
+        /// </summary>
+        /// <param name="collection">Collection to check</param>
+        /// <returns><value>true</value> if collection has items, <value>false</value> otherwise</returns>
+        public static bool HasItems(this IEnumerable collection)
+        {
+            ValidationExtensions.EnsureNotNull(collection, "collection");
+            return collection.GetEnumerator().MoveNext();
+        }
+
         /// <summary>
         /// Invokes a method on every item in collection
         /// </summary>
@@ -17,14 +30,9 @@ namespace VS.Library.Collections.Enumerable
         /// <param name="method">Method to invoke on an item</param>
         public static void ForEach<T>(this IEnumerable<T> collection, Proc1<T> method)
         {
-            if (collection == null)
-            {
-                throw new ArgumentNullException("collection");
-            }
-            if (method == null)
-            {
-                throw new ArgumentNullException("method");
-            }
+            collection.EnsureNotNull("collection");
+            method.EnsureNotNull("method");
+
             foreach (var item in collection)
             {
                 method(item);
@@ -41,14 +49,9 @@ namespace VS.Library.Collections.Enumerable
         /// <returns>Total number of items in collection</returns>
         public static int ForEachCounted<T>(this IEnumerable<T> collection, Proc2<T, int> method)
         {
-            if (collection == null)
-            {
-                throw new ArgumentNullException("collection");
-            }
-            if (method == null)
-            {
-                throw new ArgumentNullException("method");
-            }
+            collection.EnsureNotNull("collection");
+            method.EnsureNotNull("method");
+
             int count = 0;
             foreach (var item in collection)
             {
@@ -67,14 +70,8 @@ namespace VS.Library.Collections.Enumerable
         /// <returns>Collection of converted items</returns>
         public static IEnumerable<TDst> Convert<TSrc, TDst>(this IEnumerable<TSrc> collection, Func1<TDst, TSrc> converter)
         {
-            if (collection == null)
-            {
-                throw new ArgumentNullException("collection");
-            }
-            if (converter == null)
-            {
-                throw new ArgumentNullException("converter");
-            }
+            collection.EnsureNotNull("collection");
+            converter.EnsureNotNull("converter");
 
             foreach (var item in collection)
             {
@@ -92,14 +89,8 @@ namespace VS.Library.Collections.Enumerable
         /// <returns>Collection of converted items</returns>
         public static IEnumerable<TDst> ConvertCounted<TSrc, TDst>(this IEnumerable<TSrc> collection, Func2<TDst, TSrc, int> converter)
         {
-            if (collection == null)
-            {
-                throw new ArgumentNullException("collection");
-            }
-            if (converter == null)
-            {
-                throw new ArgumentNullException("converter");
-            }
+            collection.EnsureNotNull("collection");
+            converter.EnsureNotNull("converter");
 
             int count = 0;
             foreach (var item in collection)
@@ -117,16 +108,10 @@ namespace VS.Library.Collections.Enumerable
         /// <param name="targetCollection">Collection to add items to</param>
         /// <returns>Number of items added</returns>
         /// <exception cref="ArgumentNullException"><see cref="targetCollection"/> is null</exception>
-        public static int FillCollection<T>(this IEnumerable<T> sourceCollection, ICollection<T> collection)
+        public static int FillCollection<T>(this ICollection<T> collection, IEnumerable<T> sourceCollection)
         {
-            if (sourceCollection == null)
-            {
-                throw new ArgumentNullException("sourceCollection");
-            }
-            if (collection == null)
-            {
-                throw new ArgumentNullException("collection");
-            }
+            collection.EnsureNotNull("collection");
+            sourceCollection.EnsureNotNull("sourceCollection");
 
             int countBefore = collection.Count;
             foreach (var item in sourceCollection)
@@ -137,24 +122,25 @@ namespace VS.Library.Collections.Enumerable
         }
 
         /// <summary>
-        /// Creates a collection using default constructor and shallow copies all elements from source collection to the new collection.
+        /// Creates a collection using default constructor and shallow copies all elements from source collection.
         /// </summary>
         /// <typeparam name="T">Type of collection items</typeparam>
-        /// <typeparam name="TCollection">Type of new collection</typeparam>
         /// <param name="collection">Source collection</param>
         /// <returns>New collection</returns>
-        public static ICollection<T> ToCollection<T>(this IEnumerable<T> collection)
+        public static ICollection<T> ToCollection<T>(this IEnumerable<T> collection, int capacity)
         {
-            var result = new Bag<T>();
-            FillCollection(collection, result);
-            return result;
+            return CollectionFactory.CreateCollection(collection, capacity);
         }
 
+        /// <summary>
+        /// Creates a list using default constructor and shallow copies all elements from source collection.
+        /// </summary>
+        /// <typeparam name="T">Type of collection items</typeparam>
+        /// <param name="collection">Source collection</param>
+        /// <returns>New list</returns>
         public static IList<T> ToList<T>(this IEnumerable<T> collection, int capacity)
         {
-            var result = CollectionFactory.CreateList<T>(capacity);
-            FillCollection(collection, result);
-            return result;
+            return CollectionFactory.CreateList<T>(collection, capacity);
         }
 
         /// <summary>
@@ -169,14 +155,8 @@ namespace VS.Library.Collections.Enumerable
         /// <exception cref="ArgumentNullException"><see cref="keyExtractor"/> or <see cref="collectionFactory"/> is null</exception>
         public static IDictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<TValue> collection, Converter<TValue, TKey> keyExtractor, Func<Dictionary<TKey, TValue>> collectionFactory)
         {
-            if (keyExtractor == null)
-            {
-                throw new ArgumentNullException("keyExtractor");
-            }
-            if (collectionFactory == null)
-            {
-                throw new ArgumentNullException("collectionFactory");
-            }
+            keyExtractor.EnsureNotNull("keyExtractor");
+            collectionFactory.EnsureNotNull("collectionFactory");
 
             var result = collectionFactory();
             foreach (var item in collection)
