@@ -3,7 +3,6 @@ using System.Reflection;
 using VS.Library.Diagnostics;
 using System.Text;
 using VS.Library.Pattern.Lifetime;
-using VS.Library.Pattern.Enumerable;
 
 namespace CodeDemo
 {
@@ -52,7 +51,7 @@ namespace CodeDemo
 		private void LazyValueDemo()
 		{
             Console.WriteLine("\nLazyValueDemo begin");
-			MySb.Lock();
+			MySb.Activate();
 			{
                 MySb.Activate();
                 Console.WriteLine("Accessing value for the first time");
@@ -63,7 +62,7 @@ namespace CodeDemo
                 m1 = null; // this is needed to force reference release
 				MySb.Deactivate();
 
-				using(new ActivatorUser(MySb))
+				using(new ActivableUser(MySb))
 				{
                     MySb.Activate();
                     LockHolderMock m3 = MySb.Value;
@@ -72,7 +71,7 @@ namespace CodeDemo
 				};
 			}
 
-			MySb.Unlock();
+			MySb.Deactivate();
             Console.WriteLine("Calling garbage collection");
             GC.Collect();
             GC.WaitForPendingFinalizers();
@@ -143,19 +142,4 @@ namespace CodeDemo
         
         }
 	}
-
-    internal class StringJoiner : EnumerationTracker<string>
-    { 
-        const string prefix = "var a[] = {";
-        const string suffix = "};";
-        const string delimiter = ", ";
-        private StringBuilder sb = new StringBuilder();
-
-
-        protected override void OnEnumerationEnded()
-        {
-            sb.Append(Current
-            base.OnEnumerationEnded();
-        }
-    }
 }
