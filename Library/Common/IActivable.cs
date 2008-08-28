@@ -1,5 +1,5 @@
 using System;
-namespace VS.Library.Pattern.Lifetime
+namespace VS.Library.Common
 {
     /// <summary>
     /// Represents abstract activator for some entity. 

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using VS.Library.Common;
 
-namespace VS.Library.Operation.Comparison
+namespace VS.Library.Conversions.Comparers
 {
 	/// <summary>
 	/// Provides a way to specify custom comparer as a method delegate
