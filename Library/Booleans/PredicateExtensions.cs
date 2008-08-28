@@ -27,6 +27,5 @@ namespace VS.Library.Booleans
             return obj => x(obj) ^ y(obj);
         }
 
-
     }
 }

@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Booleans\ComplexPredicatesTest.cs" />
     <Compile Include="Cache\GetterCache.cs" />
     <Compile Include="Diagnostics\CodeSpy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
