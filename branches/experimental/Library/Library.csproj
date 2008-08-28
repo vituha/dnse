@@ -62,7 +62,7 @@
     <Compile Include="Common\IActivable.cs" />
     <Compile Include="Common\IExternallyDisposable.cs" />
     <Compile Include="Common\ISuspendable.cs" />
-    <Compile Include="Conversions\Comparer\DelegateComparer.cs" />
+    <Compile Include="Conversions\Comparers\DelegateComparer.cs" />
     <Compile Include="Conversions\NullUtils.cs" />
     <Compile Include="Diagnostics\Exceptions\ObjectUnavailableException.cs" />
     <Compile Include="Diagnostics\Exceptions\ObjectUnusableException.cs" />
@@ -103,9 +103,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Collections\Algorithms\" />
     <Folder Include="Reflection\" />
-    <Folder Include="Type\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

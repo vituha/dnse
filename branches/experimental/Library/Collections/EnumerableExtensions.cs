@@ -7,7 +7,7 @@ using Wintellect.PowerCollections;
 using System.Collections;
 using VS.Library.Validation;
 
-namespace VS.Library.Collections.Enumerable
+namespace VS.Library.Collections
 {
     public static class EnumerableExtensions
     {

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Collections;
 using System.Diagnostics;
-using NSight.Workstation.Utils.Validation;
 
 namespace VS.Library.Validation {
 	/// <summary>

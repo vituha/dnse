@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace NSight.Workstation.Utils.Validation {
+namespace VS.Library.Validation {
 	/// <summary>
 	/// Indicates that certain requirement was not met at some point of execution 
 	/// </summary>
