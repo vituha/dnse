@@ -78,9 +78,7 @@
     <Compile Include="Common\Delegates.cs" />
     <Compile Include="Examples\Patterns\DisposePattern.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Pattern\Lifetime\ActivatorUser.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Pattern\Lifetime\ActivatbleUser.cs" />
     <Compile Include="Pattern\Lifetime\GetterCache.cs">
       <SubType>Code</SubType>
     </Compile>

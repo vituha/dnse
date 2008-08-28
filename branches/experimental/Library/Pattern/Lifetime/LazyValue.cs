@@ -14,19 +14,19 @@ namespace VS.Library.Pattern.Lifetime
     public class LazyValue<T> : IWrapper<T>, ISuspendable, IActivableWithState, IDisposable where T : class
     {
         private T _object;
-        private Func0<T> fabric;
+        private Func0<T> factory;
         private CounterType counter;
         private bool active;
 
-        public LazyValue(Func0<T> fabric)
+        public LazyValue(Func0<T> factory)
         {
-            if (fabric == null)
+            if (factory == null)
             {
-                throw new UnexpectedNullException("fabric");
+                throw new UnexpectedNullException("factory");
             }
 
             this._object = null;
-            this.fabric = fabric;
+            this.factory = factory;
             this.counter = 0;
         }
 
@@ -128,7 +128,7 @@ namespace VS.Library.Pattern.Lifetime
         protected virtual void Dispose(bool disposing)
         {
             this._object = null;
-            this.fabric = null; // Releasing the link to fabric. No more Get() calls!
+            this.factory = null; // Releasing the link to factory. No more Get() calls!
             if (this.counter > 0)
             {
                 string message = A.Text.Formatter.UserFormat("too few calls to Release/EndAccess. {0} more expected.", this.counter);
@@ -196,7 +196,7 @@ namespace VS.Library.Pattern.Lifetime
         {
             if (this.counter == 0)
             {
-                Debug.Fail("too many calls to Release/EndAccess");
+                Debug.Fail("Too many calls to Release/EndAccess");
                 return;
             }
             this.counter--;
@@ -204,10 +204,10 @@ namespace VS.Library.Pattern.Lifetime
 
         private void CreateInstance()
         {
-            Debug.Assert(this.fabric != null, "Fabric is null");
+            Debug.Assert(this.factory != null, "Factory is null");
             try
             {
-                this._object = this.fabric();
+                this._object = this.factory();
             }
             catch (ApplicationException e)
             {
