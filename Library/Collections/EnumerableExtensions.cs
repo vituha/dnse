@@ -15,10 +15,10 @@ namespace VS.Library.Collections
         /// Checks whether collection has items
         /// </summary>
         /// <param name="collection">Collection to check</param>
-        /// <returns><value>true</value> if collection has items, <value>false</value> otherwise</returns>
+        /// <returns><c>true</c> if collection has items, <c>false</c> otherwise</returns>
         public static bool HasItems(this IEnumerable collection)
         {
-            ValidationExtensions.EnsureNotNull(collection, "collection");
+            collection.RequireArgumentNotNull("collection");
             return collection.GetEnumerator().MoveNext();
         }
 
@@ -30,8 +30,8 @@ namespace VS.Library.Collections
         /// <param name="method">Method to invoke on an item</param>
         public static void ForEach<T>(this IEnumerable<T> collection, Proc1<T> method)
         {
-            collection.EnsureNotNull("collection");
-            method.EnsureNotNull("method");
+            collection.RequireArgumentNotNull("collection");
+            method.RequireArgumentNotNull("method");
 
             foreach (var item in collection)
             {
@@ -49,8 +49,8 @@ namespace VS.Library.Collections
         /// <returns>Total number of items in collection</returns>
         public static int ForEachCounted<T>(this IEnumerable<T> collection, Proc2<T, int> method)
         {
-            collection.EnsureNotNull("collection");
-            method.EnsureNotNull("method");
+            collection.RequireArgumentNotNull("collection");
+            method.RequireArgumentNotNull("method");
 
             int count = 0;
             foreach (var item in collection)
@@ -70,8 +70,8 @@ namespace VS.Library.Collections
         /// <returns>Collection of converted items</returns>
         public static IEnumerable<TDst> Convert<TSrc, TDst>(this IEnumerable<TSrc> collection, Func1<TDst, TSrc> converter)
         {
-            collection.EnsureNotNull("collection");
-            converter.EnsureNotNull("converter");
+            collection.RequireArgumentNotNull("collection");
+            converter.RequireArgumentNotNull("converter");
 
             foreach (var item in collection)
             {
@@ -89,8 +89,8 @@ namespace VS.Library.Collections
         /// <returns>Collection of converted items</returns>
         public static IEnumerable<TDst> ConvertCounted<TSrc, TDst>(this IEnumerable<TSrc> collection, Func2<TDst, TSrc, int> converter)
         {
-            collection.EnsureNotNull("collection");
-            converter.EnsureNotNull("converter");
+            collection.RequireArgumentNotNull("collection");
+            converter.RequireArgumentNotNull("converter");
 
             int count = 0;
             foreach (var item in collection)
@@ -110,8 +110,8 @@ namespace VS.Library.Collections
         /// <exception cref="ArgumentNullException"><see cref="targetCollection"/> is null</exception>
         public static int FillCollection<T>(this ICollection<T> collection, IEnumerable<T> sourceCollection)
         {
-            collection.EnsureNotNull("collection");
-            sourceCollection.EnsureNotNull("sourceCollection");
+            collection.RequireArgumentNotNull("collection");
+            sourceCollection.RequireArgumentNotNull("sourceCollection");
 
             int countBefore = collection.Count;
             foreach (var item in sourceCollection)
@@ -155,8 +155,8 @@ namespace VS.Library.Collections
         /// <exception cref="ArgumentNullException"><see cref="keyExtractor"/> or <see cref="collectionFactory"/> is null</exception>
         public static IDictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<TValue> collection, Converter<TValue, TKey> keyExtractor, Func<Dictionary<TKey, TValue>> collectionFactory)
         {
-            keyExtractor.EnsureNotNull("keyExtractor");
-            collectionFactory.EnsureNotNull("collectionFactory");
+            keyExtractor.RequireArgumentNotNull("keyExtractor");
+            collectionFactory.RequireArgumentNotNull("collectionFactory");
 
             var result = collectionFactory();
             foreach (var item in collection)
@@ -228,7 +228,7 @@ namespace VS.Library.Collections
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="collection"></param>
-        /// <returns>First item of collection, <value>default(T)</value> if collection is empty</returns>
+        /// <returns>First item of collection, <c>default(T)</c> if collection is empty</returns>
         public static T GetFirst<T>(this IEnumerable<T> collection)
         {
             T result;

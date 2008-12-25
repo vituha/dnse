@@ -137,4 +137,7 @@
   <data name="UnexpectedNull1" xml:space="preserve">
     <value>Unexpected null value in '{0}'</value>
   </data>
+  <data name="InvalidCast" xml:space="preserve">
+    <value>Unable to cast from type '{0}' to type '{1}'</value>
+  </data>
 </root>

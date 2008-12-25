@@ -47,7 +47,7 @@ namespace VS.Library.Collections
         /// <returns>Created list</returns>
         public static IList<T> CreateList<T>(IEnumerable<T> collection, int capacity)
         {
-            collection.EnsureNotNull("collection");
+            collection.RequireArgumentNotNull("collection");
 
             if (capacity >= BigListCapacityThreshold)
             {
@@ -104,7 +104,7 @@ namespace VS.Library.Collections
         /// <returns>New collection instance</returns>
         public static ICollection<T> CreateCollection<T>(IEnumerable<T> collection, int capacity)
         {
-            collection.EnsureNotNull("collection");
+            collection.RequireArgumentNotNull("collection");
 
             if (capacity >= BigListCapacityThreshold)
             {

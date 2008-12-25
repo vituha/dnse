@@ -16,7 +16,7 @@ namespace VS.Library.Booleans
         public static readonly Predicate<T> False = v => false;
         public static readonly Predicate<T> IsNull = v => v == null;
         public static readonly Predicate<T> IsNotNull = v => v != null;
-        public static readonly Predicate<ICollection<T>> IsNonEmptyCollection = v => v != null && v.Count > 0;
+        public static readonly Predicate<ICollection<T>> IsNonEmptyCollection = v => v.Count > 0;
     }
 
     /// <summary>
@@ -27,8 +27,8 @@ namespace VS.Library.Booleans
         public static readonly Predicate<int> IsNonNegative = v => v >= 0;
         public static readonly Predicate<int> IsPositive = v => v > 0;
         public static readonly Predicate<int> IsZero = v => v == 0;
-        public static readonly Predicate<string> IsNonEmptyString = v => !String.IsNullOrEmpty(v);
-        public static readonly Predicate<ICollection> IsNonEmptyCollection = v => v != null && v.Count > 0;
+        public static readonly Predicate<string> IsNonEmptyString = v => v.Length > 0;
+        public static readonly Predicate<ICollection> IsNonEmptyCollection = v => v.Count > 0;
     }
 
 }

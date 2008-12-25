@@ -6,6 +6,9 @@ using Wintellect.PowerCollections;
 
 namespace VS.Library.Booleans
 {
+    /// <summary>
+    /// Exposes complex predicates (those combining many simple predicates)
+    /// </summary>
     public static class ComplexPredicates
     {
         public static Predicate<T> Or<T>(params Predicate<T>[] collection)
@@ -18,7 +21,7 @@ namespace VS.Library.Booleans
             return obj => null == Algorithms.FindFirstWhere(collection, p => !p(obj));
         }
 
-        public static Predicate<T> DNF<T>(params Predicate<T>[][] doubleCollection)
+        public static Predicate<T> DNF<T>(params IEnumerable<Predicate<T>>[] doubleCollection)
         {
             return obj => null != Algorithms.FindFirstWhere(
                 doubleCollection,
@@ -26,7 +29,7 @@ namespace VS.Library.Booleans
             );
         }
 
-        public static Predicate<T> CNF<T>(params Predicate<T>[][] doubleCollection)
+        public static Predicate<T> CNF<T>(params IEnumerable<Predicate<T>>[] doubleCollection)
         {
             return obj => null == Algorithms.FindFirstWhere(
                 doubleCollection,
