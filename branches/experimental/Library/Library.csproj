@@ -37,11 +37,14 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Microsoft.VisualStudio.TeamSystem.Data.UnitTesting, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="PowerCollections, Version=1.0.3151.25675, Culture=neutral, PublicKeyToken=f2b3d08ba45507be, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\3rd party\Power Collections\PowerCollections.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -52,12 +55,22 @@
     <Compile Include="Booleans\Predicates.cs" />
     <Compile Include="Booleans\PredicateExtensions.cs" />
     <Compile Include="Booleans\ComplexPredicates.cs" />
+    <Compile Include="Collections\Adapters\AdapterExtensions.cs" />
+    <Compile Include="Collections\Adapters\CollectionAdapter.cs" />
+    <Compile Include="Collections\Adapters\EnumerableAdapter.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\CollectionFactory.cs" />
+    <Compile Include="Collections\CollectionVisitor.cs" />
+    <Compile Include="Collections\Adapters\TypedCollectionAdapter.cs" />
+    <Compile Include="Collections\Adapters\TypedListAdapter.cs" />
+    <Compile Include="Collections\Adapters\UntypedListAdapter.cs" />
+    <Compile Include="Collections\Adapters\UntypedCollectionAdapter.cs" />
     <Compile Include="Collections\Delegates.cs" />
     <Compile Include="Collections\EnumerableExtensions.cs" />
+    <Compile Include="Collections\Adapters\ListAdapter.cs" />
     <Compile Include="Common\CommonDelegates.cs" />
     <Compile Include="Common\CommonPropertyInterfaces.cs" />
+    <Compile Include="Common\DelegateExtensions.cs" />
     <Compile Include="Common\Disposer.cs" />
     <Compile Include="Common\IActivable.cs" />
     <Compile Include="Common\IExternallyDisposable.cs" />
@@ -88,6 +101,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Text\Formatter.cs" />
     <Compile Include="Text\Joiner.cs" />
+    <Compile Include="Text\StringJoiner.cs" />
     <Compile Include="Validation\RequirementNotMetException.cs" />
     <Compile Include="Validation\ValidationExtensions.cs" />
   </ItemGroup>

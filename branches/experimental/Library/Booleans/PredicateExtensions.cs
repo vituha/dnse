@@ -5,6 +5,9 @@ using System.Text;
 
 namespace VS.Library.Booleans
 {
+    /// <summary>
+    /// Exposes common extensions methods for predicates
+    /// </summary>
     public static class PredicateExtensions
     {
         public static Predicate<T> And<T>(this Predicate<T> x, Predicate<T> y)
