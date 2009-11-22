@@ -644,7 +644,7 @@ namespace Wintellect.PowerCollections
             loadFactor = serializationInfo.GetSingle("loadFactor");
             equalityComparer = (IEqualityComparer<T>) serializationInfo.GetValue("equalityComparer", typeof(IEqualityComparer<T>));
 
-            T[] items = (T[])serializationInfo.GetValue("items", typeof(T[]));
+            T[] items = (T[])serializationInfo.GetValue("items", typeof(T[])) ?? new T[0];
             T dummy;
 
             EnsureEnoughSlots(items.Length);
