@@ -282,15 +282,19 @@ namespace Wintellect.PowerCollections
                     }
                 }
 
-                if (existingCount == 1) {
-                    // Removing the last value. Remove the key.
-                    hash.Delete(existing, out keyValues);
-                    return true;
-                }
-                else if (indexFound >= 0) {
-                    // Found a value. Remove it.
-                    if (indexFound < existingCount - 1)
-                        Array.Copy(existing.Values, indexFound + 1, existing.Values, indexFound, existingCount - indexFound - 1);
+				// If found a value
+                if (indexFound >= 0)
+                {
+                    if (existingCount == 1)
+                    {
+                        // Removing the last value. Remove the key.
+                        hash.Delete(existing, out keyValues);
+                        return true;
+                    }
+                    else
+                        // Remove the value
+                        if (indexFound < existingCount - 1)
+                            Array.Copy(existing.Values, indexFound + 1, existing.Values, indexFound, existingCount - indexFound - 1);
                     existing.Count = existingCount - 1;
 
                     // Update the hash.
@@ -319,6 +323,42 @@ namespace Wintellect.PowerCollections
         {
             KeyAndValues dummy;
             return hash.Delete(new KeyAndValues(key), out dummy);
+        }
+
+        /// <summary>
+        /// Removes a collection of values from the values associated with a key. If the
+        /// last value is removed from a key, the key is removed also.
+        /// </summary>
+        /// <param name="key">A key to remove values from.</param>
+        /// <param name="values">A collection of values to remove.</param>
+        /// <returns>The number of values that were present and removed. </returns>
+        public sealed override int RemoveMany(TKey key, IEnumerable<TValue> values)
+        {
+            int countRemoved = 0;
+
+            KeyAndValues keyValues = new KeyAndValues(key);
+            KeyAndValues existing;
+
+            if (hash.Find(keyValues, false, out existing)) 
+            {
+                if (object.ReferenceEquals(values, existing.Values))
+                {
+                    countRemoved = existing.Count;
+                    hash.Delete(keyValues, out existing);
+                }
+                else
+                {
+                    foreach (TValue val in values)
+                    {
+                        if (Remove(key, val))
+                            ++countRemoved;
+                    }
+
+                    countRemoved = base.RemoveMany(key, values);
+                }
+            } 
+
+            return countRemoved;
         }
 
         /// <summary>
