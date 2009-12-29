@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Default Header Filters</TITLE>
+</HEAD>
+
+<script language="JavaScript" src="help.js"></script>
+<LINK REL="stylesheet" type="text/css" href="help.css">
+<body marginwidth=0 marginheight=0>
+
+<table width=100% cellspacing=0 cellpadding=0 border=0>
+<tr><td class=hdr>
+<div class=hdr>The Default Header Filters
+</div></td>
+<td class=hdr><image align=right src="images/nav-a.jpg" usemap="#nav" border=0></td></tr>
+<tr><td colspan=2 class=hdsep><img src='images/clear.gif' width=1 height=1></td></tr>
+</table>
+
+<MAP NAME="nav">
+     <AREA SHAPE="RECT" HREF="Default Web Filters.html" alt="Previous" COORDS="6,0, 44,25">
+     <AREA SHAPE="RECT" HREF="Contents.html" alt="Back to contents" COORDS="58,0, 94,24">
+     <AREA SHAPE="RECT" HREF="Send In Your Filters.html" alt="Next" COORDS="112,0, 149,25">
+</MAP>
+
+<DIV class='text'>
+
+<P>This is a brief description of what the default HTTP header filters provided with the Proxomitron do. Note that like the web filters, new header filters are always being added and improved, this list might not be exhaustive. Also most filters include (in) or (out) in the name.  Not too surprisingly an <B>(in)</B> filter would normally be made active by checking the <B>IN</B> column in the header filter list while for an <B>(out)</B> filter you'd check the <B>OUT</B> column.  Also, a very few filters may be apply to both.
+
+<P><B>Note:</B> Many of the header filters are rather technical in nature (much more so than the web filters) and several are provided as examples only.  To help make things easier, the filters most people may find useful are highlighted in <B class=r>red</B>.  These are the ones you'll probably want to concentrate on. Meanwhile, those more esoteric (i.e. useless) filters are lowlighted in <B class=gr>Gray</B>.
+<P>
+<hr>
+
+ 
+<P><B class=r>Accept-encoding: Allow webpage encoding (out)</B>
+
+<P>This filter tells a web server it's OK to use "Content Encoding" with web pages it sends to Proxomitron.  This is can be used to compress pages so they transfer faster, however not all browser or web servers support it.  Proxomitron can now decompress common content-encodings internally (using zlib.dll) and filter the results. The pages are then sent to the browser in normal un-encoded form. You can use this filter to add compression  capability even if your browser doesn't normally support it.  Using this filter can also help ensure the pages are compressed using one of the methods Proxomitron understands.
+
+<P><B class=gr>Accept-encoding: Prevent webpage encoding (out)</B>
+
+<P>This filter is the opposite of the one above. It tells a web server <B>not</B> to use content encoded (compressed) pages.  In the past this was necessary in order for the page to be filtered. However, you shouldn't need to use it anymore unless you want to disable compression for some reason. 
+
+<P><B class=gr>Authorization: Example password entry (out)</B>
+
+<P>This filter is an example of how to automatically send a password protected web pages. Use the MIME encode/decode option available by highlighting and right-clicking over the filter's replacement text to encode or decode the username:password pair. (note: this only works for pages that use standard HTTP passwords - some pages may use custom CGI scripts instead).
+ 
+<P><B class=r>Cache-Control: always cache (in)</B>
+
+<P>This is one of several header filters that can stop a web site from not allowing their pages to be stored in your browser's cache. Using these filters can prevent wasted page reloads and speed surfing, but on the down-side may also mean you may have to hit your browser's reload button to see if a page has been recently updated.
+
+
+<P><B class=gr>Connection: Close all connections (In+Out)</B>
+
+<P>Enabling this under both IN and OUT will prevent Proxomitron from re-using HTTP connections.  Normally you wouldn't want this unless you're having some specific problems with persistent connections.
+
+<P><B class=r>Content-Type: Fix MIME types (In)</B>
+
+<P>Sometimes a web server will send items with an incorrect "Content-Type" header. This may prevent Proxomitron or your browser from correctly dealing with the files.  This filter uses the <B>MIME List.txt</B> file to fix many commonly misconfigured types. It's a good one to use most all the time.
+
+<P><B class=gr>Content-Type: Show contents of .pac files (in)</B>
+
+<P>Files ending in <B>.pac</B> are really JavaScripts used by Netscape and IE to set your browser's proxy. Sometimes your ISP or Firewall sysop will provide these files instead of the actual proxy settings.  Checking this filter allows to to load these files in your browser and actually see what they contain. It may be helpful if you need the actual proxy information, but it's not something you'll want to use for regular surfing.
+
+<P><B class=gr>Content-Type: View RealAudio links (in)</B>
+
+<P>Another rather "special case" filter. This one will show the contents of RealAudio links (which are often pointers to other URLs with the actual video or audio file).  Sometimes this can be useful to see, but most of the time you won't want this filter.
+
+<P><B class=gr>Content-Type: character set filter (in)</B>
+
+<P>This filter is an example of how to control the character set a web page may try and make your browser use. Use it only if a page is misconfigured or forcing your browser to use an inappropriate character set.  By duplicating the filter and using it's URL match you can automatically fix problem pages you may visit often.
+
+<P><B class=gr>Cookie: Fake a cookie (out)</B>
+
+<P>This cookie filter changes any cookie your browser sends out to say only "Monster" - kind of fun but probably not too useful.  However you can use it as a basic example of custom cookie modification.
+
+<P><B class=r>Cookie: Kill a cookie (out)</B>
+
+<P>Kills any outgoing cookies that may already be set in your browser before they reach the web server.  If enabled, it will check the <B>CookieList</B> blockfile for sites you want to allow cookies through.
+
+<P><B class=r>Expires: always cache (in)</B>
+
+<P>This is another of several header filters that can stop a web site from not allowing their pages to be stored in your browser's cache. Using these filters can prevent wasted page reloads and speed surfing, but on the down-side may also mean you may have to hit your browser's reload button to see if a page has been recently updated.
+
+
+<P><B class=gr>Forwarded: (out)</B>
+
+<P>This is an example of how to add a "Forwarded:" header filter as some non anonymous proxy servers may do. Only ours can send anything you like (instead of your computers IP address). Generally its not of much use though since it can't change headers added "after the fact" by an external proxy server.
+
+<P><B class=gr>If-Modified-Since: Always reload pages (Out)</B>
+
+<P>Can be enabled to force a web server to always send a page even if it hasn't changed from the one in your browser's cache.  Normally it's probably not something you'll want to do.
+
+<P><B class=gr>Last-Modified: (In)</B>
+
+<P>Removes the date a web page was last modified from the server's reply.  Probably not a filter you'll want to use regularly, but can force IE to recognize a new page (sometimes IE will actually <B>ignore</B> a page it's been sent and used its cached copy instead - this is useless since the bandwidth has already been used).
+
+<P><B class=gr>Pragma: Don't force reloads (out)</B>
+<P>Your browser sends a "Pragma: no-cache" header when it wants to reload a page and make sure it gets a fresh copy.  You can use this to remove these headers, but unless you have a good reason, you probably should leave them alone.
+
+<P><B class=gr>Proxy-Authorization: Send password to proxy server (out)</B>
+
+<P>Similar to the "Authorization:" header filter above, but this is an example of how to send a password to a proxy server.  Note: in such cases it's usually easier to use the <A href="External Proxy Dialog.html#advanced">advanced proxy settings</A> instead.
+
+<P><B class=r>Referer: Hide where we've been (Out)</B>
+
+<P>The referrer normally tells a website the URL of the last page you visited.  This may be something you prefer them <B>not</b> to know - especially if your visiting the page by clicking a link in from your email or a private message board.  Much sensitive information can be leaked this way.  By default Proxomitron will send the web pages <B>own URL</B> instead.  This looks more or less normal to the server, but doesn't reveal any information.  I recommend using this if you're security conscious.
+
+<P><B class=r>Set-cookie: Make all cookies session only (in)</B>
+
+<P>When enabled this will try and turn any "permanent" cookie into a "temporary" (or session-only) cookie. A temporary cookie is not stored on your computer's hard drive and will disappear the next time you start your browser.  Making them temporary renders them "mostly harmless" while stopping the web server from complaining that you won't accept its cookies. <B>Either use this filter or the "Never accept cookies" filter below (for stricter control), but don't use both.</b>
+
+<P>This filter also uses the "<B>CookieList</B>" for those sites where you may actually want a permanent cookie (for example, sites that use automatic logins or preference settings).
+
+<P><B class=r>Set-cookie: Never accept cookies (In)</B>
+<P>When enabled this filter will <B>only</B> allow cookies from sites in your "<B>CookieList</B>".  Use it for stricter cookie management than the "Make cookies session only" filter above.
+
+<P><B class=r>URL-Killer: kill-a-URL (out)</B>
+
+<P>This filter will completely block connections to any host listed in your the "<A href="../URL Killfile.txt"><B>AdList</B></a>" blockfile. This insures that listed sites are never contacted and can't track you via web bugs, cookies, and such even if they slip past the banner filters. You can disable this filter for less aggressive blocking, but in most cases it's better to just remove a blocked site from the list.
+ 
+<P><B class=r>URL: Alias Redirector (Out)</B>
+
+<P>This filter allows you to quickly jump to URLs in the "URL Alias List" file.  Using it you can set up "Aliases" for sites you visit often. Just type a period in front of your alias in the browser's location bar.  For example, you can type ".sd" to jump to "www.slashdot.org".  It's easy to add your own aliases - just edit the <a href="../URL Alias List.txt"><B>URL Alias List</B></a> text file to see how.
+
+<P><B class=r>URL: Enable Netscape Keywords (Out)</B>
+
+<P>Both Netscape and IE will automatically jump to a likely site if you type a single word in the location bar.  To do this they call a special search engine with a database of common names.  Unfortunately this feature often doesn't work well through a proxy.  Using this filter allows Proxomitron to transparently emulate this feature.
+
+<P><B class=gr>URL: Un-Prefixer (Out)</B>
+
+<P>This is similar to the "URL unprefixer" web filter but works at the header level using redirects.  In most cases you'll probably want to stick with the Web filter version, but this is provided as an example.
+
+<P><B class=r>User-Agent: (out)</B>
+
+<P>The User-Agent filters normally tells a website information about your web browser and operating system. Use these filters to tell it something different, and pretend to be using any browser or OS you choose. Proxomitron now includes several sample user-agents filters you can choose from (Including it's own somewhat infamous "SpaceBison"), or you can create additional UA's of your own. Just be sure to enable only <B>one</B> at a time. Also be aware some sites may complain *cough*hotmail*cough* if they don't think you're using a browser they "approve" of.  Then again, other sites when faced with an off-the-wall UA may avoid sending "rich media" ads or other annoyances.
+
+<P><B class=gr>WWW-Authenticate: filter out password requests (in)</B>
+
+<P>Will stop web page password requests from being sent to your browser. However, it <B>will NOT</B> let you into a password protected site! It just stops your browser from pestering you about it.
+
+<P><B class=gr>X-Forwarded-For (out):</B>
+
+<P>Similar to the "Forwarded:" filter, this is an example of how to add the "X-Forwarded-For:" header filter as some non anonymous proxy servers may use. This <B>will not remove</B> such a header however (since the proxy adds it after it's already left Proxomitron).
+
+<p><hr><img src="images/bullet.gif" align=top><a href="Contents.html"> Return to main index</a>
+</DIV>
+</BODY>
+</HTML>

@@ -1,0 +1,190 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Matching Rules</TITLE>
+</HEAD>
+
+<script language="JavaScript" src="help.js"></script>
+<LINK REL="stylesheet" type="text/css" href="help.css">
+<body marginwidth=0 marginheight=0>
+
+<table width=100% cellspacing=0 cellpadding=0 border=0>
+<tr><td class=hdr>
+<div class=hdr>Proxomitron's Text Matching Language
+</div></td>
+<td class=hdr><image align=right src="images/nav-a.jpg" usemap="#nav" border=0></td></tr>
+<tr><td colspan=2 class=hdsep><img src='images/clear.gif' width=1 height=1></td></tr>
+</table>
+
+<MAP NAME="nav">
+     <AREA SHAPE="RECT" HREF="BlockList Creation.html" alt="Previous" COORDS="6,0, 44,25">
+     <AREA SHAPE="RECT" HREF="Contents.html" alt="Back to contents" COORDS="58,0, 94,24">
+     <AREA SHAPE="RECT" HREF="An Introduction To Text Matching.html" alt="Next" COORDS="112,0, 149,25">
+</MAP>
+
+<DIV class='text'>
+
+<P>The text matching language is the key to understanding how the Proxomitron's filters work. It allows you to match complex combinations of HTML tags and store parts of the matched text into variables which can later be used in the replacement text.</P>
+
+<P>If you're familiar with DOS and UNIX style filename wildcards (<B>*</B>,<B>?</B>,<B>[</B>...<B>]</B>) or regular expressions, you'll find much that's familiar in Proxomitron's matching rules. My original goal, in fact, was to create a matching language as easy to use as wildcards, but with much of the added power of regular expressions. I'm not exactly sure I succeeded, but it somehow I got it all to work! ;-) </P>
+
+<P>If this kind of stuff is new to you, check out<B> <A HREF="An Introduction To Text Matching.html">An Introduction to Text Matching</A></B> for the basics.</P>
+
+<P>Many of the rules have also been specifically designed to make working with HTML easier. For instance, since case is seldom important in HTML, <I>all matching is case insensitive</I> - saving you the trouble of testing for both upper and lower case.</P>
+
+<P class=li><B>Proxomitron's meta characters </B></P>
+
+<P>Here's is a complete list of all the Proxomitron <I><B>meta characters</B> </I>and what they do.</P>
+
+<table>
+<TR><TD valign=top><B>*</B><TD>The Asterisk will match any string of characters. For example, "<B>foo*bar</B>" would match "<B>foobar</B>", "<B>fooma babar</B>", or even "<B>foo goat bat bison bar</B>". Basically the asterisk means, "search forward matching anything until you find what follows the asterisk"
+
+<TR><TD valign=top><B>?</B><TD>The question mark matches any single character no matter what it is. "<B>?oat</B>" would match "<B>boat</B>" or "<B>goa</B>t" or even "<B>&lt;oat</B>"
+
+<TR><TD valign=top><B>[abc</B>...<B>]</B><TD>Square Brackets matches any single character listed within the '<B>[</B>' and '<B>]</B>' Ranges can also be checked by using a dash: "<B>[A-Z]</B>" will match any letter "A" through "Z" while "<B>[0-9]</B>" will match any single digit. If the first character is a "<B>^</B>" it will match any character <B><I>not</I></B> within the brackets - "<B>[^0-9abc]</B>" will match any character that's not a digit and not "<B>a</B>", "<B>b</B>", or "<B>c</B>".
+
+<TR><TD valign=top><B>[#n:n]</B><TD>Special numeric match. This is used to easily check for numeric value ranges in HTML tags. For example, to check for a number between 100 and 150 use "<B>[#100:150]</B>". If the second number is a '*' it acts as if it's infinitely large, "<B>[#40:*]</B>" would match any number greater than 40. To check for a number less than 40 simply use "<B>[#0:40]</B>". To check for an exact number the second number can be left out (as in "<B>[#100]</B>"). The numeric match will match regardless of leading zeros or quotes surrounding a number - <B>tag="0100"</B>.  earlier versions of Proxomitron used to use "-" instead of ":" to separate the neumbers, but this made testing for negative numbers difficult. Currently Proxomitron will accept either way, but if you're test includes a negative value (like [#-200:150]) you'll have to use ":".
+
+<TR><TD valign=top><P>" "<TD>A space <B><I>always</I></B> matches - but it also <A HREF="Consume.html"><B>consumes</B></A> any number of spaces or tabs it may find. Use it where there may or may not be a space between items. For example
+
+<P>"<B>&lt;tag value&gt;</B>" would match "<B>&lt;tag value&gt;</B>" or "<B>&lt;tag&nbsp;&nbsp;&nbsp;value&gt;</B>" or even "<B>&lt;tagvalue&gt;</B>".
+
+<TR><TD valign=top><B>\s</B><TD>Backslash-s: Like the space, will consume any number of spaces or tabs, but there <B><I>must be at least one</I></B> for it to match. For example "<B>&lt;tag\s&gt;</B>" would match "<B>&lt;tag &gt;</B>" or "<B>&lt;tag&nbsp;&nbsp;&nbsp;&gt;</B>" but not "<B>&lt;tag&gt;</B>"
+
+<TR><TD valign=top><B>\w</B><TD> Backslash-w: Word match.  Will match any number of non-space characters. it's basically the opposite of "<B>\s</B>", but in some ways it's also similar to "<B>*</B>". The difference being it will stop if it hits a space or a "<B>&gt;</B>" (which marks the end of a HTML tag). It comes in very handy when matching tag values and URLs (See <A HREF="Tips And Tricks.html">tips and tricks</A>)
+
+<TR><TD valign=top><B>\t</B><TD>Matches a tab character explicitly
+
+<TR><TD valign=top><B>\r</B><TD>Matches a carriage return character explicitly
+
+<TR><TD valign=top><B>\n</B><TD>Matches a newline character explicitly
+
+<TR><TD valign=top><B>\0-9</B><TD>Backslash+Digit 0-9: Match into a variable. This is one of Proxomitrons key matching rules. It matches just like  the "<B>*</B>" character, but stores whatever is matched into one of ten variables.  These variables can then be used in the replacement text to include parts of the original HTML. Use it to change only part of a tag while leaving other parts intact. For example, to change only the background in a &lt;body ... &gt;  tag you could use...
+
+  <P><B>Matching:&lt;body \1 background="*" \2 &gt;</B>
+
+  <P><B>Replace:&lt;body \1 background="mybackground.gif" \2 &gt;</B>
+
+<P>This way, anything else originally within the body tag, both before and after the background tag, will be included  in the replacement text.
+
+<P>More complex matches can be captured by placing the \0-9  <B><I>directly after</I></B> a set of parenthesis with no spaces in-between as in "<B>(foo*bar)\1</B>" It this case anything matched within those parenthesis will be placed into the variable. This is similar to regular expressions, but with the added benefit of being able to choose which variable gets used.
+
+<TR><TD valign=top><B>\#</B><TD>Backslash-hash (or pound sign) works much like \0 through \9 except each time it's used the value is pushed onto the <A href="ReplacementStack.html">Replacement Stack</A>. This can be thought of as sticking the new value onto the end of the variable instead of just replacing its previous value. For example, if <B>\#</B> first matched "foo" and then matched "bar", it would contain both values.  Use "<B>\@</B>" in the replacement section to print out all values captured or "foobar".
+
+<TR><TD valign=top><B>|</B><TD>Use the vertical bar as an "OR" function. For example "<B>foo|bar</B>" would match either "<B>foo</B>" or "<B>bar</B>".
+
+<TR><TD valign=top><B>&amp;</B><TD>Use the Ampersand as a "AND" function. For example "<B>*foo&amp;*bar</B>" would match "<B>foo bar</B>" or "<B>bar foo</B>" but not "<B>foo foo</B>". Note the use of the asterisk - something like this is always needed with the AND function since a word could never be <B><I>both</I></B> "foo" and "bar" at the same place and time ;). AND is useful for situations where tag values may come in any order...
+
+  <P><B>&lt;img src="picture" height=60 width=200&gt;</B>
+
+  <P>which could also be written...
+
+  <P><B>&lt;img width=200 height=60 src="picture"&gt;</B>
+
+  <P>both would be matched by...
+
+  <P><B>&lt;img (*src="picture" &amp; *height=60 &amp; *width=200)*&gt;</B>
+
+<TR><TD valign=top><B>&amp;&amp;</B><TD>The Double Ampersand (or AND-AND) function works similar to the single "<B>&amp;</B>" with one important (but useful) difference - the second half of the AND is <B>limited</B> to matching <B>exactly</B> what the first part did. Confused? It's actually pretty simple.  Say you have an expression like this...
+
+<P><B>(&lt;img * > && \1 )</B> ...now the "<B>\1</B>" normally acts as a "<B>*</B>" and given a regular AND would match from the start of "<B>&lt;img </B>" all the way to the end of the available text (and well past the end of the image tag). The AND-AND limits it to matching only the contents of the <B>&lt;img ... ></B> tag and no more (so the <B>\1</B> will only capture the <B>&lt;img ...></B> tag). You can use this like a bounds to limit the scope of a match and prevent "run-away" expressions.
+
+<TR><TD valign=top><B>(</B> ... <B>)</B><TD>Use parenthesis to create matching sub-expressions within matching phrases. For example "<B>foo(bar|bear|goat)</B>" would match "<B>foobar</B>", "<B>foobear</B>" or even "<B>foogoat</B>". Parenthesis can be nested, as in "<B>foo(bar|(black|brown|puce) bear|goat)</B>" which would match "<B>foobar</B>" "<B>fooblackbear</B>" "<B>foobrownbear</B>" etc.. Also as with "<B>[</B>...<B>]</B>", if the first character following a "<B>(</B>" is "<B>^</B>" the expression will match only if the expression within does <B><I>not</I></B> match.  For example, "<B>(^foo|bar)</B>" would match anything that's not "<B>foo</B>" or "<B>bar</B>". <I>Note that a negated expression consumes no characters</I> - it just test them. I think Perl calls this a "negative forward assertion"?
+
+<TR><TD valign=top><B>+</B><TD>The plus sign indicates a <B><I>run</I></B> of repeating characters.  For instance, "<B>a+</B>" would match "<B>a</B>", "<B>aa</B>", or "<B>aaaa</B>". You can use it after other meta characters or parenthesis for more complex runs. For example...
+
+<P><B>[abc]+   </B>      would match a run of any characters  "<B>a</B>","<B>b</B>",or "<B>c</B>" like "<B>ababccba</B>"
+
+<P><B>([a-z]&amp;[^n])+ </B>  would match a run of letters "<B>a</B>" through "<B>z</B>" but not "<B>n</B>"
+
+<P><B>(foo)+</B>      would match "<B>foo</B>", "<B>foofoo</B>", "<B>foofoofoo</B>", etc.
+
+<P>An important point to make about <B>+</B> is that it's a <B><I>"blind"</I></B> run.  This means it repeats at long as the condition it's testing is true <i>regardless</i> of anything the follows it! For example "<B>(foo)+foobar</B>" could <B class=r>never</B> match. Why? well the loop will eat up all the "foo's" their are leaving no "foo" for "foobar"! This can actually be very useful sometimes, but if it's not what you want try "<B>++</B>" instead.
+
+<TR><TD valign=top><B>++</B><TD>A double-plus acts much like the single "<B>+</B>" plus except it also pays attention to what comes afterwards (it can "see" so to speak).  It only loops until it finds the rest of the expression matches.  This is very similar to how the "." operator works in normal regular expressions for example.  
+
+<TR><TD valign=top><B>{n,n}</B><TD>Either "<B>+</B>" or "<B>++</B>" can be followed by a pair of "curly braces".  These can be used to control the minimum and maximum times the express may loop.  For example, "<B>[a]+{4,10}</B>" would match a string of from four to ten "A's" while "<B>[b]+{20}</B>" would match a string of exactly twenty "B's".  An asterisk "*" denotes "infinity" so for example, "<B>[c]+{10,*}</B>" would match ten or more "C's". (For the regexp people in the audience, one difference to keep in mind is this <B>must</B> follow either "+" or "++" and cannot be used on it's own)
+
+<TR><TD valign=top><B>\</B><TD>The Backslash can be used to "escape" any character that has special meaning and treat it as a normal character.  For example, to match a parenthesis in the HTML text use "<B>\(</B>", to match a backslash itself use "<B>\\</B>".
+
+<TR><TD valign=top><B>=</B><TD>The equal character has special "magic". It will match not only the <B>"="</B> itself, but also any whitespace before or after - making tests for tag values easier.  For example <B>foo="bar"</B> also matches <B>foo=  "bar"</B> or <B>foo = "bar"</B>
+
+<TR><TD valign=top><B>"</B><TD>The double quote  - it will match either double or single quotes (since either may be used in HTML). for example<B>  " * " </B>would match...
+
+  <P><B>"oh happy mongoose"</B>  ...or... <B>'oh happy mengeese'</B></P>
+
+  <P>If you want to test for double quotes explicitly just use the backslash - <B>\"</B>
+
+<TR><TD valign=top><B>'</B><TD>The single quote is smarter than your average quote: It attempts to match the appropriate <I><B>ending quote</B></I> for any quote previously matched by the double quote - even if there are other quotes in between!  Confused?  Don't be - in HTML it's common to use a mixture of single and double quotes when you need "quotes within quotes" - look at the following examples...</P>
+
+<P>single within double: <B>href=" javascript:window.open( ' bison.html ' ); "  </B>or...
+
+<P>double within single: <B>href=' javascript:window.open( " bison.html " ); '</B>
+
+<P><B></B>both these could be matched by <B>href=( " * ' )</B>  -  simply use the double quote to match the initial quote and the single quote to match the ending quote.  There are some restrictions here: First <I>both the starting &amp; ending quotes must be in the same sub-expression</I> - that means in the same set of nested parenthesis. for example....
+
+<P><B>" some text '   </B>works...
+
+<P><B>( " some text ' ) </B>works too...
+
+<P><B>" ( some text | other text) ' </B>even<B> </B>works... <B><I>but</I></B>
+
+<P><B>" (  some text '  ) </B>won't work worth a darn
+
+<P><B>( " | ) some text ( ' | )</B>sadly, won't work either
+
+<P>Another restriction is start and end quotes can't be nested in the same sub-expression - a matching clause of...
+
+<P><B>" something " something else ' end of something '    </B>won't work
+
+<P><B></B>However, you can nest them using a <B><I>different</I></B> sub-expression, like so...
+
+<P><B>" something ( " something else ' )  end of something '</B>
+
+<P><B></B>It's also worth noting that if no previous double quote was matched, the single quote just matches a normal single quote. Still it's safer to use <B>\'</B> to explicitly check for a single quote if you need to.
+</TABLE>
+
+<P>&nbsp;</P>
+
+<P class=li><B>Special Replacement Text codes</B></P>
+
+<P>Besides the matching rules, there are a few special codes that are used in the replacement text.</P>
+
+<P>First "<B>\0</B>" through "<B>\9</B>" are used to insert values stored into the corresponding variables from the matching expression. For stuff captured by "<B>\#</B>"  you can either use "<B>\@</B>" which will print everything that's been stored or "<B>\#</B>" again which will print the next item it stored each time you use it in the replacement (so if for example you stored three items, using "<B>\# \# \#</B>" would print them with spaces in between).<P>
+
+<P>There are also a few others special codes you can use in the replace section...</P>
+
+<TABLE>
+<TR><TD valign=top><B>\u</B><TD>Includes the full URL of the current web page.</P>
+<TR><TD valign=top><B>\k</B><TD>Kills the current connection - useful in HTTP headers to ban specific URLs and in web page filters to skip loading the rest of a page.
+<TR><TD valign=top><B>\h</B><TD>Includes the host portion of the URL
+<TR><TD valign=top><B>\p</B><TD>Includes the path portion
+<TR><TD valign=top><B>\q</B><TD>Includes any query string from a URL (anything following a "?")
+<TR><TD valign=top><B>\a</B><TD>Includes any anchor text from a URL (anything following a "#")
+<TR><TD valign=top><B>\d</B><TD>Includes the application's base directory in a "file://" URL format<br>(used to aid in including substitute images or data)
+<TR><TD valign=top><B>\x</B><TD>Includes the URL command prefix if you've set one<br>(<b class=r>careful with this!</b> You don't want to accidentally give it to a remote server).
+</TABLE>
+
+<P><B>Note:</B> \h \p \q \a and \u can actually be used in the matching section as well.  \h in particular can sometimes be useful to see if a URL on the page has the same hostname as the page itself (or is located on a different server)</P>
+
+<P>&nbsp;</P>
+
+<P class=li><B>Matching commands (extended functions)</B></P>
+
+<P>Besides the normal meta-characters above, Proxomitron also now features special <A href="Matching Commands.html">matching commands</A>. They extend the normal matching rules and add all sorts of useful functions. They all begin with a "<B>$</B>" have an upper case name followed by parens "<B>(...)</B>" with the command parameters. One example is the <B>$LST(...)</B> command which is used to check a blocklist from anywhere within a match - for example...</P>
+
+<P><B>&lt;img * src="</B><B class=r>$LST(ImageURLCheck)</B><B>" * ></B></P>
+
+<P>Might be used to check to see if the URL of a image tag is matched somewhere in the blocklist named "ImageURLCheck". Many more such commands are available and using them can make filter design much easier.  While the example above is used in the match section, others are used in the replace (and some in both). Click <A href="Matching Commands.html">here</A> for full details.</P> 
+
+ This allows me to easily add new commands without creating conflicts or making even more characters "meta" characters. 
+
+<P class=li><B>The End...?</B></P>
+
+<P>Well, that's all the rules in a nutshell. For more examples on how to use them see <A HREF="Tips And Tricks.html"><B>tips and tricks</B></A></P>
+
+<p><hr><img src="images/bullet.gif" align=top><a href="Contents.html"> Return to main index</a>
+</DIV>
+</BODY>
+</HTML>

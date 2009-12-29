@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Installation and Eradication</TITLE>
+</HEAD>
+
+<script language="JavaScript" src="help.js"></script>
+<LINK REL="stylesheet" type="text/css" href="help.css">
+<body marginwidth=0 marginheight=0>
+
+
+
+<table width=100% cellspacing=0 cellpadding=0 border=0>
+<tr><td class=hdr>
+<div class=hdr>Installing and Un-installing installing
+</div>
+<td class=hdr><image align=right src="images/nav-r.jpg" usemap="#nav" border=0>
+<tr><td colspan=2 class=hdsep><img src='images/clear.gif' width=1 height=1></td></tr>
+</table>
+
+<MAP NAME="nav">
+     <AREA SHAPE="RECT" HREF="Contents.html" alt="Back to contents" COORDS="58,0, 94,24">
+     <AREA SHAPE="RECT" HREF="License.html" alt="Next" COORDS="112,0, 149,25">
+</MAP>
+
+<DIV class='text'>
+
+<P>Please read the section below on how to set your browser up to use Proxomitron. Unless you do this, Proxomitron will not be able to filter web pages.
+
+<P class=li><B>System Requirements</B>
+
+<P>The Proxomitron was originally developed on a Pentium 120, and will work fine on such a system depending on your connection speed and the number and types of filters you use. Faster connections (like DSL and Cable) may require more CPU horsepower to filter. It should also work fine on Win 95,98,ME,NT,2000, and XP.  However my ability to test on all platforms is limited. Please <A HREF="Contacts.html">inform me</A> if you do have any troubles here. 
+
+<P class=li><B>Upgrading from a previous versions</B>
+
+<P>If you don't want to keep the previous version around, it's safe to simply copy the new files over top of the old (be sure to include the subfolders) .  However <B>first make backup copies or rename any config files you changed!  </B>Otherwise they'll be overwritten by the newer versions. To keep your changes either copy the config files somewhere else or simply change them from their original names (as in <B>default.cfg</B> to <B>MyDefault.cfg</B> ). This only applies to the config files included in the original distribution; any config files you named yourself will be fine. 
+
+<P class=li><B>Installation and Eradication</B>
+
+<P>
+
+<P>None needed really.  Well, at least not in the normal sense...
+
+<P>Unlike many Windows programs which seem to insinuate their way into your system like some parasitic organism,  the Proxomitron...
+
+<P>
+<OL>
+<LI>copies <B>no</B> files to any folders outside its own,<br>
+<LI>makes <B>no</B> changes to your system registry,<br>
+<LI>and modifies <B>no</B> .ini files.
+</OL>
+
+<P>The Proxomitron normally comes in two flavors - one with an installer/uninstaller and one without. If you're used to copying files on your PC you don't really need the installer. 
+
+<P>For the plain version just unzip the files wherever you wish. To uninstall just delete the folder containing the Proxomitron program. No further trace of it will be left anywhere else on your system.  Because of this it's also safe to move the program folder from one place to another without having to "re-install."
+
+<a name="proxy">
+<P class=li><B>Setting your web browser to use the Proxomitron</B>
+
+<P>After "Installation" you must configure your web browser to use the program. This involves setting the browser's proxy option. Although it varies from browser to browser, most browsers have this option somewhere.
+
+<P><B class=r>For Netscape:</B> Run Netscape and go to the "<B>Edit</B>" menu. Select "<B>Preferences &gt; advanced &gt; proxies</B>". Click "<B>Manual proxy configuration</B>" then "<B>View</B>". Next under HTTP enter "<B>localhost</B>" and for port enter "<B>8080</B>". Leave the other proxy entries (FTP, Gopher, etc.) alone.
+
+<P><B class=r>For Internet Explorer 5.x:</B> Well, it seems with every version Microsoft has to bury this a little deeper (are they trying to hide it? ;-).<p>
+Anyway, here's the deal...
+
+<ul>
+<li>first go to "<B>Tools</B>", "<B>Internet Options</B>", then "<B>Connections.</B>"
+<li>Select the entry for the ISP you use under "<B>Dial-Up Settings</b>"<br> (some cable modem and DSL users may need to click the <B>LAN</B> button if there's no ISP entry)
+<li>Click "<B>Settings</B>"<BR>
+ <a href="images/IE5-Setup1.gif">
+ <img src="images/IE5-Setup-sm1.gif">
+ </a>
+<li>Next check "<B>Use Proxy Server.</B>"
+<li>Click "<B>Advanced</B>"<BR>
+  <a href="images/IE5-Setup2.gif">
+  <img src="images/IE5-Setup-sm2.gif">
+  </a>
+<li>Under the <B>HTTP</B> and (optionally) the <B>Secure</B> entry, enter "<B>localhost</B>" for host and "<B>8080</B>" for port.<BR>
+  <a href="images/IE5-Setup3.gif">
+  <img src="images/IE5-Setup-sm3.gif">
+  </a>
+<li>Make sure the line that reads "Use same proxy server for all protocols" is <b>NOT</b> checked.
+<li>Lastly also be sure you <B>don't</B> have proxy autoconfig enabled. Phew!
+</ul>
+
+<P><B class=r>For Internet Explorer 3.x &amp; 4.x:</B> Select "<B>View</B>," "<B>Internet Options</B>," then click the "<B>connections</B>" tab. Click "<B>Use proxy server</B>" and click "<B>advanced</B>" or "<B>settings</B>" (for 4.0 and 3.0 respectively). Under HTTP enter "<B>localhost</B>" and for port "<B>8080</B>". Leave the other proxy entries (FTP, Gopher, etc.) alone. You can also set the proxy from the Control panel's Internet options.
+
+<P><B class=r>For Other browsers:</B> The process should be similar to one of the above. First locate where to set the HTTP proxy entry. Once you find it, set it to "<B>localhost</B>" with the port of "<B>8080</B>".
+
+<P>Here's an example taken from Netscape (other browsers will look much the same) of how the proxy configuration should look - note the areas highlighted in yellow. You want to find the screen with all of these options shown separately.
+
+<P><IMG SRC="images/proxyset.gif" ALT="" BORDER=0>
+
+<P>After the browser it configured, run the Proxomitron program. Now any connections your browser makes must go through, and be filtered by, The Proxomitron. <B> </B>
+
+<P><B class=r>Warning:</B> after configuring your browser for use with Proxomitron, <I class=r>it won't be able to find web pages unless the Proxomitron is running also!</I> To bypass the Proxomitron entirely and return your browser to normal operation, just set your browser <B>not</B> to use a proxy server (or "direct connection to the Internet" as Netscape puts it). Both Netscape and Internet Explorer allow you to switch between these two settings with a simple checkbox in their proxy configuration screens.
+
+<P>To help make things more convenient, you can set the Proxomitron to automatically run your browser whenever it starts (See <A HREF="Configuration Dialog.html">Configuration</A>).  Then simply start the Proxomitron whenever you would normally start your browser.
+
+<P><B class=r>Note:</B> If you are already connecting through a proxy server, you'll need to set the Proxomitron to use your original HTTP proxy settings. (See <A HREF="External Proxy Dialog.html">External Proxies</A>).
+
+<p><hr><img src="images/bullet.gif" align=top><a href="Contents.html"> Return to main index</a>
+</DIV>
+</BODY>
+</HTML>

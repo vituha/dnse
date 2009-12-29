@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Web Page Filters</TITLE>
+</HEAD>
+
+<script>
+var hwWid = 325;
+var xaply="<B>Apply Button</B><P>Like OK this will activate and keep all changes but without exiting back to the main screen.";
+
+var can="<B>Cancel Button</B><P>Return to the main screen and <B>UNDO</B> any changes made to the filters. (This includes adds, edits and deletes).";
+
+var ok="<B>OK Button</B><P>Click to return to the main screen and keep all changes you've made to the filters."; 
+
+var find="<B>Find area</B><P>This can be very helpful for finding a filter in a long list. Simply type part of the filter's name and only matching items will be shown."; 
+
+var cut="<B>Cut Button</B><P>Click this to delete all selected filters. You can then use <B>Paste</B> to insert the filter(s) back into the list at a different location.";
+
+var paste="<B>Paste Button</B><P>Becomes active after doing a <B>Cut</B>. Paste will restore cut filters back into the list at the currently selected position.";
+
+var dupe="<B>Duplicate a filter</B><P>This creates a new filter that's a copy of the selected filter. Very useful for using an existing filter as a starting point for a new filter you're creating. (see <a href='Web Page Filter Editor.html'>Web Page Filter Editor</a>)";
+
+var xnew="<B>New filter</B><P>Open the <a href='Web Page Filter Editor.html'>Web Page Filter Editor</a> to create a new filter.";
+
+var edit="<B>Edit filter</B><p>Edit the selected filter in the<a href='Web Page Filter Editor.html'>Web Page Filter Editor</a>. you can also edit by double-clicking a filter.";
+
+var xname='<B>Web Filter Names</B><P>This is a list of all web page filters. You can edit a filter either by double-clicking it or pressing the "Edit" button. Use "Cut" and "Paste" to change the order of filters in this list.<P>A series of selected filters can also be toggled by right-clicking over the checkboxes while right-clicking over their names will bring up a content menu allowing you to <B>import</B> or <B>export</B> filters to the clipboard.';
+
+var xon='<B>Enable/Disable Web Filter</B><P>Click these check boxes to enable or disable a particular web filter. Enabled (active) filters are shown in <b>bold</b>.';
+</script>
+
+<script language="JavaScript" src="help.js"></script>
+<LINK REL="stylesheet" type="text/css" href="help.css">
+<body marginwidth=0 marginheight=0>
+
+<div id="help" style="position:absolute;visibility:hidden;"></div>
+
+<table width=100% cellspacing=0 cellpadding=0 border=0>
+<tr><td class=hdr>
+<div class=hdr>The Web Page Filter Dialog
+</div></td>
+<td class=hdr><image align=right src="images/nav-a.jpg" usemap="#nav" border=0></td></tr>
+<tr><td colspan=2 class=hdsep><img src='images/clear.gif' width=1 height=1></td></tr>
+</table>
+
+<MAP NAME="nav">
+     <AREA SHAPE="RECT" HREF="Log.html" alt="Previous" COORDS="6,0, 44,25">
+     <AREA SHAPE="RECT" HREF="Mainscreen.html" alt="Back to contents" COORDS="58,0, 94,24">
+     <AREA SHAPE="RECT" HREF="Web Page Filter Editor.html" alt="Next" COORDS="112,0, 149,25">
+</MAP>
+
+<DIV class='text'>
+
+<P>Clicking the "Web Page" filter button opens a list of all Web Page filters. Each filter can be individually enabled or disabled by checking the check box next to it.</P>
+
+<P class=ctr><IMG SRC="images/WebFilters.jpg" usemap="#WEBFLT" BORDER=0></P>
+
+<MAP NAME="WEBFLT">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,paste);" COORDS="359,174, 399,196">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,cut);" COORDS="357,148, 398,170">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,dupe);" COORDS="358,110, 399,133">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,xnew);" COORDS="359,85, 398,106">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,edit);" COORDS="359,59, 398,80">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,xaply);" COORDS="190,245, 264,267">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,can);" COORDS="105,244, 180,268">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,ok);" COORDS="20,245, 95,268">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,find);" COORDS="47,213, 334,228">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,xname);" COORDS="48,51, 318,202">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,xon);" COORDS="14,49, 45,203">
+</MAP>
+
+<P class=li><B>The Default Filters</B></P>
+
+<P>Web filters are perhaps the most useful feature of the Proxomitron. With them you can stop stuff like ad banners, pop-up windows, auto-play music and more. Simply click the checkbox of any filter you wish to use then hit reload on your browser to try them out. If you're looking for more information on what each default filters does, check out the <A HREF="Default Web Filters.html">Hitch-Hikers Guide to the Default Web Filters</A>.</P>
+
+<P>Of couse, you're not limited to these initial filters - you can modify them or create entirely new ones of your own!   </P>
+
+<P class=li><B>Web Page Filter Ordering</B></P>
+
+<P>You can use the "<B>Cut</B>" and "<B>Paste</B>" buttons to re-order web filters. <I>With web page filters, order is important!</I>  This is not the case with HTTP header filters<I>. </I>Normally, when a filter matches a bit of HTML it "uses it up" so no other filter can match it. This first come first served approach allows you to give priority to certain filters. A filter that only matched a specific case would come before a more general "catch all" filter that matched on the same type of HTML tag. Filters at the top of the list have the highest priority, filters at the end have the lowest.  Note that in some cases you might want a filter not "use up" the text it matches and allow other filters a crack at it. Look at "Allow for multiple matches" under the <A HREF="Web Page Filter Editor.html">Web Page Filter Editor</A> dialog to see how to do this.</P>
+
+<P class=li><B>Changes to web filters</B></P>
+
+<P>Enabling or disabling a filter check box takes effect immediately, however any changes or additions you make to filters themselves won't go into effect until the "<B>OK</B>" or "<B>Apply</B>" button is pressed - until then the check box of these modified filters will be show as grayed. This allows you to change filters while a web page is still using them (or in reality copies of them).<I> For changes to actually take effect, the filters must <B>not</B> be in use. </I> Also, pressing "<B>Cancel</B>" in this dialog will undo all pending changes you've made to the filters - this includes filters you've added or deleted.</P>
+
+<P class=li><B>Editing Web Filters</B></P>
+
+<P>Use "<B>Edit</B>", "<B>New</B>", and "<B>Dupe</B>" to modify web page filters. "<B>Edit</B>" edits the selected filter (you can also double-click the filters name) and "<B>New</B>" creates a new filter. "<B>Dupe</B>" creates a copy of the selected filter which you can then modify. It's useful for using an already existing filter as a starting point for your new filter.</P>
+
+<P>All of these button will bring up the<B> <A HREF="Web Page Filter Editor.html">Web Page Filter Editor</A></B> - use it to modify the rules a particular filter uses.</P>
+
+<P class=li><B>Sharing your web filters</B></P>
+
+<P>Right-clicking over the filter name area bring up a context menu allowing you to <b>import</b> or <b>export</b> selected filters to the clipboard.  This is an easy way to share specific filters with others or add new filters yourself. For example, to share some filters, just select the filter(s) you wish, right-click to export them to the clipboard, then paste them into an email or message board. Exported filters will be in the same plain-text form used by the config file and can easily be imported by someone else. When sharing filters be sure not to delete any of the included headers or Proxomitron may not be able to import them again. 
+
+<p>To import filters just, copy the text into the clipboard from the original source (which could be an email, message board, or any other text source) and select the import option. If Proxomitron can find enough text to make a new filter, it will be added to your list highlighted in <B class=r>red</B>.   
+</P>
+
+<p><hr><img src="images/bullet.gif" align=top><a href="Contents.html"> Return to main index</a>
+</DIV>
+</BODY>
+</HTML>

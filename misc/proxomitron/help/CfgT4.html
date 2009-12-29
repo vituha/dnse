@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Configuration Dialog</TITLE>
+</HEAD>
+
+<script language="JavaScript" src="help.js"></script>
+<script>
+var t4_lfname="<B>List File Name</B><p>This list the actual filename of the text file used for a given blockfile. To change this click the <B>File</b> button.";
+
+var t4_lname="<B>List Name</B><p>Every blockfile list must have a name. This is what you enter into the $LST(ListName) command when you call a blockfile from a matching expression. Since the name's separate from the filename, you can change the actual file a list uses without altering any filters.<p>You can change a blockfile name by first clicking to highlight it, then clicking it again (not a double-click; wait a second or two between clicks).";
+
+var t4_file="<B>File Button</B><p>Click this to change the text file associated with a given blockfile list name.";
+
+var t4_edit="<B>Edit Blockfile</B><p>Click to edit the selected blockfile. Proxomitron will use whichever editor you have set to handle .txt files (in Windows, it's usually Notepad by default).";
+
+var t4_del="<b>Delete Blockfile</B><p>Click this to remove a blockfile from Proxomitron (the actual file is <B>not</b> deleted from your computer). Be careful, any filter that use the file may no longer work correctly. You can always add the file back if necessary."; 
+
+var t4_add="<B>Add a new blockfile</B><p>Click to add a new blockfile list to Proxomitron.  First you'll be asked to pick the a text file to add (the file must already exist.  You can use any text editor, like Notepad, to make one).  Next you'll be asked to give the new blockfile list a name - choose nay name you like (but without spaces).";
+
+</script>
+
+<LINK REL="stylesheet" type="text/css" href="help.css">
+<body marginwidth=0 marginheight=0>
+
+<div id="help" style="position:absolute;visibility:hidden;"></div>
+
+<table width=100% cellspacing=0 cellpadding=0 border=0>
+<tr><td class=hdr>
+<div class=hdr>The Configuration Dialog - Blockfile
+</div></td>
+<td class=hdr><image align=right src="images/nav-a.jpg" usemap="#nav" border=0></td></tr>
+<tr><td colspan=2 class=hdsep><img src='images/clear.gif' width=1 height=1></td></tr>
+</table>
+
+<MAP NAME="nav">
+     <AREA SHAPE="RECT" HREF="CfgT3.html" alt="Previous" COORDS="6,0, 44,25">
+     <AREA SHAPE="RECT" HREF="Mainscreen.html" alt="Back to contents" COORDS="58,0, 94,24">
+     <AREA SHAPE="RECT" HREF="CfgT5.html" alt="Next" COORDS="112,0, 149,25">
+</MAP>
+
+<DIV class='text'>
+
+<P>Here is where several of the Proxomitron's global settings can be changed. Click a tab and area for an explanation of its function.</P>
+
+
+<A name="foo">
+<P class=ctr>
+<IMG SRC="images/CfgT4.jpg" USEMAP="#T4" BORDER=0>
+</P>
+
+<MAP NAME="T4">
+     <AREA SHAPE="RECT" HREF="CfgT5.html#foo" COORDS="218,30, 265,46">
+     <AREA SHAPE="RECT" HREF="CfgT3.html#foo" COORDS="117,29, 164,46">
+     <AREA SHAPE="RECT" HREF="CfgT2.html#foo" COORDS="68,28, 113,46">
+     <AREA SHAPE="RECT" HREF="Configuration Dialog.html#foo" COORDS="14,29, 65,46">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,t4_lfname);" COORDS="97,100, 271,198">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,t4_lname);" COORDS="34,99, 91,198">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,t4_file);"  COORDS="167,75, 206,93">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,t4_edit);"  COORDS="120,76, 160,93">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,t4_del);"   COORDS="75,76, 115,92">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,t4_add);"   COORDS="30,76, 71,92">
+</MAP>
+
+<P>&nbsp;</P>
+<P class=li><B>The "Blockfile" Tab</B></P>
+
+<p>Proxomitron, can use a "blockfile" (or "blocklist" depending on the weather and relative humidity).  These are lists of items that a particular filter may need.  Usually this is a list of URLs (web addresses) to control where a filter will be active.  Proxomitron already comes with several list ready to use, but you can create additional lists of you own. For example, all Proxomitron's cookie filters use the CookieList blockfile. If you want to allow cookies on a site, you can just add it to this list.  Another example is the BypassList. This list lets you bypass Proxomitron so it doesn't filter listed sites.</p>
+
+<p>Adding a new URL to a list is very easy.  Just copy a URL to your clipboard, right-click Proxomitron's icon in your <a href="System Tray.html">System Tray</a>, and select <b>"Add to blockfile"</b>. You'll get to pick a list to add the URL to and even get a chance to clean the URL up a bit (and possibly add some <a href="Matching Character Reference.html">wildcards</a>) before adding it to the list.</p>
+
+<P>Here you can add, delete, and edit the blockfiles available to Proxomitron's $LST(...) matching command.  Besides selecting the file itself, each blockfile has a <b>name</b> that's separate from the actual filename.  Use this <b>list name</b> to call the file from a filter.  For example, to call the list named <B>"BypassList"</B>, use <B>$LST(BypassList)</B> in your match.</P>
+
+<P>You can also rename a list item. First click the item to highlight it, then click again to rename (wait a second or two first though so it doesn't look like a double-click to your PC).</P> 
+
+<p><hr><img src="images/bullet.gif" align=top><a href="Contents.html"> Return to main index</a>
+</DIV>
+</BODY>
+</HTML>

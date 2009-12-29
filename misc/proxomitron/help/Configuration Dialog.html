@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Configuration Dialog</TITLE>
+</HEAD>
+
+<script language="JavaScript" src="help.js"></script>
+<script language="JavaScript">
+var t1_btn_txtr="<B>Button Texture</B><P>Click the to select a bitmap file used for button backgrounds";
+var t1_always_use="<B>Always Use Textures</b><p>Normally Proxomitron won't use textures unless you have your desktop set to more than 256 colors (since it usually looks quite ugly). If you want Proxomitron to use textures anyway click this checkbox.";
+var t1_dont_use="<B>Don't use Textures</B><p>Click this to force Proxomitron to use the plain 'ol gray Windows dialogs (note: you'll have to save and reload the config before the change will take effect).";
+var t1_txtr="<B>Texture Buttons</B><p>Click any of these areas to change the windows bitmap (.BMP) file Proxomitron uses as a background.  Just click the area with the pattern you wish to change.";
+
+</script>
+
+<LINK REL="stylesheet" type="text/css" href="help.css">
+<body marginwidth=0 marginheight=0>
+
+<div id="help" style="position:absolute;visibility:hidden;"></div>
+
+<table width=100% cellspacing=0 cellpadding=0 border=0>
+<tr><td class=hdr>
+<div class=hdr>The Configuration Dialog - Visuals
+</div></td>
+<td class=hdr><image align=right src="images/nav-a.jpg" usemap="#nav" border=0></td></tr>
+<tr><td colspan=2 class=hdsep><img src='images/clear.gif' width=1 height=1></td></tr>
+</table>
+
+<MAP NAME="nav">
+     <AREA SHAPE="RECT" HREF="Matching Test Window.html" alt="Previous" COORDS="6,0, 44,25">
+     <AREA SHAPE="RECT" HREF="Mainscreen.html" alt="Back to contents" COORDS="58,0, 94,24">
+     <AREA SHAPE="RECT" HREF="CfgT2.html" alt="Next" COORDS="112,0, 149,25">
+</MAP>
+
+<DIV class='text'>
+
+<P>Here is where several of the Proxomitron's global settings can be changed. Click a tab and area for an explanation of its function.</P>
+
+
+<A name="foo">
+<P class=ctr>
+<IMG SRC="images/CfgT1.jpg" USEMAP="#T1" BORDER=0>
+</P>
+
+<MAP NAME="T1">
+     <AREA SHAPE="RECT" HREF="CfgT5.html#foo" COORDS="218,30, 265,46">
+     <AREA SHAPE="RECT" HREF="CfgT4.html#foo" COORDS="167,30, 214,45">
+     <AREA SHAPE="RECT" HREF="CfgT3.html#foo" COORDS="117,29, 164,46">
+     <AREA SHAPE="RECT" HREF="CfgT2.html#foo" COORDS="68,28, 113,46">
+    
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,t1_btn_txtr);" COORDS="142,161, 234,184">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,t1_always_use);" COORDS="138,116, 274,146">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,t1_dont_use);" COORDS="139,89, 244,104">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,t1_txtr);" COORDS="33,84, 126,186">
+</MAP>
+
+
+<P>&nbsp;</P>
+<a name="info">
+<P class=li><B>The "Visuals" Tab</B></P>
+<P>Here you can control the look of Proxomitron. You can turn textured backgrounds on or off (you'll need to save and reload the config first though), or select different background images to use.  Most any windows bitmap (.BMP) file can be used as a background in Proxomitron.</P>
+
+<p><hr><img src="images/bullet.gif" align=top><a href="Contents.html"> Return to main index</a>
+</DIV>
+</BODY>
+</HTML>

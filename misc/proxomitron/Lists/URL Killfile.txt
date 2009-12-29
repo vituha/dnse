@@ -1,0 +1,66 @@
+#
+# Proxomitron Killfile
+#
+# The URL killer header filter, if enabled, will kill 
+# any URLs matched in this list.  This will completely
+# block access to the given site so be cautious.
+#
+# Note: the AdKey list also calls this list to give the
+# banner filters a chance to block these items before
+# they reach your browser.
+#
+# List Indexing:  New in Naoko-4 BetaFour is the ability
+# to index some regular expressions. This can greatly speed
+# lookup in large lists. No changes to existing lists are necessary
+# but to fully take advantage of these features it helps to know
+# what can and can't be indexed. This includes...
+#
+# 1) lines that begin without any wildcards can be index up to the
+#    first wildcard.  As in "www.somesite.com/\w/ads.html"
+#
+# 2) URLs with specific leading wildcards and no further wildcards
+#    for the rest of the hostname up to and including the first "/" 
+#    For example...
+#
+#    *.somesite.com/
+#    \w.somesite.com/
+#    [^.]+.somesite.com/
+#    [^/]++somesite.com/
+#    ([^/]++.|)somesite.com/    
+#    
+#    Valid leading wildcards include *, \w, [...]+, [...]++, and (...|)
+#    Note that you must include the "/" before any further wildcards. 
+#    For instance, "[^.]+.somesite.(com|net)/" won't be indexable
+#    because the host includes both leading and trailing wildcards.
+#
+#
+
+# Russian Edition system URLs:
+$LST(AdList-RE)
+
+
+# User added URLs:
+
+([^/]++.|)zna.ru/
+([^/]++.|)atdmt.com/
+([^/]++.|)ruinst.net.ru/logo/ava.png
+# ([^/]++.|)webwarper.net/ww/[^?:@]++.js
+([^/]++.|)adwork.net.ua/
+([^/]++.|)rad.msn.com/
+([^/]++.|)adocean.pl/
+([^/]++.|)tribalfusion.com/
+([^/]++.|)ap.delfi.ua/
+([^/]++.|)r.mail.ru/
+([^/]++.|)awaps.net
+([^/]++.|)tribalfusion.com/
+([^/]++.|)reklamer.com.ua/
+([^/]++.|)link.ru/
+([^/]++.|)imho.ru/
+([^/]++.|)600z.com/
+([^/]++.|)yabs.yandex.ru/
+([^/]++.|)etoday.ru/uploads/
+([^/]++.|)holder.com.ua/b/
+([^/]++.|)tradedoubler.com/
+
+# Blocked IPs
+80.91.178.234

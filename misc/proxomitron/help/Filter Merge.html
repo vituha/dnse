@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Filter Merge</TITLE>
+</HEAD>
+
+<script language="JavaScript" src="help.js"></script>
+<LINK REL="stylesheet" type="text/css" href="help.css">
+<body marginwidth=0 marginheight=0>
+
+<table width=100% cellspacing=0 cellpadding=0 border=0>
+<tr><td class=hdr>
+<div class=hdr>Merging Config File Filters
+</div></td>
+<td class=hdr><image align=right src="images/nav-a.jpg" usemap="#nav" border=0></td></tr>
+<tr><td colspan=2 class=hdsep><img src='images/clear.gif' width=1 height=1></td></tr>
+</table>
+
+<MAP NAME="nav">
+     <AREA SHAPE="RECT" HREF="Matching Character Reference.html" alt="Previous" COORDS="6,0, 44,25">
+     <AREA SHAPE="RECT" HREF="Contents.html" alt="Back to contents" COORDS="58,0, 94,24">
+     <AREA SHAPE="RECT" HREF="URL Commands.html" alt="Next" COORDS="112,0, 149,25">
+</MAP>
+
+<DIV class='text'>
+
+<P>A useful feature is the filter merge option. Although it might seem simple, it really can really come in handy.  With it, you can insert filters into the currently config file from any other config file you choose.  To make updating configs with newer versions easier, exact duplicates are weeded out of the merge. Only new or altered filters are included.</P>
+
+<P>When you select the "Merge config filters" from the menu on Proxomitron's main screen you'll get a windows file requester with a few additional options at the bottom...</P>
+
+<P><IMG SRC="images/merge.gif" ALT="" BORDER=0></P>
+
+<P>Here you can limit the merge to certain filter types. Simply check only the sections you wish to include.</P>
+
+<TABLE>
+<TR><TD><B>Global:</B> <TD>Will merge global settings set under the "Config" dialog<BR>(usually you don't want to do this).
+<TR><TD><B>Block Lists:</B> <TD>Will merge any blocklists (or blockfiles every other Tuesday).
+<TR><TD><B>Web Filters:</B> <TD>Will merge Web Page filters.
+<TR><TD><B>Header Filters:</B> <TD>Will merge HTTP Header filters
+<TR><TD><B>External Proxy List:</B> <TD>Will merge lists of proxy servers
+</TABLE>
+
+<P class=li><B>Seeing Red?</B></P>
+
+<P>Newly merged web page and HTTP header filters will be shown in <B class=r>red</B> - this makes it easy to tell new filters apart from older versions with the same name.  By picking and choosing which filters to keep and which to delete you can selectively update only those filters you choose. To "Get the red out" simply save and reload the new config file.</P>
+
+<P class=li><B>Sugar Frosted "Mini-Configs"</B></P>
+
+<P>Filter merging also lets you create "Mini-Config" files - containing only a few related filters.  For example, you could create a config file containing only JavaScript filters, and then use the merge to easily add this functionality into another config file.  This also makes it easier to share your filters with others. Just create a config file containing only the filters you wish to share.  </P>
+
+<P class=li><B>Merge from the clipboard</B></P>
+
+<P>Rather than loading filters from a file it's also possible to merge them directly from the Windows clipboard.  This is an easy way to share multiple sections of a config file on-line or via email. Just select and copy the portions you wish to import (being sure to include the <B>[section headers]</B>) then click the "<B>Merge data from clipboard</B>" option. 
+
+<P class=li><B>Location!, Location!, Location!</B></P>
+
+<P>Because order is important, when merged web page filters are either inserted at the top of the list or next to any existing filter with the same name.  This way, updated filters should keep their correct position in the filter list.  Meanwhile, HTTP header filters and proxy servers are simply sorted into the current list alphabetically (since order doesn't affect their function). </P>
+
+<p><hr><img src="images/bullet.gif" align=top><a href="Contents.html"> Return to main index</a>
+</DIV>
+</BODY>
+</HTML>

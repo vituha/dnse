@@ -1,0 +1,11 @@
+#
+# List servers for filter, which kills ad frames used by many
+# web space and redirect providers.
+# This list for servers, which used frames at TOP.
+# 
+# All wildcard are allowed.
+#
+
+[^.]+.webjump.com/
+www.cdcovercentral.com/
+www.odigo.com/

@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Web Page Filter Editor</TITLE>
+</HEAD>
+
+<script>
+var rep='<B>Replacement Text</B><P>The replacement text section determines what gets substituted for the text matched by the matching expression. Type whatever you wish here, or leave it blank to delete the text entirely.<P><B>Note:</B> You can capture parts of the matched text to use in your replacement. This is a very powerful tool when re-writing existing tags. (See <A HREF="Matching Rules.html">Matching Rules</A>).  Also note by right-clicking you can insert the URL of a disk file into the replacement text. Useful for inserting your own background images and such.';
+
+var match='<B>Matching Expression</B><P>Matching expression uses Proxomitron\'s <A HREF="Matching Rules.html">Matching Rules</A> to match text on a web page. Think of it as being a bit like a word processors "Search and Replace" function. Text matched here is replaced by the text in the "Replacement Text" section. <P>The matching clause can also have two special values:<P><B>&lt;start&gt;</B> which will insert the replacement text at the start of a web page, while <B>&lt;end&gt;</B> will insert it at the end. Use to unconditionally add items to web pages.';
+
+var test='<B>Test Matching Button</B><P>This button opens up the <A HREF="Matching Test Window.html">Testing</A> window which allows you to see in advance what effect a fliter will have on a given bit of HTML text.  Any changes made in the editor will be reflected in the matching window as soon as they are made (no need to press the <B>OK</B> button first)';
+
+var limit='<B>Scope Byte Limit</B><P>The Byte Limit determines the maximum number of characters to be considered for the match. Use the lowest value that still works, for example...<P>128 or less for small tags that only span a few lines 256-512 for medium sized matches of several lines 4096 for tags that span many lines (like "&lt;Script ...&gt;").<P>This number has a maximum value of 32076. Larger numbers may make web pages appear to load slower since the Proxomitron may need to scan ahead that many characters before sending data on to your browser.';
+
+var bound='<B>Scope Bounds</B><P>This is a simple matching expression used to limit the range of text checked by the main matching expression. You can use all the normal <A HREF="Matching Rules.html">matching rules</A>.<P>It often consists of just the start and end tag - for example, a rule used to match a link may have a bounds like "<B>&lt;a * &lt;/a&gt;</B>".  Use of bounds is optional, but it can improve performance by eliminating the need to check a more complex matching expression each time.  It\'s also useful for preventing a rule from matching more than you intended.';
+
+var xurl='<B>URL Match</B><P>The URL match allows you to limit rules to only affect certain web pages. In it you can use the full compliment of <A HREF="Matching Rules.html">Matching Rules</A> to match against the web page\'s URL. Note that "http://" is first removed from the URL before the match is done. Here\'s some examples...<P><B>"www.bison.com|www.frog.com"</B> - will only match pages who\'s URL begins with "www.bison.com" or "www.frog.com"<P> <B>"*sailormoon&amp;(^*negaverse)"</B> - would match any URL that has the word "sailormoon" unless it also has the word "negaverse"';
+
+var multi='<B>Allow for multiple matches</B><P>Checking this box lets the next filter match against the output of this filter. Use it to allow several filters to match the same HTML tag. Normally the text matched is used up by a filter - allowing only one filter to match on a particular tag, but some tags (like the "BODY" tag) may contain several items you may want to separately filter. <P>Warning: Enabling this creates the potential for <B>recursive matching</B>! (See below for more details)';
+
+var xname='<B>Filter Name</B><P>Set the web page filter\'s name here. The name has no effect on the function of the filter, but simply allows you to tell the filters apart.';
+
+</script>
+
+<script language="JavaScript" src="help.js"></script>
+<LINK REL="stylesheet" type="text/css" href="help.css">
+<body marginwidth=0 marginheight=0>
+
+<div id="help" style="position:absolute;visibility:hidden;"></div>
+
+<table width=100% cellspacing=0 cellpadding=0 border=0>
+<tr><td class=hdr>
+<div class=hdr>The Web Page Filter Editor
+</div></td>
+<td class=hdr><image align=right src="images/nav-a.jpg" usemap="#nav" border=0></td></tr>
+<tr><td colspan=2 class=hdsep><img src='images/clear.gif' width=1 height=1></td></tr>
+</table>
+
+<MAP NAME="nav">
+     <AREA SHAPE="RECT" HREF="Web Page Filters.html" alt="Previous" COORDS="6,0, 44,25">
+     <AREA SHAPE="RECT" HREF="Web Page Filters.html" alt="Back to contents" COORDS="58,0, 94,24">
+     <AREA SHAPE="RECT" HREF="HTTP Header Filters.html" alt="Next" COORDS="112,0, 149,25">
+</MAP>
+
+<DIV class='text'>
+
+<P>This is the web page filter editor. Here is where you can modify the <A HREF="Matching Rules.html"><B>matching rules</B></A> that allow the Proxomitron to re-write web pages.  Click on an area below to get an explanation of its function.</P>
+
+<P class=ctr><IMG SRC="images/WebFilterEditor.jpg" usemap="#WFE" BORDER=0></P>
+
+<MAP NAME="WFE">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,rep);"   COORDS="31,302, 445,353">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,match);" COORDS="31,231, 447,282">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,test);"  COORDS="417,210, 445,227">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,limit);" COORDS="372,161, 446,179">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,bound);" COORDS="31,161, 360,179">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,xurl);"   COORDS="29,123, 446,141">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,multi);" COORDS="306,102, 449,115">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,xname);"  COORDS="31,48, 341,66">
+</MAP>
+
+<P class=li><B>The Basics...</B></P>
+
+<P>At its simplest the matching rules work much the same as a word processor's "Search and Replace" function. Any text matching the "Matching Expression" will be replaced with the text in the "Replacement Text" section.  A matching expression of "Rimmer" with a replacement text of "That Smeghead" for instance, would change every occurrence of "Rimmer" on a web page to "That Smeghead". Simple no?</P>
+
+<P>Things really get fun when you start adding <A HREF="Matching Rules.html">Matching Rules</A> into the mix.</P>
+
+<P class=li><B>"&lt;start&gt;" and "&lt;end&gt;"</B></P>
+
+<P>Besides the normal text and matching expressions, the matching clause can have two values that have special meaning: <B>&lt;start&gt;</B> and <B>&lt;end&gt;</B>.</P>
+
+<P><B>&lt;start&gt;</B> inserts the replacement text at the beginning of a web page - use it to add items like JavaScript to a page. Likewise <B>&lt;end&gt;</B> can be used to tack stuff to the tail end of a page.</P>
+
+<P>For these special cases, bounds and limit are ignored. Also when used by multiple rules, the items will be added in the same order they appear in the <A HREF="Web Page Filters.html">web page filter list</A>.</P>
+
+<P class=li><B>What the heck is this Scope thing anyway?</B></P>
+
+<P>In HTML it's not uncommon for tags to run for several lines. Scope settings allow the filter to determine how far forward to search for the end of a match after finding the start. If not for scope, the entire web page might have to be scanned before a rule could be sure a there was no match. Not a good idea, since no data could be sent to your browser until the whole page finished loading.  Thankfully the designers of HTML gave their tags predictable beginning and ending values which makes things a bit easier.  </P>
+
+<P>The byte limit and bounds limit both work together to restrict the amount of text searched. </P>
+
+<P><B>Byte Limit</B> controls how many characters forward to look for a match before giving up.  Normally keep this as small as possible - for most tags, a value of 128-256 or even less is fine. Increase it if you find a rule that should match isn't working. Making it too large however, can make pages appear to load slower since the program must process more data before sending anything to your browser. </P>
+
+<P>Often the best size to use depends heavily on the tag in question. The "<B>&lt;Script</B> ... <B>&lt;/script&gt;</B>" tag for instance, often needs a large limit since it may contain many lines of JavaScript. In this case, try a limit of around 4096.</P>
+
+<P><B>Bounds Limit</B> is just an initial matching expression used to control the range (or boundaries) of the main matching expression. Normally a bounds check simply consists of the HTML start and end tags with an asterisk in between - "<B>&lt;script * &lt;/script&gt;</B>"  Anything valid in the matching expression can be used here, but with a bounds check - the simpler it is, the better.</P>
+
+<P>Its use is optional  - you don't need it for many simple matching expressions.  However, with complex matches it can improve performance, since the main expression need only be checked if the bounds returns true. More importantly, it's also useful for preventing a rule from matching more text than intended. Take the following rule intended to match a web link....</P>
+
+<P><B class=r>Matching:</B><B> &lt;a</B><B class=b> *</B><B> href="slugcakes.html" &gt; * &lt;/a&gt;</B></P>
+
+<P>If matched against the following text...</P>
+
+<P><B>&lt;a</B><B class=b> href="crabcakes.html" &gt; some stuff &lt;/a&gt;&lt;br&gt;<BR>
+&lt;a</B><B> href="slugcakes.html" &gt; other stuff &lt;/a&gt;</B></P>
+
+<P>The first asterisk would match the entire area highlighted in <B>blue</B> and grab <B><I>both</I></B> links instead of just the second one!   By using a bounds match like "<B>&lt;a * &lt;/a&gt;</B>" it's restricted to only checking one link at a time.</P>
+
+<P class=li><B>The Matching Expression and Bounds</B></P>
+
+<P>When not using <B>bounds</B> , never place wildcards at the beginning or end of a matching expression (as in " <B>*foo* </B>").  This results in the rule grabbing however many characters <B>byte limit</B> is set to - not usually what you want.</P>
+
+<P>When using <B>bounds</B> however, the situation changes. Since the bounds selects the range of text being searched -<I> </I>the matching expression must match <I>everything matched by the bounds </I> for the rule as a whole to match. The easiest way to do this is by using wildcards at both the beginning and end of the expression. Often matching variables are used (as in "<B>\1 foo \2</B>") so the text surrounding  the part of the tag you're matching can be captured and included in the replacement text. </P>
+
+<P>Here's an example of matching a link like: <B>&lt;a href="http://somewhere"&gt; some text &lt;/a&gt;</B></P>
+
+<table>
+<tr><td><B>Bounds</B><TD>:<B class=r> &lt;a\s*&lt;/a&gt; <TD><B class=r>Limit</B>:<B> 128</B>
+<tr><td><B>Matching</B><TD colspan=2>:<B class=r> * href="\1" *</B>
+<tr><td><B>Replace</B><TD colspan=2>:<B class=r> &lt;a href="\1"&gt; some new link next &lt;/a&gt;</B>
+</table>
+
+<P class=li><B>URL Match</B> -<B> a different kind of scope control</B></P>
+
+
+<P>You can use <B>URL Match</B> to limit a filter to affect only certain web pages. All matching rules apply here, so you need only match part of the URL.  Multiple pages can be included by using the OR symbol "<B>|</B>" as in "<B>www.this.com|www.this.too.com</B>", and pages can be excluded by using negation "<B>(^</B>...<B>)</B>" as in "<B>(^www.not.this.page)</B>". </P>
+
+<P>Also note that the "http://" portion of the URL is removed prior to the match - don't test for it.</P>
+
+<P><img align="left" src="images/URL-Context.gif"> If you have a bunch of URLs to match or want to use the same URLs for multiple filters, you can use a <A href="CfgT4.html">blockfile</a> here too. For example, if you have a blockfile named "<B>MyURLs</B>" and you only want this filter to work on sites named in that list, just enter <B>$LST(MyURLs)</B> in the filter's URL match. Likewise, if you wanted the filter to work on any site <B>not</B> in the blockfile, just wrap it in a NOT expression like <B>(^$LST(MyURLs))</B>. In fact, if you right-click over the URL match, you'll find options on the context menu to automatically add a blocklist command or edit a blockfile.</P>
+
+<P></P>
+
+<P>Also on the URL match's context-menu you'll find an option to test the URL match.  This is silimar to the <a href="Matching Test Window.html">filter test</a> and will let you easily see if a given URL would match or not.</P>
+
+<P class=li><B>What does "Allow for multiple matches" do?</B></P>
+
+<P>Normally, when a rule is matched the result is sent directly to the web browser - no other rules are allowed to process the matched section. This is mainly for efficiency, as it saves quite a bit of work, but it's also a useful way to give certain filters priority over others - essentially it's first come, first served. </P>
+
+<P>This doesn't always work however. Take the "<B>&lt;Body</B> ... <B>&gt;</B>" tag - It contains several, somewhat unrelated, elements that we may want to change.  For instance, if we had two rules - one that changed the default text color and another that changed the background image - we'd have a problem. The first rule would prevent the second rule from working by "using-up" the &lt;Body&gt; tag. This is where "allow for multiple matches" comes in. When checked, it inserts the result of a match back into the processing buffer so other rules can get a whack at it.  In the above scenario, if we enabled it on the first rule, the second rule could then also match.</P>
+
+<P>Use this feature sparingly - although powerful, it does require more processing than normal, and if not used carefully can lead to<B><I> "recursive" </I></B>matching. </P>
+
+<P>Consider the following situation - say there's a rule with a matching clause of "frog" and a replacement text of "The evil frog must die!". Looks innocent enough doesn't it? Ah, but if this rule had multiple match enabled, the "frog" in the replacement text would cause the rule to match its own output - resulting in an endless plague of frogs! Why? well the first time the rules "sees" the word frog it inserts the phrase "The evil frog must die!" - simple enough, but the scan continues forward until it hits the new "frog" and the whole process repeats itself. The solution? Well, if "frog" had been the first word in the replacement text this wouldn't have happened. <I>The next match always occurs one letter forwards</I> so it would see "rog" instead of "frog". Just make sure your rule won't match its own replacement text - minus its first character - and all will be ok.</P>
+
+<p><hr><img src="images/bullet.gif" align=top><a href="Contents.html"> Return to main index</a>
+</DIV>
+</BODY>
+</HTML>

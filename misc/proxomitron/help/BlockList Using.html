@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Using Blocklists</TITLE>
+</HEAD>
+
+<script language="JavaScript" src="help.js"></script>
+<LINK REL="stylesheet" type="text/css" href="help.css">
+<body marginwidth=0 marginheight=0>
+
+<table width=100% cellspacing=0 cellpadding=0 border=0>
+<tr><td class=hdr>
+<div class='hdr'>Blocklist, er. Blockfiles... um whatever...<br>
+<div class=sm>(making your life easier through text files)</div></div></td>
+<td class=hdr><image align=right src="images/nav-a.jpg" usemap="#nav" border=0></td></tr>
+<tr><td colspan=2 class=hdsep><img src='images/clear.gif' width=1 height=1></td></tr>
+</table>
+
+<MAP NAME="nav">
+     <AREA SHAPE="RECT" HREF="External Proxy Dialog.html" alt="Previous" COORDS="6,0, 44,25">
+     <AREA SHAPE="RECT" HREF="Contents.html" alt="Back to contents" COORDS="58,0, 94,24">
+     <AREA SHAPE="RECT" HREF="BlockList Creation.html" alt="Next" COORDS="112,0, 149,25">
+</MAP>
+
+<DIV class='text'>
+
+<P><B>Blockfiles</B> (or <B>Blocklists</B> if your license plate ends with an even number), also know as "`Putsu Putsu" (or "One who smells disturbingly of cauliflower") by a small native tribe in Pango-Pango. Have many and varied uses.
+
+<P>As the name would imply, they can be used to block stuff like ads, cookies and whatnot (especially whatnot in fact).  However they can really do much more than that (which implies that what the name implies might imply a miss-applied name, but I digress).
+
+<P>Blocklists can be lists of anything really and can be used in Proxomitron filters anywhere you might want to check a list of items, but unless you make filters, you don't need to worry about that much.  Most lists contain lists of website <B>URLs</B> (that <B>www.stuff.com/...</B> you see in your browser), and the idea is you can easily add new items to these lists.
+
+<P>Despite all this they're really simple to use (really, no I mean it, honest). Proxomitron comes with several pre-made lists....
+
+<P>
+<table cellspacing=0 cellpadding=0>
+<TR><TD><B>AdList</B> <TD> (This is a list of advertising URLs to block)<BR>
+<TR><TD><B>CookieList</B> <TD> (places where cookies are <B>Allowed</B>)<BR>
+<TR><TD><B>BypassList</B> <TD> (places where you don't want Proxomitron to change anything)<BR>
+<TR><TD><B>NoImages</B> <TD> (places where you only want to see text)<BR>
+</table>
+
+<P>These lists may be used by several filters to decided whether or not to do anything on a given site.  Adding new sites to these lists is pretty easy. For example, say you see an ad or something on a page you'd like to block.  Just do the following...
+
+<P>
+<UL>
+<LI>First we need it's URL.  Right-click over the image and select "Copy URL to clipboard" or whatever your browser happens to call it.
+<LI>Go to Proxomitron's <A href="System Tray.html">System Tray Menu</A> and select "<B>Add to Blockfile</B>".
+<LI>Pick the blockfile you want to add the URL too (<B>AdList</B> in our case)
+<LI>You should see the "Add URL to blockfile" dialog. Here you can clean the URL up a bit, add <A href="Matching rules.html">Wildcards</A> if you like, and click <B>OK</B> to add the URL to a list.
+</UL>
+
+<P>Here's what the "Add URL to Blockfile" dialog looks like - note that when you add a new URL the "<B>http://</B>" bit will be removed for you. This is intentional - you don't want to include that bit...<p>
+
+<A name="AddDlg">
+<P class=ctr><img src="images/AddURL.gif">
+
+<P>Also, you can click on the drop-down list to the right of the URL edit box to get a list of all recent URLs.  This can make finding the one you wish to block easier if the browser (or webmaster really) tries to hide it from you. Especially look for any hostname (it's the first part of the URL) that doesn't seem to match the site you're visiting.
+
+<P>Blocklists are really just plain 'ol text files. You can edit a blockfile here if you like too.  Just click "<B>Edit</B>" and the list will open up in your favorite text editor (which will be whatever ".txt" files are set to use on your computer. In Windows the default is Notepad).
+
+<P>Before adding a URL, you may want to clean it up a bit first. Just include the bits of the URL you really need.  For example an ad's URL might look pretty involved...
+
+<P class=indb><B class=sm>www.obnoxious-banners.com/ads/banners/pop?victim_id=232&annoyance=54&intrusion=100&invasiveness=45</B>
+
+<P>Also each banner may be slightly different.  The answer to this is not to use the whole thing.  Looking at the URL above we see the ad comes from <B class=sm>"www.obnoxious-banners.com"</b>. Hm, I think it's safe to say we don't want <B><I>Anything</I></B> from those guys.  So, all we need to add to the blockfile is...
+
+<P class=indb><B class=sm>www.obnoxious-banners.com/</B>
+
+<P>This will completely block any connections to "www.obnoxious-banners.com" and will happily kill all the ads they care to send us.
+
+<P>Sometimes advertisers will get sneaky and also change their hostnames on us. Look at the following...
+
+
+<div class=sm>
+<P class=ind>
+<B class=r>ad121</B><B>.obnoxious-banners.com/</B>ads/banners/pop?victim_id=232...<BR>
+<B class=r>ad232</B><B>.obnoxious-banners.com/</B>ads/banners/pop?victim_id=232...<BR>
+<B class=r>ad454</B><B>.obnoxious-banners.com/</B>ads/banners/pop?victim_id=232...<BR>
+</P></DIV>
+
+<P>However we don't need to add all these numbers.  A simple wildcard like an asterisk '<B> * </B>' will happily match them all...
+
+<P class=indb><b class=r>*</b><B class=sm>.obnoxious-banners.com/</B>
+
+<P>That'll do nicely for most things.  Once you know a bit more about matching you might also want to try some of the following...
+
+<P>
+<div class=ind>
+<table cellspacing=0 cellpadding=0 >
+<TR><TD class=smb><B class=r>(www.|)</b>someplace.com/
+  <TD class=sm>Match <B>www.someplace.com</B> or just plain <B>someplace.com</B>
+<TR><TD class=smb><B class=r>([^.]+.|)</b>someplace.com/
+  <TD class=sm>Match <B class=r>anything-up-to-the-first-dot.</B><B>someplace.com</B> or plain <B>someplace.com</B>
+<TR><TD class=smb><B class=r>[^/]++</b>someplace.com/
+  <TD class=sm>Match <B class=r>anything.at.all.before.</B><B>someplace.com</B>
+</table>
+</div>
+
+<P><B>Note:</B> Although it'll work without it, if you use a beginning wildcard, be sure to end the hostname with a slash "/" (like the examples above).  This helps Proxomitron search the list quickly.
+
+<P>Also using some of these fancier matches may sometimes work a little better that the asterisk ' * ' alone since an asterisk might also match a URL that had the word "someplace.com" after the hostname like so...
+
+<P class=indb><B class=sm>wwww.someplace-else-entirely.net/gamera/eats/<B class=r>someplace.com</B>/for-lunch.html</B>
+
+<p><hr><img src="images/bullet.gif" align=top><a href="Contents.html"> Return to main index</a>
+</DIV>
+</BODY>
+</HTML>

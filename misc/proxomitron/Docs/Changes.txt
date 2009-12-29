@@ -1,0 +1,794 @@
+Final fixes in Naoko 4.5 (release version)
+
+* Fixed issue where under some conditions 304 replies could cause
+  persistent connections to get out of sync (this could cause headers
+  to appear in the web page body for example). 
+  
+* proxcert.pem updated
+
+* Added check to prevent infinite list recursion
+
+* Fixed bug in filter merge when a texture is not found.
+
+* Fixed bad request following redirecting a POST URL to a file
+  (the posted data wasn't being "consumed" even though it's not used).
+
+New Stuff in Naoko 4.5 (beta 4/18/2003)
+
+* Added HTML escaping to block files and URL list under .pinfo
+  to prevent any included tags from causing trouble.
+  
+* Positional variables are now stored and reset if a match fails.
+  With luck it should make them behave more as they did in previous
+  versions while still allowing them to be read while matching.
+  
+* Web filters no longer import in reverse order.
+
+* Ok I know I said no new features, but it's true all those local
+  file requests flood the log window. There's now an option to show
+  them which is disabled by default. :-)
+
+* PriorityBoost = TRUE/FALSE flag has been added to the config. This is
+  a bit experimental, but when true will boost the priority of filtering
+  threads while allowing the main program to run at a normal level.
+  It might help especially when browsers up their own priority which may
+  starve Proxomitron for CPU time. Because of this I'd not recommend also
+  running Proxomitron itself at high priority at first or it make make the
+  thread priority too high; if you do, you may want to disable the boost.
+  
+* Changed 302 redirect handling a bit so Mozilla can process them
+  faster (the latest Mozilla seems to pause for some time if some HTML isn't
+  included with the redirect). 
+  
+* Internal header filter sorting on config load has been fixed.  This could
+  cause header filters to be called in an even more unpredictable order than
+  normal. :-)  Still, it's best not to rely on header filter order as the
+  internal order they're called is "officially" undefined. Someday headers
+  will be more like web filters and have a order you can arrange rather than
+  just being sorted, but for now it's best to assume they may be called
+  in any order.
+  
+* TST matches must now be an exact length. For example given "foobar", 
+  $TST(var=foo???) will match while $TST(var=foo??) will fail.  This makes
+  it a bit easier to test for exact values.
+
+* "w" added to $DTM command for current weekday (thanks to a great observation
+  by ScoJo that this can be used to create filters that are active only at
+  certain times or on certain days :-)
+   
+  $SET(today=$DTM(w))
+  $TST(today=(Sat|Sun))  
+
+New Stuff in Naoko 4.5 (beta 4/12/2003)
+
+* Try http://local.ptron/.pinfo/ - lots of stuff there ^_^
+  (views can be customized via the Info.css in the html folder)
+  
+* Added ability to import/export filter to and from the windows
+  clipboard. Right-click over either the web or header filter 
+  lists - the import/export options are available in the context
+  menu.
+
+  Export will write any selected filters to the clipboard while
+  import will insert filters from the clipboard's text. The format
+  is the same as is used in Proxomitron's config files.
+
+  There's also an option in the merge dialog to accept input from
+  the clipboard rather than a file. It can be used to import any
+  config file settings - just be sure to include the filter section
+  headers with the text.
+  
+* Log window clipboard should be better behaved under NT/W2k/XP
+  
+* Proxomitron now has support for pre-request variables. These
+  can be set anywhere (even in the headers) and checked later
+  (say in the actual HTML).  Each request has it's own set, and
+  is isolated from all other pages.
+  
+  - To set a variable use...
+      $SET(variable=something)
+  - To clear a variable use...
+      $SET(variable=)
+  - To get a variable's value use...
+      $GET(variable)
+  - To test a variable's value use...
+      $TST(variable=match expression)
+    or also just...
+      $TST(variable)
+    can be used in a match to see if the variable's contents match
+    the current text. For example..
+      src="http://$TST(myhost)/"
+    note that this must be a literal match (except for case) - the variable's
+    value isn't treated as a matching expression with wildcards and such.
+    
+  Unlike positional "\1 \2 \# ..." style variables, $SET expands a named
+  variable's value as soon as it's called (positional are expanded
+  in the replace). That means named variables can be set to themselves
+  and expanded - for instance...
+  
+  $SET(foo=$GET(foo) more stuff)   - adds to the end of "foo"
+  $SET(foo=more stuff $GET(foo))   - adds to the start of "foo"
+  $SET(foo=$GET(foo) \1)		   - adds value of "\1" to the end of "foo"
+  $SET(foo=$GET(foo)$GET(bar))     - adds value of "bar" to the end of "foo"
+
+  $TST can also be used on good-old positional type variables \0 ... \9
+  which allows you to do neat things like...
+  
+  <\1\s * </$TST(\1)> 
+    which matches...
+  <any-tag > stuff </any-tag>
+    but not...
+  <any-tag > stuff </a-different-tag>
+
+  Note that to get this to work I had to make some big changes to the way
+  Proxomitron normally sets these variables.  In this beta please watch out
+  for unexpected side-effects. Especially in cases where you use the same
+  variable more than once in a match.  Proxomitron used to wait till the very
+  end to set variables which guaranteed that once matched it wouldn't change
+  till matched again.  Now it may be possible for some failed match later on
+  to erase the previous value of a variable. Still I can't really find many
+  cases where this would actually be a problem and the trade off is probably
+  worth it.
+    
+  Speed notes:
+    Like calling a list, testing a variable is a bit costly
+    It involves a lookup of it's name each time it's called so it's better
+    to not have it as the very first thing in a match...
+      SLOW:   $TST(name=ayumu|osaka)<a href="chiyo">
+      BETTER: <a href="chiyo">$TST(name=ayumu|osaka)
+    Also more variables makes the lookup take longer, so if you know your
+    done with one, it's best to clear it: $SET(foo=)
+
+* size specifiers on runs ( like "[a]+{0,500}" ) can now range up to
+  65535 rather than being limited to 255.  
+
+* Error messages now call "Errors.css" in the html folder
+  so you can customize the colors and fonts used
+  
+* Config name now shows in system tray tool tip (as per request ;-)
+
+* Can now filter the CONNECT method used to establish 
+  SSL pass-thru connections. That allows some minimal
+  filtering (basic site blocking and bypass list host
+  matching) even without using OpenSSL. CONNECT headers
+  are now also visible in the log window (though keep 
+  in mind they're only used by the proxy and not passed
+  to the remote site).
+  
+* Bug fixed with $WESC not escaping closing parenthesis
+
+* Added new DOM banner/container killer filter
+
+* multi-part (push) content types not filtered by default
+
+* Updated SSLeay/OpenSSL libraries used. Also added some basic 
+  remote site certificate validation.  See readme.txt for 
+  new details
+
+* Fixed bug that could sometimes cause characters not to be 
+  filtered in the tester window when the match was exactly 
+  1 character long.
+
+* $LOG() command can now open the log window if it's closed. 
+  just include a "!" as the first character before the color 
+  indicator...
+
+  $LOG(!GLog Something green)
+
+* Fixed "read overflow" bug (for real this time ;-)
+
+* Fixed missing "&" in "Content-Type: Fix MIME types based on URL" 
+  filter
+
+* Altered Javascript filters to insert after the <!DOCTYPE ... >
+  tag on webpages (works better for IE6)
+  
+* Pop-up filters are improved a bit and now use the external
+  "WindowOpen.js" file in the html folder.
+  
+* $URL, $RESP, $IHDR, $OHDR, $TST all now work in the replacement
+  section too (where they can be useful to capture values).
+
+* Latest DOM banner blaster and container killer included
+  this uses "DomConKiller.js" in the html folder
+  
+* Long command causing crash in NT/Win2k/XP fixed.
+
+* Bug with long entries in log window fixed.
+
+* Bug with handling certain malformed HTTP headers fixed.
+
+* SSL socket reuse bug fixed (hopefully)
+
+* \h will now match hostnames that don't have a trailing slash like
+  "http://foo.com"
+  
+* Proxy advanced options now allow a username with no password.
+
+* Reloading a config no longer clears the debug flag.
+
+New stuff in Naoko 4.4
+
+* Added KEYCHK command.  This can be used to test for keypress 
+  combinations inside a filter.  It works like any matching test
+  and can be used in a filter's match or a URL match. When the
+  match is done KEYCHK will return as "matched" if the keys
+  being tested for are currently pressed.  Most keys can be tested
+  by using their *unshifted* values.  However, there's several
+  special key tests which begin with a carat "^" symbol....
+
+  ^C  = CONTROL
+  ^A  = ALT
+  ^S  = SHIFT
+  ^T  = TAB
+  ^F1 = Function key #1
+  ^F2 = Function key #2
+  ^32 = Virtual keycode 32 (spacebar)
+  ^65 = Virtual keycode 65 ("A")
+
+  These are not case sensitive so either "^c" or "^C" may be used.
+  Multiple keys can be included to test for combinations. For 
+  example...
+
+  $KEYCHK(^A^S)   = ALT+SHIFT
+  $KEYCHK(^C^F6)  = CONTROL+F6
+  $KEYCHK(^AG)    = ALT+G
+  $KEYCHK(^C^A^S) = CONTROL+ALT+SHIFT
+
+  This will work for any combination the keyboard allows.  Other
+  special keys can also be tested if you know the Windows virtual
+  keycode - this is a number between 0-255.  For instance ^2 tests
+  for the right mouse button.
+
+* Added LOGFILE option to blockfiles.  Adding this keyword to the top
+  of any blockfile tells Proxomitron not to treat the contents as 
+  matching tests or to load them into memory. This makes it safe to
+  use the file as a log file when using $ADDLST(). It also increases
+  speed - normally $ADDLST opens the file, appends the new entry, and
+  then closes the file again.  However in LOGFILE mode the file will
+  remain open between writes to make inserting large amounts of data
+  much more efficient.  
+
+  It's important to keep this in mind if you load a logfile into another
+  program while it's in use since recent entries may still be in the
+  file buffer and not written yet.  However, reloading the config or
+  editing a log via the "Edit blockfile" option from a Proxomitron
+  menu will flush any unwritten data to the log.  You can give your
+  logfiles a filename extension other than ".txt" then associate that
+  extension with a specialized logfile viewer if you wish. This allows
+  the "edit blockfile" option to be used to launch your log viewer.
+
+* Added $FILE(filename) command.  This will insert the contents of any file
+  into the replace section of any filter. It's most useful in web filters,
+  but will work in header filters too (keep in mind headers should only be
+  one line and no more than around 4k in size).
+
+* Added $RESP(match) matching command.  This command can be used to match
+  or capture the response code returned by a web server. Normally this
+  will look something like...
+
+  "200 OK" or "404 Not Found" etc.
+
+  The match starts directly with the return code so does not include the
+  "HTTP/x.x" portion of the reply line. However any message text after
+  the code is included in the match.  For example, to match redirects
+  you could use "$RESP(302*)". This can also be useful to capture this
+  information for a log file.
+
+* Entries added to a non-existent blocklist will cause a new "temporary"
+  list to be created with that name.  This list will be memory only, and
+  can be used like a hash array to store information globally. Note that
+  the list won't appear on any menus and can't be edited (since it's not
+  a file), but can be called in a match and added to just like any other
+  list.  
+
+  Also keep in mind reloading the config or restarting Proxomitron will
+  clear all temporary list. Use a normal file based list if you wish to
+  store the information longer term.
+
+* Multi-match replace buffers can now insert any amount of data 
+  as long as there's enough memory (previously they were limited to 32k).
+  Keep in mind when designing filters this does allocate extra memory, 
+  so should be used carefully (especially if using the new $FILE command).
+
+* Fixed error with stale file handles being reused - may help the 
+  "half-loaded" page problem some people were reporting.
+
+* Fixed reused connections still using the proxy after "Use remote
+  proxy" has been deselected.
+
+* Fixed "Read overflow" warning from needlessly popping up.
+
+* Fixed bug that could cause some hostnames not to resolve properly
+  when contacting a webserver on ports other than 80.
+
+* Created a work-around for servers that send "deflate" content
+  encoding with/without the normal header bytes. Seems not all
+  servers format it the same.
+
+* Updated proxcert.pem for another year. This is a self-signed
+  certificate Proxomitron uses for it's experimental SSL filtering
+  (not enabled by default).  It's not an actual valid server
+  certificate.
+
+
+Naoko 4.3
+
+* Added $ASK(AllowList, DenyList, Prompt msg, item to add [,alternate match])
+
+  $ASK() automates the process of asking the user if a particular
+  item should be filtered at a given site. Although you can do the
+  same thing with combinations of some of the other new commands,
+  ASK wraps it up neatly in one small package.
+
+* Added a NOAPPEND option to blockfiles. Blockfiles with this flag set
+  will not have new items added to the file itself when ASK or ADDLST
+  is called. The items will still be blocked, but only for the current
+  session or until the list is reloaded (whichever comes first).
+
+  It might be useful in cases where you only want to block something
+  temporarily, and I admit it's a bit of a hack. It may not stay
+  around too long if I get a better idea. ;-)
+
+* Added $DTM(format) command.  This can be use to insert date, time 
+  and connection information into any replacement text. It uses a
+  simple format string to control the display and can be useful for
+  adding dates to a page, or including information for use with $LOG
+  or other similar commands.
+
+* Added persistent connection support to local connections as well
+  as remote. For best results make sure your browser is set to use
+  HTTP/1.1 through the proxy and has pipelining enabled (if it's an
+  option). Also I recommend about 6-8 simultaneous connections. With
+  this, Proxomitron now supports nearly all of HTTP/1.1's optional
+  features.  
+
+  For this to work Proxomitron must make heavy use of "chunked"
+  encoding since we can't know the size of a filtered item ahead of
+  time.  This shouldn't be a problem, but it's possible some browsers
+  may not expect so many items to be "chunked" - especially images.
+  In testing Mozilla seems to have some random problems with chunked
+  encoding if pipelining is enabled, but the flaw doesn't seem to be
+  in Proxomitron's handling of things (Pipelining support in Mozilla
+  is new and may still be a bit buggy). Opera, which also heavily
+  pipelines, seem ok.
+
+  HTTP/1.0 persistence is also supported. However, since Proxomitron
+  frequently makes changes to an item's content-length and HTTP/1.0
+  does not allow for chunked encoding, fewer requests may be able
+  to persist if your filtering. 
+
+  Local persistence can be turned off if necessary and it's keep-alive
+  time adjusted under the HTTP tab of the Config dialog. By default 
+  local connections are killed after 10 seconds of inactivity. That
+  should be fine in most cases since new local connections are fairly
+  fast to create, but you may wish to increase this - especially if
+  you're using Proxomitron remotely over a LAN.
+
+* Added new character hashing to matching routines.  This can greatly
+  speed up OR separated lists where the initial item in each OR section
+  is not a wildcard.  For example...
+
+    (one|two|(three|four|five)|six)    is hashable while...
+    (one|*two|(three|four|five)|six)   isn't, and neither is...
+    ([to]ne|two|(three|four|five)|six) 
+
+  Actually though each set of parens (...) has its own hash, so 
+  in each case above the "(three|four|five)" is still hashed each
+  time.  Also mixing in AND or ANDAND is usually ok too...
+
+    (one|two|(three|four|five)|six)*(end)&&*whatever*
+    (one|two|((three|four|five)*&*whatever*)|six) 
+
+  This also means a complex match like (from the banner blaster)...
+
+    <(a\s*</a>|i(nput*>|layer*</ilayer>|frame*</iframe>))
+
+  is pretty much just as fast written like...
+
+    <a\s*</a>|<input*>|<ilayer*</ilayer>|<iframe*</iframe>
+
+  but it's good deal easier to read.  Still, the hashing speeds up both 
+  examples. Using it is pretty much transparent (hopefully).  Keep in
+  mind leading wildcards are always slower and should be avoided if
+  possible (particularly in web filter bounds checks). 
+  
+* Added $LOG(), $ALERT(), and $CONFIRM() matching commands.  These
+  allow you to send a message to the user.  $ALERT() just pops up a
+  message box with whatever text you provide.  $CONFIRM pops up a 
+  Yes/No dialog box with the message. If the user clicks "No", this
+  will be treated as a non-match in the filter the command is called
+  from. $LOG() sends the message to the log window (if it's open).
+  Note that the first letter in a log window message determines the
+  color used to display it...
+
+    R=Red W=White w=Gray B=Blue G=Green Y=Yellow V=Violet C=Cyan
+
+  All commands take a single string of text and will have replacement
+  expansion done before display. They can be used in either the
+  matching or replacement section of any type of filter. 
+
+* Added $ADDLST(ListName, Text of line to add) command.  This lets you
+  add items to a blocklist from a filter.  The item to add will have 
+  replacement expansion done to the input beforehand, so it may include
+  text captured by the filter.  Because of this, you'll need to double-
+  escape stuff like "\1" if you want to place the wildcard itself (and
+  not it's value) in a blocklist. Just add an extra backslash like
+  so: "\\1", "\\h", "\\p".
+
+* Added $ADDLSTBOX(ListName, Title, Text to add) command. This is very
+  much like $ADDLST() but prompts the user with the standard "add to 
+  blockfile" dialog normally called from the systray menu.  The "Title"
+  portion is optional, but any text entered here will be shown on the
+  dialog's title bar.  The command matches true if an item is added or
+  false if the user cancels.
+
+* Added $WESC() command. This will escape any wildcards in the given
+  input string (after first doing replacement expansion). Useful for 
+  making sure anything added to a blocklist from an unknown source
+  (like a URL) will be matched literally so characters like "+","&"
+  "?", etc. won't cause inadvertent matching errors. It can be used
+  in the replacement section of a match or in the input of any,
+  command, like $ADDLST(), that performs replacement expansion on its
+  input.
+
+* Added $LOCK() and $UNLOCK() commands. These are useful for synch-
+  ronizing a filter's action across simultaneously loading pages. 
+  Only one filter can be "locked" at any given time. if any other filter
+  then calls lock, it will wait until the first completes before being
+  processed.  You can use this to group a series of related actions in a
+  filter.
+
+* Rigged the "profile" in the matching test window to abort if it's
+  taking too long.  Normally it does 1000 iterations, but on a 
+  very complex match or if matching a lot of text, this can take some
+  time to complete.  Now it'll stop beforehand if it takes over
+  6 seconds. The results are adjusted to reflect the actual number
+  of iterations finished so should still be fairly accurate.
+
+  Note that due to this extra checking, test times may be slightly
+  slower than in the previous versions of Proxomitron. Don't worry,
+  the filters themselves aren't slower though.  
+
+* Fixed \h matching too small of a string in some cases.
+
+* Fixed a potential bug in the $RDIR() command
+
+* Made replacement text buffer grow dynamically. This should prevent
+  problems some people where having when certain combinations of
+  filters with large byte limits were used with multi-match enabled. 
+
+* Moved the "Edit Blockfile" option to it's own spot on the systray
+  menu - should make it easier to use.
+
+* Removed a "Last-Modified" header hack I used to get around a silly
+  cache problem IE used to have. If the last-modified date hadn't changed
+  IE would use the old cached version of a page even if the server sent
+  it a completely new version. Thankfully this has been fixed for several
+  version now. 
+
+
+Naoko 4.2
+
+* Still having issues with windows update in XP and IE6. Proxomitron
+  isn't the only proxy affected by this, but I'm not exactly sure
+  what the cause is. For now, the best fix is to add...
+
+  windowsupdate.microsoft.com; windowsupdate.com
+
+  to the "Do not use proxy server for addresses beginning with:"
+  section of IE's advanced proxy setup. Then again, perhaps this is
+  secretly what MS wants? ;-)
+
+* updated zlib to version 1.1.4 since the earlier version recently
+  was discovered to have problems.
+
+* Fixed a bug in the installer script that was preventing it from
+  overwriting any existing versions of the program's exe.
+
+* http://Local.ptron/  can now also access files in sub-folders under
+  /html (previously this wasn't allowed). Should make it easier
+  to organize scripts.
+
+* With help from JarC, fixed a crash when releasing a checkbox
+  outside the header filter dialog window in NT/W2k/XP.
+
+* Fixed RDIR command disabling any additional proxy server.
+
+* Fixed GUI resource leak
+
+* Fixed bug when using \a or \q in a match when the URL lacks 
+  those components.
+
+Naoko 4.1
+
+* Fixed a potentially serious bug with the "Allow access to the following
+  IP address range" feature. Proxomitron wasn't correctly interpreting the 
+  IP ranges which could allow connections it shouldn't! Fortunately this
+  is disabled by default, but if you use this feature please update ASAP!
+  Many thanks to Michael Beggs for spotting this bug and helping me
+  confirm the fix.
+
+* $SET can now be used to clear a positional variable. For example,
+  to clear \0 you can use $SET(0=)
+
+* Connect errors to localhost IP addresses are now never retried.  
+  This should help if you also use a hostfile for ad blocking
+  (although using 0.0.0.0 instead of 127.0.0.1 is even better)
+
+* Fixed bug where setting a variable to itself with $SET(1=\1) would
+  cause a lockup. Note it's still not allowed, but now it 
+  fails gracefully.
+
+* NOTE! Altered $URL() command to include protocol (i.e. http://)
+  Makes it possible to check for now, but you may have to adjust
+  existing filters!
+
+* Fixed bug where nulls in a page's HTML could cause spurious output.
+
+* Fixed bug that could cause a crash if a space appeared before a 
+  https URL (https:// somehost/).
+
+* Fixed bug that could cause Proxomitron to lockup while loading
+  config files with missing section headers.
+
+* JUMP and RDIR commands now will correct URLs missing the trailing
+  slash on a hostname (like "http://somewhere.com").
+
+* Fixed replacement stack bug where old data could show up in some
+  situations when an empty ending variable is pushed on the stack.
+
+* Fixed bug in counter killer filter.
+
+* Fixed bug where SSL Pass-Thru mode wasn't using the
+  selected proxy server.
+
+* Fixed bug where mismatched brackets [...] could lock up the parser.
+
+Naoko 4
+
+* Added list of recent URLs to "Add to blocklist" dialog.
+  Also added "Show URL in browser" option to its context menu and
+  made the dialog resizable.
+
+* Added support for gzip and deflate content-encoded pages using
+  zlib.dll (http://www.gzip.org/zlib/)
+
+* Fixed bug with GIFs not freezing if web and header filters
+  were disabled.
+
+* Sample multi-level filter sets added
+
+* Sample textures added (look in the /Textures folder)
+
+* New pop-up window filters
+
+* Alternate User-Agents
+
+* Fixed incorrect <!-//-> comments in the config file.
+
+* Added error checking for filter item sizes in the 
+  config files (long/malformed lines could cause crashes).
+
+* Added \x replacement code to print the URL prefix
+
+* All redirect commands now require the prefix be used along
+  with any URL commands (use the \x code for this).
+
+* Fixed infinite loop problem with NEST/INEST commands.
+
+* $AV() and $AVQ() now allow newlines within quotes.
+
+* Fixed a small matching bug causing some matches to report
+  the wrong number of bytes matched (could cause $AV and $AVQ
+  commands to not match when they really should have).
+
+BETA FIVE:
+
+* Fixed a potential JavaScript exploit that could result from 
+  including HTML in a bad URL. Proxomitron's error message output
+  would echo the URL to the browser allowing the code to be
+  processed. This could let JavaScript run seemingly under that
+  URL (and might lead to cookie vulnerabilities).
+
+  All echoed text is now HTML escaped before being printed. 
+  (My thanks to Hiromitsu Takagi for alerting me to this).
+
+* Added $ESC command to keep $UESC from hogging all the glory.
+
+* Bug with NEST & INEST commands not checking inner match fixed.
+
+* Added missing ViewSrc.css
+
+* Made sure filter names have any HTML escaped in source view
+
+* Re-Arranged the source view styles a bit and added crude
+  line wrap for very long lines.
+
+BETA FIVE (Pre-Release): 
+
+* All new HTML help file!
+
+* Proxomitron now should redraw its Systray icon if explorer crashes
+
+* Increased the size of the replacement stack to 100 items.
+
+* Added syntax highlighting for source & debug views. Use the 
+  ViewSrc.css file in Proxomitron's html folder to customize the
+  colors and fonts. It's pretty simple minded (does weird things
+  in scripts sometimes), but makes the listings a good deal easier
+  to read.  
+
+* Added special http://Local.ptron/ URL.  This acts as a simple 
+  web server to share access to items in Proxomitron's HTML
+  folder.  Only those allowed to connect to Proxomitron can 
+  access these, and it's safer than using the http://file/ syntax
+  (which allows access to all files). This can be used to load
+  remotely images, scripts, style sheets, and such when using
+  Proxomitron from other machines (Proxomitron's error messages
+  now use this too).
+
+* Added $STOP() command (disables a filter for the rest of the page).
+
+* Added $NEST() and $INEST() matching commands.
+
+* Added work-around for some URLs with illegal unescaped characters.
+
+* Added "&&" (double AND) for bounded and checks (see docs)
+
+* Changed the order of precedence so "&" comes before "|".
+  This is probably more correct and makes using "&&" easier
+  (since it has the same precedence as "&"), but may affect some
+  filters.  Of the defaults, the banner blaster needed some
+  re-arranging (also modified it to use "&&"). Keep this in
+  mind if you're using an earlier version.
+
+* Added $AV() and $AVQ() matching commands and adjusted some 
+  filters to use them.
+
+* Fixed a parsing bug in certain matching commands.
+
+* Fixed header filters not being sorted properly on load.
+
+* $CTYP command is now $TYPE (and now actually works too).
+
+* Fixed a window re-positioning problem.
+
+BETA FOUR: Features
+
+* "Profile" option added to filter test - gives you a rough
+  but sometimes useful estimate of a filter's efficiency. 
+
+* Speed improvements on webpage filters
+
+* Ability to index many items in Blocklists (speeds up large lists).
+
+* Added several new URL commands for partial bypass...
+  bout..   Bypass outgoing header filters
+  bin..    Bypass incoming header filters
+  bweb..   Bypass web filters 
+
+* Some basic contact info added to the "Help" menu
+
+BETA FOUR: Fixes
+
+* Fixed crash when hitting enter on an empty filter list
+  (inevitable fallout from the new "find" option ;-). 
+
+* Reduced the flicker when resizing windows.
+
+* Fixed bug where IP access range wasn't saving if the 
+  first IP address was zero.
+
+* Fixed problem with IE when starting Proxomitron with a URL.
+
+BETA THREE: Features
+
+* Ok I finally made the Web filter editor resizable so you
+  can stop asking me now. ;-)  It also features a splitter
+  between the matching and replace edit windows which was
+  also needed for the resizing to be most useful.  
+
+* In the same vein, window sizes are now saved in the config!
+  Beware though, the program won't prompt you to save the config
+  due to changes in window sizes alone.  Still you can always save
+  from the "File" menu even when the save icon is grayed.
+
+* Added an "Apply" button to the Header filters.  Initially only
+  the web filters had this since they were used far more often.
+  However all the new URL commands have pushed the header filters
+  a bit more into the forefront.
+ 
+* Added a new option to the Config access tab: "Prefix all URL 
+  commands with". This can be used to add an extra layer of 
+  security to the URL based commands Proxomitron understands.
+
+  Any URL must begin with whatever text is specified here before
+  a URL based command will be processed.  Use this as a kind of 
+  password protection. For example, the URL commands "http://file/..."
+  can be used to load a local file from the hard drive.  However if you 
+  allow other PCs to access Proxomitron, this could be a serious 
+  security risk. By including a URL prefix such as "myprefix." 
+  the command will only work if typed like so...
+  "http://myprefix.file/filename".  
+
+  Note: if a URL command is used internally in a $RDIR command, it's
+  not necessary to add the prefix. This allows filters to be written
+  without needing to know if any prefix is being used. This should 
+  be safe as the filter itself controls the use of the URL command. 
+ 
+  Another use for this feature is to overcome Opera's reluctance
+  to send hostnames without a dot "." to a proxy (it assumes the names
+  are local and should not be proxied). By including a dotted prefix
+  the commands can be processed without problems.
+
+* Added a "Find" option to the filter lists. The filter list
+  will only display filters that include in their title, words
+  matching what's entered in the find box (yeah, I admit it's an
+  idea stolen from several popular news readers ;-)
+
+  It's still pretty basic, and may yet have problems, but it should
+  help when dealing with really large lists of filters.  Actually
+  it's kind of a stop-gap measure until I can find the time to
+  redo the GUI and perhaps include something like sub-folders.
+
+* Added List options to the context menu of the "Bypass URL"
+  edit box.
+
+* changed the $UESC() command to unescape any normal ASCII
+  character (anything between "!" and "~")
+
+* Some updates have been made to the included filters 
+
+
+BETA THREE: fixes
+
+* Fixed a bug that could cause a crash in some cases if a web server
+  produced an invalid response to a request. 
+
+* Added some code to trap hardware exceptions.  This may help me
+  track down what's still causing crashes for some users.
+
+* Changed proxy authorization to send "Basic user:pass" instead of
+  "basic user:pass" (MS proxies appear to be case sensitive).
+
+* Fixed a problem with persistent connections and some HEAD requests
+
+* Fixed a bug with the "Use SSLeay" checkbox in the config dialog.
+
+* Corrected a problem with using lists in the "Bypass URL" match in
+  the config section.  Actually this has a more global effect as 
+  you can now add a call to a list to a filter before the list
+  itself exists.  It will go into effect once a list with the same
+  name is added later.  Previously the filter wouldn't work until the
+  config was saved and reloaded or the filter was re-parsed.
+
+BETA TWO: Features
+
+* New dbug URL command shows the page in debug mode
+
+* You can now have multiple URL commands - as in...
+  http://src..file//C:/web/somefile.html
+  http://bypass..src..www.somepage.com/
+
+* Added a new option when using the square bracket matches [...]
+  to check for a specific byte values. Just enter the value within a 
+  URL style hex escape as in... "[%2a]" for a single char or
+  "[%20-%41]" for a range of values.
+
+BETA TWO: Bug fixes
+
+* Problem with escapes within brackets (as in "[\n]")
+
+* Bounds match rules being set to lower case
+
+* "Minimize Proxomitron to system tray" option doing a 
+   erroneous SSLeay dll check.
+
+* Crash when using some replace commands (like "\q" or "\a") in the
+  matching expression instead.
+
+* Possible Priority inversion lock with IE fixed (I hope)
+  It appears IE might up its own priority to give it an advantage 
+  over other winsock apps.  That's no too smart when it's depending
+  on one of those other apps for its input! 

@@ -1,0 +1,370 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Tips and Tricks</TITLE>
+</HEAD>
+
+<script language="JavaScript" src="help.js"></script>
+<LINK REL="stylesheet" type="text/css" href="help.css">
+<body marginwidth=0 marginheight=0>
+
+<table width=100% cellspacing=0 cellpadding=0 border=0>
+<tr><td class=hdr>
+<div class=hdr>Matching Rule Tips and Tricks
+</div></td>
+<td class=hdr><image align=right src="images/nav-a.jpg" usemap="#nav" border=0></td></tr>
+<tr><td colspan=2 class=hdsep><img src='images/clear.gif' width=1 height=1></td></tr>
+</table>
+
+<MAP NAME="nav">
+     <AREA SHAPE="RECT" HREF="Matching Commands.html" alt="Previous" COORDS="6,0, 44,25">
+     <AREA SHAPE="RECT" HREF="Contents.html" alt="Back to contents" COORDS="58,0, 94,24">
+     <AREA SHAPE="RECT" HREF="Matching Character Reference.html" alt="Next" COORDS="112,0, 149,25">
+</MAP>
+
+<DIV class='text'>
+
+<style>
+td {font-size:9pt; font-weight:bold}
+</style>
+
+<P>The matching rules are the most complex part of the Proxomitron. Understanding them can be confusing at first - especially if you've never used a pattern matching language before. However, don't despair, even very simple rules can accomplish quite a bit. Take it a step at a time and soon it'll become second nature. To get you started, Here's a few tips covering some basic HTML matching tasks.
+
+<P><B>Note: </B>This section assumes you know a little about HTML - if not there are many excellent tutorials available on the net. Also If you don't intend to write your own rules, you can ignore this information entirely.
+
+<P class=li><B>Formatting your matching rules</B>
+
+<P>Complex matching rules can often be hard to read. However, to make them a little more legible, both the matching expressions and replacement text can be split over multiples lines when you enter them into the filter editor. These line breaks have no effect on the actual filter. To actually include a line break in the HTML you're sending to the browser use "\n".
+
+<P>Also because spaces always match true, you can normally use them freely to separate elements of a matching expression. Just be aware that they do consume spaces they find. 
+
+<P class=li><B>Some general info</B>
+
+<P>When designing a new rule it's more common for it to not match at all rather than match too much.  Always start simple - then add refinements as needed. That way, when a rule suddenly doesn't match when you expected it to, you'll have an idea which part is causing the trouble.
+
+<P>Use the <A href="Log.html">log window</a> to see when a filter matches, and especially use the "<B>HTML debug info</B>" option in the log (or type  "<B>dbug..</B>" in front of the URLs hostname) to view webpages as source and see what your filters are up to. These are two very helpful tools when designing rules.  Even more helpful is the new <A HREF="Matching Test Window.html">Match Testing Window</A> which allows you to see exactly how a filter will change a bit of HTML text.  
+
+<P class=li><B>Cutting and pasting HTML</B>
+
+<P>Often a good way to get started on a new filter is to cut and paste the HTML you're interested in directly into the matching clause.  One thing to watch out for here is line endings - since the matching clause ignores line breaks, a line of HTML that looks like so (two lines...
+
+<div class=ind>
+<P class=smb>
+&lt;br&gt;<br>
+&lt;p&gt;<br>
+</div>
+
+<P>seems just like "<B class=smb>&lt;br&gt;&lt;p&gt;</B>" (no spaces) to it.  This can cause trouble since the actual HTML also has a newline character that must be matched.  The solution is simply to place a space at the beginning or end of each line you insert like "<B class=smb>&lt;br&gt; (space) &lt;p&gt;</B>" (if it doesn't already have one) this will match all "whitespace" including any newlines.
+
+<P class=li><B>Disabling a tags and tag elements </B>
+
+<P>Since browsers will ignore any tags and element they don't understand, a "quick and dirty" but effective way to disable a tag or one of its elements is to rename it. This comes in especially useful when the same element may be used by several different tags. Take "onload" for example, this element auto-runs a JavaScript. Although normally in the "<B>&lt;body</B> ... <B>&gt;</B>" tag, it may occur elsewhere as well. To stop it you could use...
+
+<P>
+<div class=ind>
+<table cellspacing=0 cellpadding=0>
+<TR><TD class=r>Matching: <TD> onload=
+<TR><TD class=r>Replace: <TD> LoadOff=
+</table>
+</div>
+
+<P>Which would make a tag like...
+
+<div class=ind>
+<P class=smb>&lt;body background="bak.gif" <B class=r>onload=</b>"window.open(myadd);" &gt;
+
+<P>become...
+
+<P class=smb>&lt;body background="bak.gif" <B class=r>LoadOff=</B>"window.open(myadd);" &gt;
+</div>
+
+<P>Notice how simple this rule is! It's also a bit risky too, since there's a chance the phrase "<B>onload=</B>" could occur outside a tag in the actual text of a web page. In practice however this seldom happens (including the equal sign helps guard against this a bit). Even if it does, it's normally not a big deal as long as you realize what's happened.
+
+<P class=li><B>Killing two stones with one bird</B>
+
+<P>Here's a simple trick for changing both a start and end tag with the same rule. This trick is used by the "Blink to Bold" rule among others. In this rule we want to convert "<B>&lt;blink&gt;</B>" to "<B>&lt;b&gt;</B>" and "<B>&lt;/blink&gt;</B>" to "<B>&lt;/b&gt;</B>" - Let's take a look how it's done...
+
+<P>
+<div class=ind>
+<table cellspacing=0 cellpadding=0>
+<TR><TD class=r>Matching: <TD> &lt;\1blink&gt;
+<TR><TD class=r>Replace: <TD> &lt;\1b&gt;
+</table>
+</div>
+
+<P>By using the "<B>\1</B>" meta character, the rule will match both the start tag: "<B>&lt;blink&gt;</B>" and also the end tag: "<B>&lt;/blink&gt;</B>". Additionally, the  "<B>\1</B>" captures the end tag's slash for use in the replacement text. A safer, but more complex,  version of the rule might be...
+
+<P>
+<div class=ind>
+<table cellspacing=0 cellpadding=0>
+<TR><TD class=r>Matching: <TD> &lt; ( / | )\1 blink&gt;
+<TR><TD class=r>Replace: <TD> &lt;\1b&gt;
+</table>
+</div>
+
+<P>Can you tell why? If not read "Testing for something or nothing".
+
+<P class=li><B>Capturing a tag's contents</B>
+
+<P>Often you'll want to change only one element of a tag while leaving the rest as they are. This is where the number variable "\#" matching is very useful. Take the following example of a rule to kill web page backgrounds.
+
+<P>
+<div class=ind>
+<table cellspacing=0 cellpadding=0>
+<TR><TD class=r>Matching: <TD> &lt;body \1 background=\w \2 &gt;
+<TR><TD class=r>Replace: <TD> &lt;body \1 \2&gt;
+</table>
+</div>
+
+<P>When they don't directly follow parenthesis ( ... )'s  the \# variables act just like an asterisk "*". Here, the "\1"  captures anything before the background element, while the "\2" captures everything afterwards. In the replacement text, the background element is simply left out, but you could also include your own background here.
+
+<P class=li><B>Adding an new element to a tag</B>
+
+<P>Here's quick trick to add an element to a tag.  Although the "proper" method would be to replace an element if it already exists and add it only if it doesn't, this can sometimes be difficult. It's often simpler to just add the element regardless. We just need to make sure the browser will use our tag instead of any pre-existing one.  For example, to add a border to all "<B>&lt;img</B> ... <B>&gt;</B>" tags, you could use.
+
+<P>
+<div class=ind>
+<table cellspacing=0 cellpadding=0>
+<TR><TD class=r>Matching: <TD> &lt;img \1 &gt;
+<TR><TD class=r>Replace: <TD> &lt;img border=1 \1 border=1&gt;
+</table>
+</div>
+
+<P>Why add border twice?  Well ideally, when a browser finds a duplicate element it should use the first one and ignore the rest. This is in fact what Netscape does, but as it turns out, Internet Explorer does the exact opposite! (what a surprise huh?)  By placing the element at the beginning <B><I>and</I></B> end of the tag, it works in either case.  Note that being browser independent isn't as important here as it is for designing web pages. You're likely to know what browser you intend to use, so it's ok to just arrange thing in the way your browser expects. 
+
+<P class=li><B>Capturing specific tag attribute values</B>
+
+<P>The values of a tag's attributes can often be tricky to match. Take "<B>&lt;a href=... &gt;</B>" for instance. "href" indicates a URL, but the URL value could be surrounded by single quotes, double quotes, or even no quotes at all.  This is where the special <B>$AVQ(...)</B> (Attribute Value & Quotes) matching command comes in very handy.  It will match all of the value, including any quotes it may find.  For example, if you wanted to capture the URL into the \1 variable you could use...
+
+<div class=ind>
+<P class=smb>&lt;a * href=$AVQ(\1) * &gt;
+</div>
+
+<P>Remember that when a "\1" or other \(number) immediately follows parenthesis it captures whatever text those parenthesis matched? Say you now want to capture a value only if it contains specific stuff.  To do this we can use parens (...) and the <B>$AV(...)</B> command...
+
+<div class=ind>
+<P class=smb>&lt;a * href=<B class=r>(</B><B class=b> $AV(<B class=bk>*(banner|advert|cgi)*</B>) </B><B class=r>)\1</B> * &gt;
+</div>
+
+
+<P>Which would only match URLs containing the words "banner", "advert", or "cgi".  We now have the beginnings of a "banner blaster" type rule. <B>$AV(...)</B> is like $AVQ except the quotes are not included as part of the inner match so you don't have to bother checking if it actually has quotes or not.  However since we also want to capture the whole thing (including any quotes) we'll just wrap it all in parens and tack a <B>\1</B> on the end.  This will stuff the entire attribute value into <B>\1</B>
+
+<P class=li><B>Testing for something or nothing</B>
+
+<P>Often you'll find you'll want an expression to match whether a particular value is there or not. To do that use the following rule... "<B>( something | )</B>"
+
+<P>This will first test for the word "something" but if it isn't found the expression is still true. Why? Notice there's an OR symbol (vertical bar) with nothing between it and the closing parenthesis. This creates an empty expression and <I class=r>an empty expression is always true and consumes no characters</I>. Read this as saying - match <I>"something"</I> <B>OR</B> <I>nothing</I>.
+
+<P>Note that if the expression had been written "<B>(|something)</B>", the word "something" would never be matched!  Since ORs are processed from left to right, the empty expression would always be tested (and match) first before the word "something" got a chance.
+
+<P>A practical example is <B>( " | ) * ( " | )  </B>which tests for something that may or may not be surrounded by quotes.
+
+<P>Here's a more elaborate example which grabs the "border" value from an "&lt;img ... &gt;" tag if it exists and places it into the variable<B> \1</B> 
+
+<P class=ind><B class=sm>&lt;img <B class=r>(</B> * (border=\w)\1 <B class=r>| )</B> * &gt;</B>
+
+<P>Be careful of the placement of asterisks here, for example "<B>&lt;img*(border=\w|)\1*&gt;</B>" might not do what you expect. Upon scanning the first character after "<B>&lt;img</B> ", if it turned out not to be "border" the sub-expression would still match!  Then when "border" occurred later in the string, it would be matched by the second asterisk instead, since the initial test had already passed by.
+
+<P class=li><B>Using "AND" to capture multiple tag attributes</B>
+
+<P>By using the ampersand "<B>&amp;</B>" you can capture certain tag attributes regardless of the order they're found in. For example. Say you wanted to re-write an "&lt;img ... &gt;" tag to contain an image of your own, but wanted to keep the original "width" and "height" values. You might use...
+
+<P>
+<div class=ind>
+<table cellspacing=0 cellpadding=0>
+<TR><TD class=r>Matching: <TD> &lt;img ( (*(height=\w)\1*| ) &amp; (*(width=\w)\2*| ) ) &gt;
+<TR><TD class=r>Replace: <TD> &lt;img src="file://d|/my_pictures/shonen.gif" \1 \2 &gt;
+</table></div>
+
+<P>Note that the height is captured into variable <B>\1</B> and the width into <B>\2</B>. Also by using the "something or nothing" syntax described above, the expression will still match even if the width or height value is missing from the tag.  In which case the corresponding <B>\#</B> variables will simply be blank. 
+
+<P class=li><B>Using "smart" quotes</B>
+
+<P>Most of the time "<B>\w</B>" works well for capturing a tags attributes. However there are times when you need something more. Something like the an "<B>&lt;img</B> ... <B>&gt;</B>" tag's "<B>alt</B>" element often contains spaces as in... <B>alt="this is some text" </B>or<B> alt='also some text'</B>.<B>  </B>To capture this sort of thing use the double quotes...
+
+<P>
+<div class=ind>
+<table cellspacing=0 cellpadding=0>
+<TR><TD class=r>Matching: <TD> alt=( " * " )\1
+</table></div>
+
+<P>An even more complex situation often arises with JavaScript.  Here is common to have "quotes within quotes" as in the following...
+
+<P class=ind><B class=sm>onmouseover="javascript:window.open( ' mywindow.html ' ); "</B>
+
+<P>capturing this would normally be difficult as it could also be written...
+
+<P class=ind><B class=sm>onmouseover= ' javascript:window.open( " mywindow.html " ); '</B>
+
+<P>This is where the single quote comes in, when it follows a double quote in a match, it looks for the correct closing quote for the previous starting quote...
+
+<P>
+<div class=ind>
+<table cellspacing=0 cellpadding=0>
+<TR><TD class=r>Matching: <TD> onmouseover=( " * ' )\1
+</table></div>
+
+<P>This will get single quotes, double quotes, or nested quotes! However, in this case, there's an even better way - remember the <B>$AVQ(  )</B> command?  It also will handle all kinds of quotes (or even no quotes at all) and is great for capturing attribute values... 
+
+<P>
+<div class=ind>
+<table cellspacing=0 cellpadding=0>
+<TR><TD class=r>Matching: <TD> onmouseover=$AVQ(\1)
+</table></div>
+
+<P class=li><B></B>
+
+<P class=li><B>Using file URLs to include your own stuff</B>
+
+<P>A "file URL" is a URL that points to a file on your hard drive rather than some location on the Internet.  Browsers use file URLs to view web pages stored off-line, but they are also a very handy way to insert your own pictures, web pages, even JavaScripts into pages you view. 
+
+<P>The Proxomitron now makes it very easy to insert a file URL into a matching rule's replacement text.  First position your cursor where you wish to insert the URL then right-click and select "<B>Insert file URL</B>" from the context menu. A file requester will open up allowing you to choose the file to insert. 
+
+<P>Here's an example of a "background replacer" rule that uses a file URL
+
+<P>
+<div class=ind>
+<table cellspacing=0 cellpadding=0>
+<TR><TD class=r>Matching: <TD> &lt;body ( \1 background=\w | ) \2 &gt;
+
+<TR><TD class=r>Replace: <TD> &lt;body \1 background="file://c|/pictures/background.gif" \2 &gt;
+</table></div>
+<P>Note the matching expression has a space between the ")" and the "\2" - it's a common mistake to forget this space! This would result in the \2 containing what was matched in the "( ... )" phrase instead of whatever follows the background attribute.
+
+<P class=li><B>Inserting JavaScript or other items in every web page you view.</B>
+
+<P>Here's an trick for really taking control of a web page. JavaScript can be a very powerful tool - in the right hands...  Now those hands can be your own! To insert a JavaScript, or for that matter anything else, into every web page you view, search for a tag you know will always be there - "&lt;html&gt;",  "&lt;head&gt;" or "&lt;body&gt;" are often a good choices.  Take for example, a rule to stop JavaScript error boxes from popping up. For Netscape we need to execute the following bit of JavaScript code on every page "&lt;script&gt; this.onerror=null; &lt;/script&gt;" The rule would look like so...
+
+<P>
+<div class=ind>
+<table cellspacing=0 cellpadding=0>
+<TR><TD class=r>Matching: <TD> &lt;html&gt;
+<TR><TD class=r>Replace: <TD> &lt;html&gt;\n&lt;script&gt; onerror=null; &lt;/script&gt;$STOP( )
+</table></div>
+
+<P>This basically inserts the script directly after the &lt;html&gt; tag. Note the "\n" - this causes a line break between the &lt;html&gt; tag and the start of the script. Though not really necessary, it makes the web page source easier to view if you want to check your results.  Also, when using this trick it's best to have the "<B>Allow for multiple matches</B>" check box enabled. This allows any other rules that may use the same trick to insert their text as well. 
+
+<P>Also notice the use of the <B>$STOP( )</B> command.  This will turn the filter off for the rest of the page and makes sure our script will only be inserted once (especially important when you also use "multi-match").  
+
+<P>Small scripts like the one above can easily be included directly in the replacement text, but for larger scripts this might be cumbersome. A better solution might be to have the "&lt;script ...&gt;" tag contain a "file URL" pointing to a file with the actual script. As In...
+
+<P class=ind><B class=sm>&lt;html&gt;\n&lt;script src= "file://c|/scripts/myscript.js" &gt;</B>
+
+<P class=li><B>An even better way to insert items into every web page you view.</B>
+
+<P>I described the above method first because it's a useful trick when you need to insert something into a certain area of the page (like after the &lt;body ... &gt; tag for instance).  However, if all you want to do is put it at the start or end of the page there's an even easier way....
+
+<P>The matching clause can have two special values <B>&lt;start&gt;</B> and <B>&lt;end&gt;</B> - they simply insert the replacement text either at the beginning or end of a web page.  They're easy to use and very efficient since no searching has to be done.  Using &lt;start&gt; the above rule could be written...
+
+<P>
+<div class=ind>
+<table cellspacing=0 cellpadding=0>
+<TR><TD class=r>Matching: <TD> &lt;start&gt;</B>
+<TR><TD class=r>Replace: <TD> &lt;script&gt; onerror=null; &lt;/script&gt;</B>
+</table></div>
+
+<P>This works great for JavaScripts (and overriding JavaScript functions - see below).  Also there's no need to worry about allowing for multiple matches!
+
+<P class=li><B>Overriding JavaScript Functions with your own</B>
+
+<P>In Netscape and Internet Explorer 4.0+ there's a very effective trick for warping JavaScripts.  Any JavaScript function - even built-in ones - can be redefined to do whatever we want. Say we wanted to get rid of those "<B>alert(</B> ... <B>)</B>"  and "<B>confirm(</B> ... <B>)</B>" boxes.  We could do it by simply inserting the following script at the start of a web page (use the &lt;start&gt; technique above)....
+
+<P>
+<B class=sm>
+<div class=ind>
+&lt;script&gt;<br>
+   <div class=ind>
+   function alert( ){ return(1); }<br>
+   function confirm( ){ return(1); }<br>
+   </div>
+&lt;/script&gt;<br>
+</div>
+</B>
+
+<P>Now whenever any other script on the page attempts to call an alert or confirm box, our functions get called instead.  By returning a "1" we even make the unsuspecting script think we answered "yes" to the confirm box's prompt! 
+
+<P>This is really a very powerful concept - although the functions in this example don't really do anything, more complex replacement functions could filter only certain alert boxes or even do something else entirely. There's really no limit. 
+
+<P>Since it's so efficient, the Proxomitron's default rules make good use of this trick. One drawback, while it works with most all versions of Netscape, and IE 4.0 or higher - it won't work with Microsoft's JScript in IE 3.x  The Proxomitron provides an alternate rule set for IE 3.0 users which use the normal search and replace techniques to accomplish these things instead.
+
+<P class=li><B>How to use recursive matching</B>
+
+<P>Recursive matching is when a rule matches its own previous results. Normally this is something to avoid, especially if it leads to <B><I>infinite recursion</I></B> - where the rule matches endlessly against itself. However, used properly,  this can be a powerful technique. Take this scenario - say you want to eliminate any pop-up windows the occurs between the "<B>&lt;script</B> ..." and "<B>&lt;/script&gt;</B>" tags.  Since JavaScript uses the "<B>open(</B>...<B>)</B>" command to pop open a window, the resulting rule might look like this...
+
+<P>
+<div class=ind>
+<table cellspacing=0 cellpadding=0>
+<TR><TD class=r>Matching: <TD> &lt;script \1 open \( * \) \2 &lt;/script&gt;
+<TR><TD class=r>Replace: <TD> &lt;script \1 \2 &lt;/script&gt;
+</table></div>
+
+<P>(In actuality, you'd also want to use <I>scope</I> here, but we'll discuss that later - also note the use of the "\" to escape the special meaning of the parenthesis).  This might work if there was <B><I>only one</I></B> open command in the JavaScript, but if there was more than that only the first would be eliminated.  The solution? Well, two things. First, check "<A HREF="Web Page Filter Editor.html">Allow for multiple matches</A>" to let the rule match against its own results. Secondly, we need to change the replacement text to read...
+
+<P>
+<div class=ind>
+<table cellspacing=0 cellpadding=0>
+<TR><TD class=r>Replace: <TD> \n&lt;script \1 \2 &lt;/script&gt;
+</table></div>
+
+<P>Why? Well, in order to help guard against accidental infinite recursion, the Proxomitron's matching engine always advances one character forward <B><I>after</I></B> all rules have been checked. This means the next time through our rule would see only "<B>script</B> ..." instead of "<B>&lt;script</B> ...". To get around this we simply insert a "newline" character in front of the replacement text. Although in the final output this will create a blank line before the "<B>&lt;script</B> ..." tag, the browser will ignore it.  However it lets the rule see "<B>&lt;script</B> ..." next time around. A leading space could have also been used,  in fact so could anything that doesn't affect the web browser's function.  The idea is simply to push the entire result at least one character forward. 
+
+<P>Once all the "<B>open(</B>...<B>)</B>" commands have been removed, the rule will no longer match, so there's no danger of infinite recursion.
+
+<P>Actually, although this is a useful trick, there's a better (and safer) way to do this...
+
+
+<P class=li><B>How to NOT use recursive matching</B>
+
+<P>Proxomitron also has a feature called the "<A href="ReplacementStack.html">replacement stack</a>".  This uses the <B>\#</B> variable to collect up <B>multiple</B> values.  Perhaps the easiest way to this of this is <B>\#</B> works just like <B>\0</B> through <B>\9</B> and can be used in exactly the same places. The difference is if it's called more than once - either in a loop or by using it multiple times - the value is stuck onto the end rather than replacing what's already there. By using this we can match multiple items without having to get low-down recursive...
+
+<P>
+<div class=ind>
+<table cellspacing=0 cellpadding=0>
+<TR><TD class=r>Match: <TD> &lt;script (\#.open \( * \))+ \# &lt;/script&gt;
+<TR><TD class=r>Replace: <TD> &lt;script \@ &lt;/script&gt;
+</table></div>
+
+<P>Here we create a loop using the plus after a set of parens: "<B>(...)+</B>". This will loop as long as it can find a match for what's inside. This particular loop searches for ".open()" commands.  Anything before the open gets stuck into the first <B>\#</B> and as the loop repeats anything before the <B>next</B> open gets added onto <B>\#</B>.  This continues until we run out of open's entirely. Then, anything left over gets stuck on the end by the second <B>\#</B>.  
+
+<P>Essentially we've captured everything between the two script tags <B>except</B> the open commands. In the replace section we just call <B>\@</B> which will dump out everything <B>\#</B> has stored up so far.  This has much the same effect as the recursive match, but is more efficient and less dangerous (since it should never get stuck in an infinite loop).
+
+
+<P class=li><B>A word about Scope Bounds</B>
+
+<P>For simplicity, the examples here have made no use of the web filter's scope <I>bounds</I> settings. Bounds can be used to control how far ahead the Proxomitron's matching engine scans a web page when searching for a match (see the <A HREF="Web Page Filter Editor.html">web page filter editor</A> for a more detailed explanation). 
+
+<P>With bounds you normally give the rule fixed starting and ending points to search between.  Reusing an example from above, take the following rule...
+
+<P>
+<div class=ind>
+<table cellspacing=0 cellpadding=0>
+<TR><TD class=r>Matching: <TD> &lt;script \1 open \( * \) \2 &lt;/script&gt;
+<TR><TD class=r>Replace: <TD> &lt;script \1 \2 &lt;/script&gt;
+</table></div>
+
+<P>Written using bounds might look like...
+
+<P>
+<div class=ind>
+<table cellspacing=0 cellpadding=0>
+<TR><TD class=r>Bounds: <TD> &lt;script\s*&lt;/script&gt;
+<TR><TD class=r>Byte Limit: <TD> 4096
+<TR><TD class=r>Matching: <TD> \1 open \( * \) \2
+<TR><TD class=r>Replace: <TD> \1 \2
+</table></div>
+
+<P>Notice we just move the fixed beginning and ending text into the scope's bounds check. The byte limit is the maximum characters to search before giving up. Nothing to it really. Also we've used the <B>\1</B> and <B>\2</B> in the matching expression to capture the start and end of what the bounds matched - including  <B>&lt;script</B> and <B>&lt;/script&gt;</B>. So we no longer need put them in the replacement text. 
+
+<P>The main thing to remember when using bounds is this: The <B>Match:</B> section much match <B><I>exactly the same amount of text</I></B> as the <B>Bounds:</B> section. 
+
+<P>So, if the bounds: matches from say "<B class=sm>&lt;HEAD></b>" to "<B class=sm>&lt;/HEAD></B>", the match must also!  The example above shows how to easily do this - just capture the start and end of the match into variables you can use in the replace section. 
+
+<P class=li><B>That's all there is...  For now</B>
+
+<P>Those are all the tips I can think of. If you have any ideas of your own please let me know. <B><I>Also remember you can look at the rules that come with the Proxomitron!  </I></B>Use them as a starting point when writing new rules - often you'll find one that already comes close to what you want to do.
+
+<p><hr><img src="images/bullet.gif" align=top><a href="Contents.html"> Return to main index</a>
+</DIV>
+</BODY>
+</HTML>

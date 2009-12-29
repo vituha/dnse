@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>The Log Window</TITLE>
+</HEAD>
+
+<script language="JavaScript" src="help.js"></script>
+<LINK REL="stylesheet" type="text/css" href="help.css">
+<style>
+.head{font-weight:bold; color:black;}
+.mhd{font-weight:bold; color:red;}
+.mtxt{font-weight:normal; color:darkred;}
+.q{font-weight:bold; color:green;}
+.t{font-weight:bold; color:black;}
+.i{font-weight:normal; color:blue;}
+</style>
+
+<body marginwidth=0 marginheight=0>
+
+<table width=100% cellspacing=0 cellpadding=0 border=0>
+<tr><td class=hdr>
+<div class=hdr>Proxomitron's Log Window
+</div></td>
+<td class=hdr><image align=right src="images/nav-a.jpg" usemap="#nav" border=0></td></tr>
+<tr><td colspan=2 class=hdsep><img src='images/clear.gif' width=1 height=1></td></tr>
+</table>
+
+<MAP NAME="nav">
+     <AREA SHAPE="RECT" HREF="Mainscreen.html" alt="Previous" COORDS="6,0, 44,25">
+     <AREA SHAPE="RECT" HREF="Mainscreen.html" alt="Back to contents" COORDS="58,0, 94,24">
+     <AREA SHAPE="RECT" HREF="Web Page Filters.html" alt="Next" COORDS="112,0, 149,25">
+</MAP>
+
+<DIV class='text'>
+
+<P>The log window is used to display useful information about ongoing activity. This includes HTTP header messages sent between your web browser and the Internet, and information on which web page filters matched a particular page. To see them click the "Log Window" button on Proxomitron's main window. <I>Messages are only logged while the log window is open</I> and are lost when the window is closed. This is for efficiency's sake since always logging all information might slow down Proxomitron operations. Log windows messages can however be saved to the windows clipboard - first select the messages then either click the "Copy" option from the log window's "Edit" menu, or press CTRL-INSERT. </P>
+
+<P class=ctr><IMG SRC="images/LogWindow.gif" ALT="" BORDER=0></P>
+
+<P class=li><B>Other options on the edit of interest menu include...</B></P>
+
+<table cellspacing=0>
+<tr><td><B>Pause</B><td>Temporarily suspends logging
+<tr><td><B>Reset</B><td>Clears the log window
+<tr><td><B>View Posted data </B><td>See stuff your browser sends in "POST" commands
+<tr><td><B>HTML Debug Info</B><td>Show webpages as source to see what the filters are up to
+<tr><td><B>HTML filters</B><td>Enable/disable logging of web page filter matches<br>
+<tr><td><B>HTTP filters</B><td>Enable/disable logging of header messages
+</table>
+
+<P>The edit menu can also be accessed by right-clicking anywhere over the log window.</P>
+
+<P class=li><B>Log window messages are color coded...</B></P>
+
+<table cellspacing=0>
+<tr><td><B class=g>Green</B><td>:Request messages from your browser to the Internet
+<tr><td><B class=y>Yellow</B><td>:Response messages from an Internet web server to your browser
+<tr><td><B class=gr>White</B><td>:Informational - such as the start and end of new connections (less important ones are gray)
+<tr><td><B class=r>Red</B><td>:Error messages
+<tr><td><B class=vi>Violet</B><td>:Web page filter matches
+<tr><td><B class=cy>Cyan</B><td>:Proxy test progress messages
+</table>
+
+<P>The HTTP request and response header messages allow you to view the normally hidden conversation that takes place whenever your browser requests a web page. For details on what these messages can tell you see <A HREF="HTTP Header Filters.html">HTTP Header Filters</A></P>
+
+<P>Since requests for web pages may come in any order and are often mixed together, the Proxomitron numbers all requests your browser makes.  You can use these number to track, for instance, which request goes with which reply.</P>
+
+<P class=li><B>Inserting HTML Debug Info</B></P>
+
+<P>Under the log window's menu is an option to insert  "debug info" into webpages. When this is checked, all webpages will be shown as text.  Areas of the page that were modified by your web filters will be highlighted allowing you to easily see exactly what changes each filter has made.  This can be <b>Very</b> helpful, and should be the first thing you try when debugging a filter that's causing a problem or not matching what you expect. Here's a sample of the debug output...<br>
+<b class=sm>(Note: this is shown in your browser - not in the log itself)</b></P>
+
+<table class=yl><tr><td>
+<pre>
+<b class=t>&lt;TABLE</b><b class=i> WIDTH=<b class=q>640</b> BORDER=<b class=q>0</b> CELLPADDING=<b class=q>0</b> CELLSPACING=<b class=q>0</b></b><b class=t>></b>
+ <b class=t>&lt;TR</b><b class=i> ALIGN=<b class=q>RIGHT</b></b><b class=t>></b>
+  <b class=t>&lt;TD</b><b class=i> WIDTH=<b class=q>110</b></b><b class=t>></b>
+   <b class=t>&lt;IMG</b><b class=i> SRC=<b class=q>"../images/spacer.gif"</b> WIDTH=<b class=q>103</b> HEIGHT=<b class=q>85</b></b><b class=t>></b>
+  <b class=t>&lt;/TD></b>
+  <b class=t>&lt;TD</b><b class=i> WIDTH=<b class=q>530</b> ALIGN=<b class=q>CENTER</b></b><b class=t>></b>
+
+<b class=t>&lt;!--Foobar</b><b class=i> Advertising Corporation--</b><b class=t>></b><b class=t>&lt;CENTER></b>
+<b class=mhd>&lt;Match: Banner Blaster&gt;</b><b class=mtxt>
+&lt;A HREF="http://www.foobar.org/cgi-bin/bannerlink.pl?">&lt;IMG SRC="http://www.foobar.org/cgi-bin/banner.cfg?" ALT="Our Sponsor">&lt;/A>
+</b><b class=mhd>&lt;/Match&gt;</b>
+<b class=t>&lt;center></b>
+<b class=mhd>&lt;Match: Frame Jumper-Outer&gt;</b><b class=mtxt>
+&lt;A HREF="http://www.foobar.org/cgi-bin/bannerlink.pl?">
+</b><b class=mhd>&lt;/Match&gt;</b>
+<b class=t>&lt;a</b><b class=i> target=<b class=q>_top</b> HREF=<b class=q>"http://www.foobar.org/cgi-bin/bannerlink.pl?"</b></b><b class=t>></b><b class=t>&lt;font</b><b class=i> size=<b class=q>1</b> color=<b class=q>red</b></b><b class=t>></b>[Our Sponsor]<b class=t>&lt;/font></b><b class=t>&lt;/A></b><b class=t>&lt;/center></b><b class=t>&lt;/CENTER></b>
+  <b class=t>&lt;/TD></b>
+ <b class=t>&lt;/TR></b>
+<b class=t>&lt;TR></b>
+</pre>
+
+</td></tr></table>
+
+<P>The original text each filter matches is shown here in red surrounded by...</p>
+
+<p>
+<b class=r>&lt;Match (filter's name)><br>
+Original web page text matched<br>
+&lt;/Match><br>
+</b>
+</p>
+
+<P>The filter's output will be the text that follows directly after.  In the example above you can see that two filters actually matched.  First the banner blaster ate a banner ad, then the "Frame Jumper-Outer" filter matched the link produced by the banner blaster! In this way you can tell exactly what these filters are doing to the web page's HTML.</p>
+
+<p><hr><img src="images/bullet.gif" align=top><a href="Contents.html"> Return to main index</a>
+</DIV>
+</BODY>
+</HTML>
