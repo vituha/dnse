@@ -1,0 +1,58 @@
+4.08.2005 (v.0.8_b50804):
+#Изменения с версии re_v.0.7_b50421:
++ Расширен набор фильтров
+* Многие фильтры переработаны (thanks to Unknown Mystic)
+* Слегка обновлено описание фильтров
+* В фильтрах сдвигающий тег <match> заменён на <ins></ins> для совместимости
+* Некоторые фильтры отключены за ненадобностью
+#Header filters:
++ Content-Type: Fix MIME types (In) [SSL] [ALX]
++ Referer: Hide where we've been (Out) [ALX]
+#Web page filters:
++ Consultant.ru base fixer {site} [ALX]
++ Kadets news only {site} [ALX]
++ SecLab Cleaner {site} [ALX]
+- NoNaMe Aggressive Cleaner {site} [YDY]
+* Ru.Board forum topic list fixer #1.4 {site} [ALX]
+* Banner Blaster (limit text) [RT]
++ Kill fastbb JavaScript banners [ALX]
++ Kill JavaScript Banners {^sites} [ALX]
+* Counter Killer [ALX]
+* Kill off-site resources {sites} [ALX]
++ Commented Ad Killer [ymy] [ALX]
+* Wordwrap all form textboxes [ALX]
+* Enlarge textareas [ALX]
++ Long links trimmer {sites} [ALX]
+* Alt2title {Mozilla} [ALX]
+* WebBugs (replace small images) [USR] [ALX]
+* Unprefix URLs {^sites} [ALX]
+* Sounds to links [ALX]
+* Dark background replacer {sites} [ALX]
+-* Сontent-type filter [ALX] (переименован)
++* Meta content-type filter [ALX]
+* Kill new window anchors [ALX]
+* Deny links to change statusbar [ALX]
+* Reset page events {^sites} [RT]
+* Remove page events from tags [ALX]
+* Fix Nosey JavaScripts [ALX]
+* Flash menu enabler [ALX]
+#Block-files:
+* >AdKeys-RE
++ >Adlist-RE
+* >CookieList-RE
++ >OffsiteList-RE
+
+
+21.04.2005 (v0.7_b50421):
+#Изменения с версии re_v.0.7_b50406 (т.е. с самой первой публичной):
++ Создан данный Change Log ;)
++ Появилась инструкция по установке: Docs\Setup_RE.txt
++ >Adlist-RE
++ >AdKeys-RE
++ >CookieList-RE
+- Персональный фильтр для NoNaMe отключен за ненадобностью
+* "Reset page events [RT]" переименован в "Reset page events {^sites} [RT]" с добавлением проверки в URL: (^gmail.google.com/)
++ Новый фильтр "Fix Nosey JavaScripts [ALX]"
+- Соответственно, старый "Kill Nosey JavaScripts" отключен
+* Обновлён (и соответственно переименован) "Ru.Board forum topic list fixer #1.3 {site} [ALX]"
+* Убраны старые внешние прокси, добавлены новые (теперь их ровно 2)

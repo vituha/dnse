@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Matching Test Window</TITLE>
+</HEAD>
+<script>
+var otxt='<B>Output Window</B><P>Here\'s where the results of your test or profile will appear.';
+var itxt='<B>Sample text window</B><P>Here you can enter some sample HTML text (or URL for a URL test) to run against your filter.  The results of the test will appear in the window below.';
+var done='<B>Done Button</B><P>This button will summon the power of Gamera (friend to the scientists and the children) to close the test window.<br><div class=ctr><img src="images/Gam.gif"></div>';
+var prof='<B>Profile Button</B><P>This will execute the test match several <B>thousand</B> times and then report the average time the filter took. Be careful, if you give it too much text it make take awhile! Use this to get an idea how efficient your filter is (or isn\'t).';
+var test='<B>Test Button</B><P>Click this to start the filter or URL test.';
+</script>
+<script language="JavaScript" src="help.js"></script>
+<LINK REL="stylesheet" type="text/css" href="help.css">
+<body marginwidth=0 marginheight=0>
+
+<div id="help" style="position:absolute;visibility:hidden;"></div>
+
+<table width=100% cellspacing=0 cellpadding=0 border=0>
+<tr><td class=hdr>
+<div class=hdr>The Matching Expression Test Window
+</div></td>
+<td class=hdr><image align=right src="images/nav-a.jpg" usemap="#nav" border=0></td></tr>
+<tr><td colspan=2 class=hdsep><img src='images/clear.gif' width=1 height=1></td></tr>
+</table>
+
+<MAP NAME="nav">
+     <AREA SHAPE="RECT" HREF="Header Filter Editor.html" alt="Previous" COORDS="6,0, 44,25">
+     <AREA SHAPE="RECT" HREF="Mainscreen.html" alt="Back to contents" COORDS="58,0, 94,24">
+     <AREA SHAPE="RECT" HREF="Configuration Dialog.html" alt="Next" COORDS="112,0, 149,25">
+</MAP>
+
+<DIV class='text'>
+
+<P>A very useful feature of Proxomitron is the Matching Expression Test Window. It lets you see first-hand if a particular expression will match any given text, and (if applicable) show what the resulting text will look like.  No more web page reloading just to check every little modification you make to a filter - just "paste and test".</P>
+
+<P>You get here by pressing the "<B>test</B>" button in the Web Page Filter Editor or selecting "<B>Test Matching</B>" from the right-click context menu of the HTTP filter or URL matching windows.  </P>
+
+<P class=ctr><IMG SRC="images/Tester.gif" usemap="#TST" BORDER=0></P>
+
+<MAP NAME="TST">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,otxt);" COORDS="11,115, 307,158">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,itxt);" COORDS="12,63, 307,106">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,done);" COORDS="151,33, 203,53">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,prof);" COORDS="68,33, 118,53">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,test);" COORDS="10,34, 60,53">
+</MAP>
+
+<P>&nbsp;</P>
+
+<P class=li><B>Simplicity was never easier...</B></P>
+
+<P>Using the tester is really pretty straight-forward.  Just enter some stuff to match in the top window (this will often be HTML source snipped from a web page), and press the TEST button. The result window will either show you what results your match has wrought, or tell you the rule simply didn't match at all.</P>
+
+<P>This will also work to test URL matches. In this case right-click over the filter's URL match and select "Test matching" from the menu. Now, instead of some HTML, just enter an example URL (minus the http:// bit) and press test. The output window will tell you if the URL will match your filter's expression or not.</P>
+
+<P class=li><B>We're always open...</B></P>
+
+<P>Another unusual thing about the tester window is it doesn't have to be closed to go back to the filter editor.  You can simply flip between the editor and the tester window and any changes made to a filter will be immediately recognized the next time you press "test".  This makes it very easy to see what effect a change will have before you actually update the filter by pressing the editor's "OK" button.</P>
+
+<P></P>
+
+<p><hr><img src="images/bullet.gif" align=top><a href="Contents.html"> Return to main index</a>
+</DIV>
+</BODY>
+</HTML>

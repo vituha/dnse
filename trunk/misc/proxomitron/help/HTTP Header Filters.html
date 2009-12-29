@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>HTTP Header Filters</TITLE>
+</HEAD>
+
+<script>
+var hwWid = 325;
+var xaply="<B>Apply Button</B><P>Like OK this will activate and keep all changes but without exiting back to the main screen.";
+var can="<B>Cancel Button</B><P>Return to the main screen and <B>UNDO</B> any changes made to the filters. (This includes adds, edits and deletes).";
+var ok="<B>OK Button</B><P>Click to return to the main screen and keep all changes you've made to the filters."; 
+var find="<B>Find area</B><P>This can be very helpful for finding a filter in a long list. Simply type part of the filter's name and only matching items will be shown."; 
+var del="<B>Delete a filter</B><P>Click this to delete any selected header filters. The delete can be undone by clicking <B>Cancel</B>";
+var dupe="<B>Duplicate a filter</B><P>This creates a new filter that's a copy of the selected filter. Very useful for using an existing filter as a starting point for a new filter you're creating.";
+var xnew="<B>New filter</B><P>Open the <a href='Header Filter Editor.html'>Header Filter Editor</a> to create a new filter.";
+var edit="<B>Edit filter</B><p>Edit the selected filter in the<br><a href='Header Filter Editor.html'>Header Filter Editor</a>.";
+var xname="<B>Header Filter Names</B><P>This is a alphabetical list of all header filters. Unlike web page filters, order is unimportant. The part of the name before the '<B>:</B>' is the actual header to filter - anything after the '<B>:</B>' is simply a descriptive comment. The (Out) or (In) in the descriptions indicates how this filter is commonly used.<P>Multiple selected filters can be toggled on or off by pressing the '1' for outgoing and '2' for incoming filters.<P>Also right-clicking over the filter names will bring up a context menu allowing you to <B>Import</B> or <B>Export</B> header filters to the clipboard.";
+var xin="<B>Filter Incoming Headers</B><P>When this is checked a given filter will be applied to any incoming headers (those sent back by a web the server and shown as yellow in the <a href='Log.html'>log</a>).";
+var out="<B>Filter Outgoing Headers</B><P>When this is checked a given filter will be applied to any outgoing headers (those sent by your web browser and shown as green in the <a href='Log.html'>log</a>)."; 
+</script>
+
+<script language="JavaScript" src="help.js"></script>
+
+<LINK REL="stylesheet" type="text/css" href="help.css">
+<body marginwidth=0 marginheight=0>
+
+<div id="help" style="position:absolute;visibility:hidden;"></div>
+
+<table width=100% cellspacing=0 cellpadding=0 border=0>
+<tr><td class=hdr>
+<div class=hdr>The HTTP Header Filter Dialog
+</div></td>
+<td class=hdr><image align=right src="images/nav-a.jpg" usemap="#nav" border=0></td></tr>
+<tr><td colspan=2 class=hdsep><img src='images/clear.gif' width=1 height=1></td></tr>
+</table>
+
+<MAP NAME="nav">
+     <AREA SHAPE="RECT" HREF="Web Page Filter Editor.html" alt="Previous" COORDS="6,0, 44,25">
+     <AREA SHAPE="RECT" HREF="Mainscreen.html" alt="Back to contents" COORDS="58,0, 94,24">
+     <AREA SHAPE="RECT" HREF="Header Filter Editor.html" alt="Next" COORDS="112,0, 149,25">
+</MAP>
+
+<DIV class='text'>
+
+<P>Here is where you can control how the Proxomitron edits the HTTP header messages that pass between your browser and the Internet.  Click on an area to get an explanation of its function.</P>
+
+<P class=ctr><IMG SRC="images/HeaderFilters.jpg" usemap="#HFLTR" BORDER=0></P>
+
+<MAP NAME="HFLTR">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,xaply);" COORDS="189,261, 263,284">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,can);" COORDS="105,260, 180,283">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,ok);" COORDS="20,261, 94,283">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,find);" COORDS="46,228, 361,246">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,del);" COORDS="384,163, 424,185">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,dupe);" COORDS="385,111, 424,132">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,xnew);" COORDS="385,85, 424,106">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,edit);" COORDS="383,59, 423,79">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,xname);" COORDS="70,50, 342,218">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,xin);" COORDS="40,49, 64,220">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,out);" COORDS="15,48, 38,220">
+</MAP>
+
+<P class=li><B>The mysterious HTTP Headers revealed...</B></P>
+
+<P>HTTP Headers are messages sent between your browser and Internet web servers whenever you request a page. These messages contain all sorts of information - some necessary, some merely informational. This includes, among other things, the infamous <B>"web cookies"</B> you may of heard about. Normally these messages are never seen, but using the Proxomitron's <A HREF="Log.html">Log Window</A>, you can see what your browser has to say.</P>
+
+<P>Headers come in two flavors - <I class=r>Request Headers</I> are outgoing messages from your browser to the web server, while <I class=r>Reply Headers</I> are incoming messages from the web server back to your browser. The log window shows these in different colors, green and yellow respectively. Headers can be arranged in any order and the same header may even appear twice (though this is unusual). Headers your browser or the web server doesn't understand are simply ignored. </P>
+
+<P>Using the HTTP header filters, you can add, delete, or change these headers based on their content. To modify or create a filter use the <A HREF="Header Filter Editor.html">HTTP Header Filter Editor</A>.</P>
+
+<P><B class=r>Warning:</b><b> Caution should always be used when modifying HTTP headers -</B> <B>sending incorrect data or deleting required headers can impair your browser's operation</B>. </P>
+
+<P class=li><B>Committing URL-acide</B></P>
+
+<P>One newly added header filter serves a special function. The "<B>URL-Killer:</B>"  uses the new connection killer "<B>\k</B>" option to block unwanted URLs.  When a URL match is made, the remote web server won't even be contacted.  For image URLs the Proxomitron will return "<B>killed.gif</B>" (by default a blank, transparent .gif file) in place of the original image, for any other type of URL the Proxomitron simply sends the contents of "<B>killed.html</B>" instead.  Both <B>killed.gif</B> and <B>killed.html</B> are located in the Proxomitron's program directory under "<B>html</B>" and can be changed to send whatever you wish.   </P>
+
+<P>Besides URLs, you can use the same trick to kill items based on other header content as well. <B>Content-Length:</B> and <B>Content-Type:</B> can often make good candidates.  Note that for filters based on reply headers, the remote web server must first be contacted in order to get the information to test. Still, killing a reply will avoid loading the item's actual data.</P>
+
+<P class=li><B>File Sushi -  How to fix broken MIME Content-Types</B></P>
+
+<P>Web servers use the "<B>Content-Type:</B>" header to tell your browser what it's loading. A web page, for example,  is "<B>text/html</B>" while a .jpeg file would be "<B>image/jpeg</B>".  However, when a server isn't aware of a new or unusual media type, it usually defaults to "<B>text/plain</B>".  Generally, this is bad because the browser, thinking it's reading a text file, can corrupt the data by gleefully adding extrainous CR/LF pairs where none should be - also known as <B>"cooking"</B> a file. </P>
+
+<P>The Proxomitron can turn down the heat by assigning the correct content type to a "<B>text/plain</B>" file based on the URL's extention  (which is what the web server should have done in the first place). The default filter set includes examples for JavaScript, MIDI and MP3 files (look for the "Content-Type" header filters) - use them as a basis for adding other  media types.</P>
+
+<P class=li><B>Sharing your header filters</B></P>
+
+<P>Right-clicking over the filter name area bring up a context menu allowing you to <b>import</b> or <b>export</b> selected filters to the clipboard.  This is an easy way to share specific filters with others or add new filters yourself. For example, to share some filters, just select the filter(s) you wish, right-click to export them to the clipboard, then paste them into an email or message board. Exported filters will be in the same plain-text form used by the config file and can easily be imported by someone else. When sharing filters be sure not to delete any of the included headers or Proxomitron may not be able to import them again. 
+
+<p>To import filters just, copy the text into the clipboard from the original source (which could be an email, message board, or any other text source) and select the import option. If Proxomitron can find enough text to make a new filter, it will be added to your list highlighted in <B class=r>red</B>.   
+</P>
+
+
+<P class=li><B>HTTP headers in their natural environment </B></P>
+
+<P>For a complete list of what all Proxomitron's header filters do, go to the <a href="Default Header Filters.html">Default Header Filters</a> section. On the other hand if you'd like to know a bit more about what these headers actually are, here's a mini-bestiary of some common HTTP headers what they do...</P>
+
+<P class=li><B>Request Headers</B></P>
+
+<table>
+<tr><td valign=top><B>If-Modified-Since:</B><TD>This contains the date of the last time your web browser fetched this web page. Basically it says to the web server "only send me the page if it's been changed since this date". Deleting this header will force a web page to fully reload even if it's already in your browser's cache (with IE you'll also need to delete the "Last-Modified" header).
+
+<tr><td valign=top><B>Referer: </B><TD>This contains the URL of the web page you previously came from. For security reasons web browser are <B><I>supposed</I></B> to give you the option not to send this information, but few browsers do.  It's usually safe to delete although it can have an odd effect on things like free web counters, which sometimes use it to track which web page they're keeping count of. If enabled for outgoing messages, Proxomitron's default Referer filter just sends a page its <I>own</I> URL here - sneaky no?
+
+<tr><td valign=top><B>User-Agent:</B><TD>This contains information about your web browser and usually your operating system as well. Normally, it's just informational - you can delete this header or even send your own information here if you like. 
+
+<tr><td valign=top><B>Host:</B><TD>Contains the host name of the web page your contacting (as in "www.somewhere.com"). It commonly used by many web servers for "virtual hosting" where the same web server is used for several different sites. Generally leave this one alone.
+
+<tr><td valign=top><B>Accept: </B><TD>Contains a list of file and image type your browser understands. Another one you usually need not modify.
+
+<tr><td valign=top><B>Accept-Language:</B><TD>Contains a list of preferred languages - intended for allowing multi-lingual web pages the automatically choose your language (though seldom really used for this). This is another header that the original HTTP specs said should be under user control. Sometimes you may not wish everyone to know your native language. 
+
+<tr><td valign=top><B>Accept-Charset:</B><TD>The character sets your browser understands. Generally best let alone.
+
+<tr><td valign=top><B>Cookie:</B><TD><p>This is perhaps one of the most infamous, and misunderstood of all headers. Cookies contain a line of information originally send by a web server to your browser. All your browser ever does with them is send them back to the server unchanged.  Most often they contain some sort of user identification the server uses to tell you apart from other visitors, but the server has to know this information already through other means to create the cookie in the first place. By altering a cookie, you can really "mess with a server's head" so to speak and confuse it to who you really are. Depending on the situation, this can be a good or bad thing ;-).
+
+<P>You can use the Proxomitron's cookie filter to stop all cookies from being sent, or by including a URL match, send cookies only to certain trusted sites. 
+
+<tr><td valign=top><B>Pragma: no-cache</B><TD>Often sent by web browsers when a page is reloaded. It's intended to tell any remote proxy to send a fresh version of the page (instead of a copy it may have stored). The Proxomitron uses this to detect when a browser's "reload" button is pressed.
+</table>
+
+<P class=li><B>Reply Headers</B></P>
+
+<table>
+<tr><td valign=top><B>Server:</B><TD>Contains the Name and version of the web server. Simply informational and not used by your browser. Sort of the reverse of the "User-Agent" header.
+
+<tr><td valign=top><B>Cache-control:</B><TD>affect how pages are stored in your browser's cache. A value of "Private" indicated the contents should not be stored while "max-age" give an indication of how long the page should be kept (kinda like a "Use By" date on milk ;-).
+
+<tr><td valign=top><B>Pragma: no-cache</B><TD>In a reply, this Indicates that your web browser should not store the page in its cache. Often used for temporary web pages like search engine results.
+
+<tr><td valign=top><B>Expires:</B><TD>Another header used by your browser's cache - contains a date when the web page's contents will have probably changed.  It usually is only speculative.
+
+<tr><td valign=top><B>Date:</B><TD>The web server's idea of the current date and time.
+
+<tr><td valign=top><B>Last-Modified:</B><TD>The date and time the web page was last modified. Also used by your browser's cache. For earlier versions of Internet Explorer, you may have to delete this header along with "If-Modified-Since" to "force" the browser to always reload a web page. 
+
+<tr><td valign=top><B>Content-Type:</B><TD>Contains the type of data the server is sending, for example "text/html" is used for a web page and "image/gif" for a .GIF file.
+
+<tr><td valign=top><B>Accept-Ranges:</B><TD>Part of HTTP 1.1 -  "Bytes" indicates a server supports retrieving arbitrary sections of a file.  Used by some download utilities to "resume" an interrupted file transfer.
+
+<tr><td valign=top><B>ETag:</B><TD>A little like a checksum (but only very little). It contains a string that is supposed to change every time the web page is updated. The string has no real meaning other than that. Again something to be used by your browser's cache.
+
+<tr><td valign=top><B>Connection:</B><TD>Another HTTP 1.1 header - "close" indicates no more data will be send on this connection (as was always the case in HTTP 1.0). HTTP 1.1 supports the idea of "persistent connections"  where the same connection is "reused" to send multiple items. By altering this header you can control Proxomiton's own use of persistent connections. For example, always sending "Conntection: close" will prevent persistent connections entirely.
+
+<tr><td valign=top><B>Content-Location:</B><TD>The URL where the data came from - not always present.
+
+<tr><td valign=top><B>Location:</B><TD>This is used by webservers to redirect you to a different URL (in a 302 Redirect reply). Proxomitron's <b>$JUMP( )</b> command actually works by sending one of these to your browser.
+
+<tr><td valign=top><B>Content-Length:</B><TD>The length in bytes of the web page or file being sent.
+
+<tr><td valign=top><B>Set-cookie:</B><TD>A request to your browser to store the information contained in this header and send it back to this sever the next time you visit the web page.  Delete this, and your browser will <B><I>never</I></B> receive any cookies.  In the Set-Cookie filter, the URL match can be used to selectively accept cookies. Also Proxomitron can make cookies "session only" so they're not permenently stored by your browser. Often this will work better at places where killing the cookie altogether will cause a site to complain.
+</table>
+
+<p><hr><img src="images/bullet.gif" align=top><a href="Contents.html"> Return to main index</a>
+</DIV>
+</BODY>
+</HTML>

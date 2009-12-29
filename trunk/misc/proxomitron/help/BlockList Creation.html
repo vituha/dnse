@@ -1,0 +1,305 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Blocklist Creation</TITLE>
+</HEAD>
+
+<script language="JavaScript" src="help.js"></script>
+<LINK REL="stylesheet" type="text/css" href="help.css">
+<body marginwidth=0 marginheight=0>
+
+<table width=100% cellspacing=0 cellpadding=0 border=0>
+<tr><td class=hdr>
+<div class=hdr>A blockfile of your very own</div></td>
+<td class=hdr><image align=right src="images/nav-a.jpg" usemap="#nav" border=0></td></tr>
+<tr><td colspan=2 class=hdsep><img src='images/clear.gif' width=1 height=1></td></tr>
+</table>
+
+<MAP NAME="nav">
+     <AREA SHAPE="RECT" HREF="BlockList Using.html" alt="Previous" COORDS="6,0, 44,25">
+     <AREA SHAPE="RECT" HREF="Contents.html" alt="Back to contents" COORDS="58,0, 94,24">
+     <AREA SHAPE="RECT" HREF="Matching Rules.html" alt="Next" COORDS="112,0, 149,25">
+</MAP>
+
+<DIV class='text'>
+
+<P>The Blocklist/Blockfile feature is really one of the most powerful new additions to Proxomitron. Actually "block list" is a bit of a misnomer though, since they can do much more than just block. In fact, they're really an extension of the normal matching expressions.
+
+<P>Most often you'll see them in a filter's <B>URL match</B>, but they're by no means limited to URLs alone.  A list can contain any matching commands - even calls to other lists!
+
+<P>When it comes right down to it, a block list is a simply a text file containing a list of matching items.  Each line in the list is checked until a match is found - otherwise the list returns false. Every block list file has a name (in the settings dialog), and can be included at any point in a matching expression by using "<B>$LST(listname)</B>". 
+
+<P>You can have up to 255 different lists and use them in any way you like. 
+Common uses could include URLs to kill, sites to accept cookies from, pages
+to disable or enable JavaScript on, etc.  To create a new file just follow these steps...
+
+<P>
+<OL>
+<LI>First, use any text editor (like notepad) to make a list. Save it as a plain <B>somename.txt</B> file.
+<LI>Next, add the list under Proxomitron's <A href="CfgT4.html">Blockfile</a> tab in the config dialog. Use "ADD" to select your file then give it a name.  The name you use inside Proxomitron can be different from the filename itself.  This lets you swap out actual blockfiles without having to change any filters that use them.
+<LI>Finally, to use the blockfile, place a <B>$LST(BlockfileName)</B> in your filter at the point you would like the list items to be checked.  Think of it a bit like including your list at this point.
+</OL>
+
+<P>For example, if you had a matching expression like...
+
+<P class=ind><B class=sm>(Keitarou|Naru|Suu|Mitsune|Motoko|Shinobu|Mutsumi|Kame)</B>
+
+<P>You could create a list like so..
+
+<PRE class=indb>
+#
+# Sample List LoveHina.txt
+#
+
+Keitarou
+Naru
+Suu
+Mitsune
+Motoko
+Shinobu
+Mutsumi
+Kame
+</pre>
+
+<P>Then, name the list something like "LoveHina" and place "<B>$LST(LoveHina)</B>" in your match in place of the old "<B>(...|...|...)</B>" separated parenthetical group of items. As you might guess, this can be a very convenient way to deal with a large number of items.  Not only are such lists easier to maintain, but the same list can be used in different filters!
+
+<P class=li><B>Unmatching a match</B>
+
+<P>You can also add "<B>exclude</B>" lines By prefixing a line with the '<B>~</B>' character. They can be used to limit what a list will match, and are only checked if a regular match is found first in the list. The list will return as true only
+if <B>none</B> of the exclude lines match. For example a list like...
+
+<pre class=indb>
+#
+# Another sample list 
+# an example of using `~` to exclude
+#
+
+*.gif
+~*/gamera.gif
+</pre>
+
+<P>The first line would match anything ending in "<B>.gif</B>",  however the second line checks to see if it also matches "<B>/gamera.gif</B>".  Which will insure that <A href="images/Gam.gif">Gamera</A> is never caught in our list (think of it as a Turtle Excluder Device).  
+
+<P class=li><B>Obfuscating more clearly</B>
+
+<P>Lists can also be called in the replacement text of a filter.  Here they're not really used to match anything but instead are used to set a positional variable to
+some value.  For instance, by using the $CON(#,#) along with the $SET(#=...) matching commands, replacement text variables can be rotated based on the connection number (like multiple User-Agents or browser versions for instance)....
+
+<P>
+<pre class=indb>
+#
+# A sample value rotation list (named "MyList")
+#
+
+$CON(1,3)$SET(0=Value One)
+$CON(2,3)$SET(0=Value Two)
+$CON(3,3)$SET(0=Value Three)
+</pre>
+
+<P>will place the next of the three values into <B>\0</B> each time it's called. You could use this in a replacement section like so...
+
+<pre class=indb>$LST(MyList) \0</pre>
+
+<P>First we call the list to set <B>\0</B> then we print the value of <B>\0</B> by placing it in the replacement text.
+
+
+<P class=li><B>Breaking up isn't so hard to do</B>
+
+
+<P>Normally, each line in a list is treated as an independent matching
+expression. However long expressions can be broken up over multiple lines
+by indenting the lines that follow. For example...
+
+<P>
+<pre class=indb>
+taste (this|that|these|those|the other thing)
+</pre>
+
+<P>could also be written as....
+
+<P>
+<pre class=indb>
+taste (
+  this|
+  that|
+  these|
+  those|
+  the other thing)
+</pre>
+ 
+<P>The effect is exactly the same, but you can break long lines up for easier
+reading - leading or trailing whitespace on each line will be ignored.
+ 
+<P class=li><B>Some comments on comments</B>
+
+<P>Also, as you've probably guessed from the examples, Lists can contain comments by beginning a line with '#'. Comments normally will be ignored, but the first few lines of a list are scanned for certain "keywords" which can affect how the list works.  Currently there are six keywords: "<B>NoAddURL</B>", "<B>junkbuster</B>", "<B>NoHash</B>", "<B>NoUrlHash</B>", "<B>NoPreHash</B>", and "<B>Logfile</B>".
+
+<P>"<B>NoAddURL</B>" hides the list from the "Add to blockfile" menu in the sysytem tray. It's useful to keep it from becoming cluttered by lists not used for URL matches.
+
+<P>"<B>JunkBuster</B>" if found, will cause Proxomitron to attempt to read and
+interpret the list as a JunkBuster style blockfile.  It's probably less than
+perfect, but seems to work fairly well with most JunkBuster lists.
+
+<P class=ind>Note that due to differences in methodology, designing your own list by adding URLs as you find them will likely be more efficient.  In particular,
+JunkBuster processes hostnames in reverse (root first).  Proxomitron treats
+a URL the same as any random text, so you're better off not using an initial
+wildcard. For instance, "(www.|)somehost.com" will be much faster than
+"*somehost.com".  If you need a leading wildcard try "[^/]++somehost.com".
+It's a little better than '*' since it only scans up to the first "/" in the
+URL.
+
+<P>"<B>NoHash</B>", "<B>NoUrlHash</B>", and "<B>NoPreHash</B>" are used to disable various hashing algorithms used in lists.  NoHash eliminates all hashing and can save memory for list that are seldom called or where speed isn't an issue. "NoUrlHash" and "NoPreHash" disable particular hash types (see section on hashing below). You probably shouldn't need to use these very often (if at all).
+
+<P>"<B>Logfile</B>" is a special command that tells Proxomitron not to load or process the contents of the file like a regular blocklist.  Instead it's useful for using a blocklist for logging purposes along with the <b>$ADDLST()</b> command. 
+
+<p>Normally Proxomitron loads and parses the contents of a blockfile into memory as matching expressions.  However, for a logfile, not only would that be a waste of memory, but it might also produce parsing errors since the file's contents may not be matching expressions at all. 
+
+<P>To set up a logfile, just create a file, add "LOGFILE" somewhere within the first few lines like so...
+
+<P class="smbi">
+##<br>
+## Proxomitron log file (LOGFILE)<br>
+##<br>
+</P>
+
+<p>Then add the file as you would any other blocklist.  To write messages to the log, just use the $ADDLST(Logname, text to add) command. 
+
+<p>To view the log just use Proxomitron's "Edit blockfile" option.  This will first close the file to flush any unwritten data, then it will launch it in the default editor for the filename's extension (like .txt or .log). To make adding new data faster, unlike other blocklists, Proxomitron keeps logfiles open between writes.
+
+<P class=li><B>Blocklist Indexing (hashes)</B>
+
+<P> Another advantage lists have over using a bunch of ORs in a match is speed. Proxomitron can do a sort of indexed hash lookup on eligible list entries. Not everything can be indexed, but for items that can, it makes finding matches in a large list <B>much</B> faster.  Normally you don't need to worry much about how this works, but if you want to guarantee your blocklist will be as fast as possible here's some tips...
+
+<P>First Proxomitron checks each item in the list to see if it's "hashable" (can be indexed).  If so, it's added to a hashable list - if not, it's added to a non-hashable list that must be scanned each time the list is checked. Of course, it's better to be hashable.
+
+<P>There's two types of indexes Proxomitron can use - a fixed prefix and a
+URL style index.  Each item in the list is checked to see if it can be
+indexed using either one method or the other, if so the method that can index the most characters is used for that item. The total list may have mixture of both
+types.
+
+<P>"<B>fixed prefix</B>" are the simplest - they're just any expression that has a
+fixed number of characters without any wildcards. The longer the prefix is
+before any wildcard, the more indexable it becomes. Most user added URLs
+probably fall into this category, but it benefits many non-URL based lists
+too.  Here's a few examples of eligible expressions...
+
+<pre class=indb>
+www.somewhere.com
+127.0.0.
+shonen(kinfe|)
+foo(bar|bat)*bear
+</pre>
+
+<P>ANDs are fine too as in "<B>this*&*that</B>" - however ORs outside of parens like "<B class=r>this|that</B>" won't index since the match can begin with two different values. In this case it's better to place each on its own line.
+
+<P><B>URL style hashes</B> as the name implies are designed mainly for lists of URLs. The goal is to allow some leading wildcards to be used, since often this is necessary for matching partial hostnames.  It works by looking in the expression for the end of the hostname (marked by a ":" or "/") and indexes back from there.  For it to work there must be no other wildcards between the hostname's end and the leading wildcard. Valid wildcards include <B>"*", "\w", "[...]+", "[...]++", and "(...|)"</B>. This should cover the most useful ones for leading off URLs.  Again here's some examples...
+
+<pre class=indb>
+*somehost.com/(anything|after|here|is|fine)/\w.html
+\wsomehost.com/
+[^.]+.somehost.com/
+[^/]++somehost.com/
+(www.|)somehost.com:[0-9]+/
+([^/]++.|)somehost.com/
+</pre>
+
+<P>Unfortunately things like...
+
+<pre class=indb>
+([^/]++.|)somehost.*/
+([^/]++.|)somehost.(com|net)/
+</pre>
+
+<P>won't be indexable.  In these cases it may actually be faster to write
+them as two entries...
+
+<pre class=indb>
+([^/]++.|)somehost.com/
+([^/]++.|)somehost.net/
+</pre>
+
+<P>One change blocklist authors should take note of is, when using a leading
+wildcard, it's very important to use the full hostname including the "/". 
+Previously this wasn't necessary, so an entry like...
+
+<pre class=indb>
+([^/]++.|)microsoft.
+</pre>
+
+<P>would be better written as...
+
+<pre class=indb>
+([^/]++.|)microsoft.com/
+</pre>
+
+<P>or perhaps multiple entries if necessary. It also means there's less of
+a need to write expressions like...
+
+<pre class=indb>
+www.(ad(server|engine|banner)|banner(site|click|)).(com|net)
+</pre>
+
+<P>Instead, listing all the actual hosts to be matched will be faster - not
+to mention easier to maintain.
+
+<P class=li><B>On the inside...</B>
+
+<P>To get an "inside" look at what's going on with your blocklists - including how they're being hashed, how often each item is checked, and how often each item matches, Proxomitron now includes a special information URL...
+
+
+
+<ul class="r">
+<li><b><a href="http://local.ptron/.pinfo/lists/">http://local.ptron/.pinfo/lists/</a></b>
+</li></ul>
+
+<P>  Here you'll find a table of all loaded lists, their filenames, number of items they contain, and the number of items that have been prefix or URL hashed. Clicking on a list's name will bring up a detaied breakdown of each entry it contains. This can come in very useful when trying to make the most efficient use of your lists.</P>
+
+<P class=li><B>Limitations...</B>
+
+<P>Blocklist do have some limitations that make them work a bit different from a list of OR seperated items. Mainly they operate in their own scope.  For example, say you have a match like...
+
+<pre class=indb>
+www.$LST(hosts).com
+</pre>
+
+and a list like...
+
+<pre class=indb>
+#
+# Host list
+#
+
+adsite
+adsite-2
+</pre>
+
+Given the host "www.adsite-2.com" would not match even though it looks like it should.  This is because the list first finds a match with "adsite" but, being in it's own scope, can't look beyond to see that it also needs ".com".  To avoid this it's important to make matches unambiguous. for example, by moving the trailing "." to the list like so...
+
+<pre class=indb>
+www.$LST(hosts)com
+</pre>
+
+<pre class=indb>
+#
+# Host list
+#
+
+adsite.
+adsite-2.
+</pre>
+
+<P>Also be aware that a "*" at the end of a list item will match all the way to the end of the available characters.  Normally you don't want this, instead place them in the calling match...
+
+<pre class=indb>
+www.$LST(hosts)*.com
+</pre>
+
+<P class=li><B>The end...</B>
+
+<P>Well that should be about all there is to know about blocklists.  If you've made it this far I officially award you a <B>P.C.B.F.E.</B> (Proxomitron Certified Blocklist (or Blockfile) Engineer). Now, won't that look good on your next Resume!
+
+<p><hr><img src="images/bullet.gif" align=top><a href="Contents.html"> Return to main index</a>
+</DIV>
+</BODY>
+</HTML>

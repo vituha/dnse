@@ -1,0 +1,18 @@
+#
+# Proxomitron MIME type fixes - Russian Edition (NOADDURL)
+# Don't modify! Please use "Lists\MIME Fix List.txt" instead.
+#
+# Format:  extension $SET(0=correct/content-type)
+#
+
+js  $SET(0=text/javascript)
+css $SET(0=text/css)
+mp3 $SET(0=audio/x-mpeg)
+swf $SET(0=application/x-shockwave-flash)
+mid $SET(0=audio/mid)
+midi $SET(0=audio/midi)
+htm $SET(0=text/html)
+html $SET(0=text/html)
+zip $SET(0=application/x-zip-compressed)
+rar $SET(0=application/rar)
+/ $SET(0=text/plain)

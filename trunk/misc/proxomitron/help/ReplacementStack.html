@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Replacement Stack</TITLE>
+</HEAD>
+
+<script language="JavaScript" src="help.js"></script>
+<LINK REL="stylesheet" type="text/css" href="help.css">
+<body marginwidth=0 marginheight=0>
+
+<table width=100% cellspacing=0 cellpadding=0 border=0>
+<tr><td class=hdr>
+<div class=hdr>The Replacement Stack
+</div></td>
+<td class=hdr><image align=right src="images/nav-a.jpg" usemap="#nav" border=0></td></tr>
+<tr><td colspan=2 class=hdsep><img src='images/clear.gif' width=1 height=1></td></tr>
+</table>
+
+<MAP NAME="nav">
+     <AREA SHAPE="RECT" HREF="An Introduction To Text Matching.html" alt="Previous" COORDS="6,0, 44,25">
+     <AREA SHAPE="RECT" HREF="Contents.html" alt="Back to contents" COORDS="58,0, 94,24">
+     <AREA SHAPE="RECT" HREF="Matching Commands.html" alt="Next" COORDS="112,0, 149,25">
+</MAP>
+
+<DIV class='text'>
+
+<P>The "Replacement Stack" is a new feature in Proxomitron Naoko-4. Normally Proxomitron supports ten matching variables <B>\0</B> to <B>\9</B>.  For most things this is fine, but occationally you may find you need something more.
+
+<P>Take for example, using the "<B>+</B>" or "<B>++</B>" expressions to match a repeating run of matches. What if you want to stick each item found into a <B><I>different</I></B> variable? For instance - look at this run that matches each section of a URL path...
+
+<P class=indb>http://<B class=r>(*/)+</B>*.html
+
+<P>The (*/)+ bit will match for each section of the URL - but how can we capture each one of these sections into a different variable?  This is where the replacement stack comes in. It uses the special character "<B>\#</B>" which like "<B>\0</B>" through "<B>\9</B>" stores a matched value.  However each time it's called it stores the matched value into a "stack" which can hold up to 100 items. It can then be used in the replacement text to "pop" an item off that stack in a first-in first-out manner.  Using this we could write the above match like so...
+
+<P class=indb>http://(<B class=r>\#</B>/)+<B class=r>\#</B>.html
+
+<P>Then use a replacement text like...
+
+<P class=indb>"\# \# \# \# \# \# \#"
+
+<P>Which would convert this URL...
+
+<P class=indb>http://this/is/a/test/of/the/stack.html
+
+<P>Into this...
+
+<P class=indb>"this is a test of the stack.html"
+
+<P>Each time the (...)+ run loops it pushes a new value onto the stack, then whatever's left over gets matched by the final "\#". Also, like the other positional variables, the stack variable can be used directly after a set of parenthesis to capture the expression within.  For
+instance...
+
+<P class=indb>http://(*/)\#+\#
+
+<P>would produce...
+
+<P class=indb>"this/ is/ a/ test/ of/ the/ stack.html"
+
+<P>The replacement text also recognizes another special escape "<B>\@</B>".  This
+just dumps the entire contents of the stack in order (like using
+\#\#\#\#\#\#\#\#...). In fact, this is probably what you'll use most of the time.  
+
+<P class=li><B>Some typical uses...</B>
+
+<P>Really another way to think of <B>\#</B> is that it's exactly like \1, \2, \3, etc. except that each time it's called, the value is stuck onto the end of whatever's already there rather than just replacing it. Here's some examples...
+
+<P class=li><B>Remove attributes from a tag:</B>
+
+<style>
+td {font-size:9pt; font-weight:bold}
+</style>
+
+<P>
+<div class=ind>
+<table cellspacing=0 cellpadding=0>
+<TR><TD class=r>Bounds: <TD> &lt;Sometag\s*> 
+<TR><TD class=r>Matching: <TD> (\#(attr1|attr2|attr3)=$AV(*))+ \#
+<TR><TD class=r>Replace: <TD> \@
+</table>
+</div>
+
+<P>
+<OL>
+<LI>The first "\#" catches the text up to the first attribute to be removed (if any)
+<LI>Further iterations of the loop catch the text between that and any other
+<LI>The final \# catches what's left over after the last attribute or the entire tag if no attribute was matched.
+</OL>
+
+<P class=li><B>Keep only selected attributes (and toss everything else):</B>
+
+<P>
+<div class=ind>
+<table cellspacing=0 cellpadding=0>
+<TR><TD class=r>Bounds: <TD> &lt;Sometag\s*> 
+<TR><TD class=r>Matching: <TD> (*((attr1|attr2|attr3)=$AV(*) )\#)+ *
+<TR><TD class=r>Replace: <TD> &lt;Sometag \@>
+</table>
+</div>
+
+<P>This is the opposite from above, but very similar. It'll throw away everything except those attributes we want to keep around. Here There's only one hash that captures each attribute and value.
+
+<P class=li><B>Replace attribute values with something else:</B>
+
+<P>
+<div class=ind>
+<table cellspacing=0 cellpadding=0>
+<TR><TD class=r>Bounds: <TD> &lt;Sometag\s*> 
+<TR><TD valign=top class=r>Matching: 
+<TD> 
+(\#((attr1=)\#foo$SET(\#=bar)|<br>
+(attr2=)\#black$SET(\#=white)|<br>
+(attr3=)\#one$SET(\#=zero)))+ \#
+<TR><TD class=r>Replace: <TD> \@
+</table>
+</div>
+
+<P>This is a bit more complex.  Notice it uses the <B>$SET(\#=...)</B> command along with the normal match. This can be used to do some interesting things.
+
+<P>The example above first looks for one of the attributes it's trying to match. When it finds one, it pushes it's name onto the stack and then tries to match the value. if it find the one it's looking for, it uses set to push a new value instead.  In addition it also captures and preserves anything else that's not matched. You could even replace the separate attributes with a list call like so...
+
+<P class=indb>(\#$LST(AttributeReplace))+ \#
+
+<P>With list items like...
+
+<pre class=indb>
+#
+# Sample attribute replacement list
+#
+(attr1=)\#foo$SET(\#=bar)
+(attr2=)\#black$SET(\#=white)
+(attr3=)\#one$SET(\#=zero) 
+</pre>
+
+<P>or even...
+
+<pre class=indb>
+#
+# Sample attribute replacement list two
+#
+attr1=foo $SET(\#=attr1=bar )
+attr2=black $SET(\#=attr2=white )
+attr3=one $SET(\#=attr3=zero ) 
+</pre>
+
+<P>to selectively replace both the attribute and it's value with something else. (Actually this is also better because the items are "hashable" in the list and can match quicker).
+
+<p><hr><img src="images/bullet.gif" align=top><a href="Contents.html"> Return to main index</a>
+</DIV>
+</BODY>
+</HTML>

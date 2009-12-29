@@ -1,0 +1,917 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Matching Commands</TITLE>
+</HEAD>
+
+<script language="JavaScript" src="help.js"></script>
+<LINK REL="stylesheet" type="text/css" href="help.css">
+<body marginwidth=0 marginheight=0>
+
+<table width=100% cellspacing=0 cellpadding=0 border=0>
+<tr><td class=hdr>
+<div class=hdr>Extended Matching Commands
+</div></td>
+<td class=hdr><image align=right src="images/nav-a.jpg" usemap="#nav" border=0></td></tr>
+<tr><td colspan=2 class=hdsep><img src='images/clear.gif' width=1 height=1></td></tr>
+</table>
+
+<MAP NAME="nav">
+     <AREA SHAPE="RECT" HREF="ReplacementStack.html" alt="Previous" COORDS="6,0, 44,25">
+     <AREA SHAPE="RECT" HREF="Contents.html" alt="Back to contents" COORDS="58,0, 94,24">
+     <AREA SHAPE="RECT" HREF="Tips And Tricks.html" alt="Next" COORDS="112,0, 149,25">
+</MAP>
+
+<DIV class='text'>
+<P>Besides the normal <A href="Matching Rules.html">meta-characters</a>, Proxomitron also features special matching commands. Looking a bit like function calls, they work to extend the normal matching rules and add all sorts of useful abilities that would be hard or impossible to do with meta-characters alone. The basic format looks a bit like so...</P>
+
+<P><B>$COMMAND(Parameter1, Parameter2, ...)</B></P>
+
+<P>Although the commands begin with a "$", this character alone does not have special meaning. Normally you can use it in a match without having to escape it.  The only exception would be if you were matching text that actually looked like an existing command.</P>
+
+<P>One last note: not all commands can be used in all places.  Some function only in the match, others only in the replace (and a few in both).  Likewise some commands work only in header filters while others are designed to be used in web filters. Any such restrictions will be mentioned in the command descriptions below.</P>
+
+<hr>
+
+<P class=li><B>Matching Command Reference</B></P>
+
+<P>Now without further ado (Ok, just one more ado - <B class=li>Ado!</B> There - got that out of my system now) Here's what you've all been waiting for - A (hopefully) complete listing of all matching commands, their parameters (if any), and their basic use.</P>
+
+<P><B>Quick Jump:</b> click a link to jump to the command you're looking for or browse below:<br>
+<DIV CLASS=cmdt><B class=sm>
+<A href="#ADDLST">$ADDLST</A>
+<A href="#ADDLSTBOX">$ADDLSTBOX</A>
+<A href="#ALERT">$ALERT</A>
+<A href="#ASK">$ASK</A>
+<A href="#AV">$AV</A> 
+<A href="#AVQ">$AVQ</A> 
+<A href="#CON">$CON</A> 
+<A href="#CONFIRM">$CONFIRM</A> 
+<A href="#DTM">$DTM</A>
+<A href="#ESC">$ESC</A>
+<A href="#FILE">$FILE</A>
+<A href="#FILTER">$FILTER</A>
+<A href="#GET">$GET</A> 
+<A href="#IHDR">$IHDR</A>
+<A href="#INEST">$INEST</A> 
+<A href="#JUMP">$JUMP</A>
+<A href="#KEYCHK">$KEYCHK</A> 
+<A href="#LOCK">$LOCK</A>
+<A href="#LOG">$LOG</A>
+<A href="#LST">$LST</A> 
+<A href="#NEST">$NEST</A>
+<A href="#OHDR">$OHDR</A> 
+<A href="#RDIR">$RDIR</A> 
+<A href="#RESP">$RESP</A> 
+<A href="#SET">$SET</A> 
+<A href="#SETPROXY">$SETPROXY</A> 
+<A href="#STOP">$STOP</A> 
+<A href="#TST">$TST</A>
+<A href="#TYPE">$TYPE</A> 
+<A href="#UESC">$UESC</A>
+<A href="#UNLOCK">$UNLOCK</A> 
+<A href="#URL">$URL</A> 
+<A href="#USEPROXY">$USEPROXY</A> 
+<A href="#WESC">$WESC</A> 
+</B>
+</DIV>
+<hr>
+
+<A name="ALERT">
+<P class=cmd>$ALERT(message text)<BR>
+<div class=cmdsub>
+<B>Restrictions:</B> Match or replace<BR>
+<B>Filter Types:</B> All<BR>
+</div>
+<div class=cmdt>
+
+<P>$ALERT works much like the JavaScript alert() function. It will display a dialog box with message of your choosing. It doesn't do much of anything but can be useful for debugging or notifying the user something has happened. The message isn't fixed and any of the replacement commands (like <b>\1</b> and <b>\h</b>) can be used to add captured text, hostnames, etc.
+</div>
+
+<A name="CONFIRM">
+<P class=cmd>$CONFIRM(message text)<BR>
+<div class=cmdsub>
+<B>Restrictions:</B> Match or replace<BR>
+<B>Filter Types:</B> All<BR>
+</div>
+<div class=cmdt>
+
+<P>Like $ALERT, $CONFIRM will display a dialog box with message of your choosing. However it also includes "Yes" and "No" buttons. This can be used as a test in a match where "Yes" is considered a match and "No" will fail to match.  With this, you can have filters do different things depending on how the user responds. 
+
+<P>Also like $ALERT, the message will have any replacement commands expanded before the message is displayed.
+</div>
+
+<A name="ADDLST">
+<P class=cmd>$ADDLST(ListName, text to add)<BR>
+<div class=cmdsub>
+<B>Restrictions:</B> Match or replace<BR>
+<B>Filter Types:</B> All<BR>
+</div>
+<div class=cmdt>
+
+<P>$ADDLST can be used to add a new line to any currently loaded blocklist. Just give it the name of the list to add the item to and the text of what you want to add and it'll will be appended to the file. Any replacement commands in the text will expanded before the item is added which makes it easy to add captured URLs, hostnames, or other items matched by a filter.  One word of caution: it's best not to trust stuff captured from a page - it's a good idea to use the <b>$WESC(...)</b> command to neutralize any potentially harmful matching commands first. For example...
+
+<P class=indb>
+$URL(http://\1)<br>
+$ADDLST(MyList, <B class=r>$WESC(\1)</B>)
+
+<P>Will make sure that everything captured in the <b>\1</b> variable will have any wildcards safely escaped into regular characters.
+</div>
+
+<A name="ADDLSTBOX">
+<P class=cmd>$ADDLSTBOX(ListName, [dialog title,] text to add)<BR>
+<div class=cmdsub>
+<B>Restrictions:</B> Match or replace<BR>
+<B>Filter Types:</B> All<BR>
+</div>
+<div class=cmdt>
+
+<P>$ADDLSTBOX can also be used to add a new line to any currently loaded blocklist. However this does so by calling Proxomitron's 
+"<a href="BlockList%20Using.html#AddDlg">Add to blockfile</a>" dialog box.  This gives the user a chance to edit the entry or even cancel the addition altogether. When called in a match, the $ADDLSTBOX will match as "true" if the user decides to add the item and "false" otherwise.  The dialog title is optional, but if included will be show in the dialog box's title bar.
+</div>
+
+<A name="ASK">
+<P class=cmd>$ASK(AllowList, DenyList, Prompt, item to add [, alt match])
+<div class=cmdsub>
+<B>Restrictions:</B> Match only<BR>
+<B>Filter Types:</B> All<BR>
+</div>
+<div class=cmdt>
+<p>$ASK() automates the process of asking the user if a particular item should be filtered at a given site.  You first must have both an "<B>Allow</B>" list and a "<B>Deny</B>" list that will be used to store the user's choice (lists could be shared by multiple filters though).  "<B>Prompt</B>" is any text you wish to include with the YES/NO choice the user will be given.  Any replacement commands will be expanded before display.  "<B>item to add</B>" is the item to add to either list (based on the user's choice).  It will be matched against the sites URL (by default). $ASK must be used in the matching section of a filter and should normally be the last item checked. Here's an example....
+
+<p><pre class="indb">
+  Name="A foo filter"
+  Active=TRUE
+  URL="<B class=b>^$LST(AllowFoos)</B>"
+  Match="&lt;foo\s*&gt;&"
+        "<B class=r>$ASK(AllowFoos, DenyFoos, You you want to Foo at...\n\h?, \h)</B>"
+  Replace="&lt;NoFoosAllowed&gt;"
+</pre>
+
+<p>Notice here all we do is insert the hostname of the site into either list using "<B>\h</B>".  There's no need to call $LOCK() or any similar commands - $ASK will do that for us to make sure it won't prompt the user twice for the same item. Also notice we've added a "<B class=b>not</B>" test of the allow list to the filter's URL match. It would work without this, but it's always a good idea since, if the item's already allowed, we don't need to use the filter at all on this site.
+
+<P>Normally $ASK will use the site's URL to match against (similar to the filter's own URL match), but it's also possible to match against other items.  $ASK can be given an optional "<B>alternate match</b>" that, when expanded, will be matched against the "allow" and "deny" lists instead.  Here's an example...
+
+<p><pre class="indb">
+  Name="Filter applets by class"
+  Active=TRUE
+  Bounds="&lt;applet\s*&lt;/applet&gt;"
+  Match="&lt;applet*code=$AV(<B class=r>\1</B>)*&"
+        "$ASK(AllowApplet, DenyApplet,"
+        "Do you you want to allow Java Applet\n[\1]?, <B class=r>\1</B>, <B class=r>\1</B>)"
+  Replace="&lt;AppletKilled&gt;"
+</pre>
+
+<P>This first matches the applet's "code" attribute and sticks the value in variable <B>\1</B>.  Next when $ASK is called, instead of the page's URL, <B>\1</B>'s value is checked against both. 
+
+<P>One thing that may seem odd at first is $ASK returns as a "<B>true</B>" when the user selects "No" and "<B>false</B>" when they select "Yes". It may seem backwards, but it makes things simpler since "Yes" normally means we <B>don't</B> want to filter this item. 
+
+</DIV>
+
+<A name="AV">
+<P class=cmd>$AV(match)<BR>
+<div class=cmdsub>
+<B>Restrictions:</B> Match only<BR>
+<B>Filter Types:</B> IN Headers, OUT Headers, or Match<BR>
+</div>
+<div class=cmdt>
+<P>This is used to match any attribute's value.  It first parses and isolates
+the value - automatically taking things like quotes vs. no quotes into
+account.  The match within the command is then limited to just the
+attribute value.  Note: Any quotes surrounding the value will not be part
+of the match. 
+
+<P>For example, to match any image with the word "Gargalishous!" in
+the alt tag, you could use...
+ 
+<P class=indb>&lt;img * alt=<B class=r>$AV(*gargalishous!*)</B> *>
+
+<P>which would work for any of the following...
+
+<P class=smbi>
+&lt;img src="foo" alt="My is this trout ever Gargalishous!"><BR>
+&lt;img src="foo" alt='Gee your hair is Gargalishous! Is that bison flavor?'><BR>
+&lt;img src="foo" alt=JustRawGargalishous! ><BR>
+
+<P>Even though the match doesn't include the quotes, they'll still be
+consumed by the command. This means if you want to capture the entire
+value including quotes you could use a match like...
+
+<P class=smbi>&lt;img * alt=<B class=r>(<B class=bk>$AV(\1)</B>)\2</B> *></P>
+
+<P>Here <B>\2</B> will contain the full tag with its original quotes, while <B>\1</B> will just contain the raw value itself. For example given...
+
+<P class=smbi>
+ &lt;img src="foo" alt=<B class=r>"Move all Zig!"</B>><BR><BR>
+ \1 = Move all Zig!<BR>
+ \2 = <B class=r>"</B>Move all Zig!<B class=r>"</b><BR>
+
+<P>But there's also another way to do this - just use <B>$AVQ()</B>
+</DIV>
+
+<A name="AVQ">
+<P class=cmd>$AVQ(match)
+<div class=cmdsub>
+<B>Restrictions:</B> Match only<BR>
+<B>Filter Types:</B> All<BR>
+</div>
+<div class=cmdt>
+
+<P>This is exactly like $AV(...) except it also includes any quotes in
+the match.  Useful when you just want to capture an attribute's value
+like so...
+
+<P class=smbi>&lt;img * alt=<B class=r>$AVQ(\1)</B> * >
+
+<P>which would capture any <B>alt</B> value into <B>\1</B>.
+</div>
+
+<A name="DTM">
+<P class=cmd>$DTM(format)
+<div class=cmdsub>
+<B>Restrictions:</B> Replace only<BR>
+<B>Filter Types:</B> All<BR>
+</div>
+<div class=cmdt>
+
+<P>$DTM can be use to insert date, time and connection information into any replacement text. It uses a simple (case sensitive) format string to control the display...
+
+<P class="smbi">
+  M = Month<br>
+  D = Day<br>
+  Y = Year<br>
+  h = (12 hour)<br> 
+  H = (24 hour)<br>
+  m = Minute<br>
+  s = Second<br> 
+  t = thousandths of a second (milliseconds)<br>
+  a = (am/pm)<br>
+  w = Three letter weekday abbreviation (Sun,Mon,Tue,etc).<br>
+  I = Internet formatted UTC<br>
+  c = Current connection #<br>
+
+<p> There's also some shortcuts
+
+<P class="smbi">
+  T = H:m:s  (24 Hour:Minute:second)<br>
+  U = M/D/Y  (U.S. style date)<br>
+  E = D/M/Y  (European style date)<br>
+  d = Y-M-D  (database style date)<br>
+
+<P>For example, to print out a date "year/month/day" you can use...
+
+<P class="smbi">$DTM(Y/M/D)
+
+<P>To print out the time in a 12 hour format, you could use...
+
+<P class="smbi">$DTM(h:m:s a)
+
+<P>To print both use...
+
+<P class="smbi">$DTM(Y/M/D h:m:s a)
+
+<P>This can be useful for adding dates to a page, or including information for use with $LOG or other similar commands.
+
+<p>Dates can also be matched in a filter by setting a variable (thanks ScoJo :-). For example, to make a filter that only works between 9 and 10 pm you could use...
+
+<P class="smbi">
+$SET(CHour=$DTM(H))$TST(CHour=[#19:20])
+
+</div>
+
+<A name="KEYCHK"></A>
+<P class=cmd>$KEYCHK(keycode list)
+<div class=cmdsub>
+<B>Restrictions:</B> Match only<BR>
+<B>Filter Types:</B> All<BR>
+</div>
+
+<div class=cmdt>
+<p>The KEYCHK command can be used to test for user keypress combinations during a filter test (for example, to have a filter bypass itself or act differently if the user is pressing a specific key).  It works like any matching test and can be used in a filter's match or a URL match. When the match is done KEYCHK will return as "matched" if the keys being tested for are currently pressed.  Most keys can be tested by using their *unshifted* values.  However, there's several special key tests which begin with a carat "^" symbol....<p>
+
+<p class="smbi">
+^C  = CONTROL<br>
+^A  = ALT<br>
+^S  = SHIFT<br>
+^T  = TAB<br>
+^F1 = Function key #1<br>
+^F2 = Function key #2<br>
+^32 = Virtual keycode 32 (spacebar)<br>
+^65 = Virtual keycode 65 ("A")<br>
+</p>
+
+<p>Characters are not case sensitive so either "^c" or "^C" may be used. Multiple keys can be included to test for combinations. For example...
+
+<p class="smbi">
+$KEYCHK(^A^S)   = ALT+SHIFT<br>
+$KEYCHK(^C^F6)  = CONTROL+F6<br>
+$KEYCHK(^AG)    = ALT+G<br>
+$KEYCHK(^C^A^S) = CONTROL+ALT+SHIFT<br>
+</p>
+
+<p>This will work for any combination the keyboard allows.  Other
+  special keys can also be tested if you know the Windows virtual
+  keycode - this is a number between 0-255.  For instance ^2 tests
+  for the right mouse button.
+</div>
+
+<A name="FILE"></A>
+<P class=cmd>$FILE(filename)
+<div class=cmdsub>
+<B>Restrictions:</B> Replacement only<BR>
+<B>Filter Types:</B> All<BR>
+</div>
+<div class=cmdt>
+<p>
+The $FILE command can be used to insert the contents of any file into the replacement text of a filter. 
+
+For example...
+
+<pre class="smbi">
+Match="(^(^&lt;BODY))"
+Replace="&lt;script&gt;<b class=r>$FILE(c:/mystuff/myscript.js)</b>&lt;/script&gt;"
+        "$STOP()"
+</pre>
+
+<p>Could be used to insert a custom JavaScript directly before the body tag of a webpage.
+
+<p class=sm><b>Note:</b> Since Proxomitron uses the backslash <b>"\"</b> as an escape character, filenames should be entered using either use forward slashes <b>"c:/some/path/name"</b> or escaped (doubled) backslashes <b>"c:\\some\\path\\name"</b>.
+
+<p>We're actually using another trick here too - take a close look at the <b>(^(^...))</b> in the match section.  a single "<b>(^...)</b>" is used to negate a match so what's a "double negative" like "<b>(^(^...))</b>" do?  It re-reverses things to make it once again act pretty much like a normal match with one important exception - it consumes no characters!  What this means is you can use it to test for something (like a &lt;body&gt; tag) without actually "using it up". That way you don't have to re-include it in the replacement, and other filters can still match on it even without using multi-match!
+
+<p>The trick has one other important feature - if we used multi-match on this filter, anything we inserted via $FILE would be stuck back in the input buffer and also subject to filtering. Using the negative, negative trick take's the cake but let's us have it too (or something like that), but be careful to use something like $STOP() in your filter to prevent matching the same tag over and over!
+</div>
+
+<A name="LOCK">
+<P class=cmd>$LOCK()
+<div class=cmdsub>
+<B>Restrictions:</B> None<BR>
+<B>Filter Types:</B> All<BR>
+</div>
+<div class=cmdt>
+
+<P>The $LOCK command can be used to make sure a group of items in a filter all happen together as a unit. Only one filter can be "locked" at any given time.  Any other filters that then call $LOCK - even on other pages loading at the same time - will have to wait until the first filter has completed or calls $UNLOCK.  Most often this can be useful for filters that involve some kind of user interaction, like choosing to add a site to an "allow" or "deny" list.  Here's an example...
+
+<pre class=indb>
+(some filter matching code)
+& <b class=r>$LOCK()</b>
+(
+  $URL(http://$LST(DenyList))|
+  (^$URL(http://$LST(AllowList)))
+  (^$CONFIRM(Allow Flash at:\n\h)
+    $ADDLST(AllowList,\h)
+    $STOP()
+  )
+  $ADDLST(DenyList,\h)
+)
+</pre>
+
+<P> first the filter is LOCKed so any other filters attempting the same thing will wait until we're finished. Next we check to see if the site's already in the "deny" list. If so, we have a match and don't need to do anything else, but if it's not denied, we then check to make sure it's not in the "allow" list. If it's not allowed either, we finally prompt the user for a choice. Depending on the user's choice we either add the hostname to the "allow" or "deny" lists so they won't need to be asked again next time.
+
+<P>As you can see quite a bit has to happen here, and while it's happening it's important no other page try to do the same check until we're finished.  $LOCK insures the whole deal happens as a single unit. Keep in mind this slows things down, so you should never call LOCK before you really need to. In the example above, the normal filter's match would be completed first before the "locked" section.
+
+</div>
+
+<A name="UNLOCK">
+<P class=cmd>$UNLOCK()
+<div class=cmdsub>
+<B>Restrictions:</B> None<BR>
+<B>Filter Types:</B> All<BR>
+</div>
+<div class=cmdt>
+$UNLOCK is the reverse of the $LOCK function. It releases the lock allowing the next filter waiting for a LOCK to complete.  Also, UNLOCK is automatically called after a filter completes. Usually, you only need to call it yourself if you'd like to release a lock sooner.
+</div>
+
+<A name="LOG">
+<P class=cmd>$LOG([!][RGBYVCWw]text to log)
+<div class=cmdsub>
+<B>Restrictions:</B> None<BR>
+<B>Filter Types:</B> All<BR>
+</div>
+<div class=cmdt>
+
+<P>$LOG can be used to display an entry in Proxomitron's log window (if it's open).  It can be useful for debugging or adding more detailed information about a filter to the log.  One thing to keep in mind is the first character is special - it's not shown in the log, but sets what color the line will be displayed as. For example...
+<P class=smbi>
+  $LOG(<b class=r>RThis will be red</b>)
+
+<P>Here's a list of the available colors:
+<P class=smbi>
+R=<B class=r>Red</B> W=White w=<B class=gr>Gray</B> B=<B class=b>Blue</B> 
+G=<B class=g>Green</B> Y=<B class=y>Yellow</B> V=<B class=vi>Violet</B> 
+C=<B class=cy>Cyan</B>
+
+<P>Keep in mind they're case sensitive. Also, for important messages, you can optionally, place an exclamation point "<b>!</b>" directly before the color letter. This will force the log window to open if it happens to be closed...
+
+<P class=smbi>
+$LOG(<b class=r>!</b>R---This is Important---)
+
+</div>
+
+<A name="LST">
+<P class=cmd>$LST(blockfile name)
+<div class=cmdsub>
+<B>Restrictions:</B> None<BR>
+<B>Filter Types:</B> All<BR>
+</div>
+<div class=cmdt>
+
+<P>This Is used to include a blockfile in any matching expression.  The contents ofthe blockfile are tested line by line against the text to be matched until a
+match is found. Otherwise the expression returns false.
+</div>
+
+<A name="NEST">
+<P class=cmd>$NEST(start match, [inner match,] end match)
+<div class=cmdsub>
+<B>Restrictions:</B> Match only<BR>
+<B>Filter Types:</B> All (but mainly web)<BR>
+</div>
+<div class=cmdt>
+
+<P>The $NEST command can be used to find the corosponding ending tag or character for a given starting tag or character even when the same tag may be nested within. To use nest you must give it a "<B>start match</B>" which will match the opening tag and an "<B>end match</B>" which will match the closing tag. For example, to match nested &lt;TABLE> tags you might use... 
+
+<P class=indb>$NEST(&lt;table*>,&lt;/table>)
+
+<P>Given the following text, it would match the area in red...
+<pre class=ind>
+...some HTML...
+<span class=r><B>&lt;table name="outer table"></B>
+  ...
+  &lt;table name="inner table">
+    ...
+  &lt;/table>
+  ...
+<B>&lt;/table></B></span>
+...some more HTML...
+</pre>
+
+<P>Notice it manages to find the correct ending tag for the outer table even though there's an innter table also using the same tags.
+
+<P>$NEST can also have an optional third "<B>inner match</B>" parameter.  If present this match will be applied to the area of text withing the starting and ending tags matched.  It's important to note this <B>doesn't</B> include the actual text in the starting or ending tag, only what's between them. Again using the example above...
+
+<P class=indb>$NEST(&lt;table*>,<B class=b>\1</B>,&lt;/table>)
+
+<P>Given the following text the "<B class=b>\1</B>" would only match the area in <B class=b>blue</B>...
+
+<pre class=ind>
+...some HTML...
+<B class=r>&lt;table name="outer table"></B><B class=b>
+  ...
+  &lt;table name="inner table">
+    ...
+  &lt;/table>
+  ...
+</B><B class=r>&lt;/table></B>
+...some more HTML...
+</pre>
+
+
+</div>
+
+
+<A name="INEST">
+<P class=cmd>$INEST(start match, [inner match], end match)
+<div class=cmdsub>
+<B>Restrictions:</B> Match only<BR>
+<B>Filter Types:</B> All (but mainly web)<BR>
+</div>
+<div class=cmdt>
+
+<P>$INEST ("Inner Nest") works just like $NEST above except that the initial starting tag and ending tag are located outside the command.  In other words, it assumes you've already found the tag your looking for and are only interested in discovering its end. Again the example from $NEST above might look like this...
+
+<P class=indb> &lt;table name=$AV(*outer*) ><B class=r>$INEST(&lt;table*>,&lt;/table>)</B> &lt;/table>
+
+<P>Given the following text, it would match the area in red...
+<pre class=ind>
+...some HTML...
+<B>&lt;table name="outer table"></B><B class=r>
+  ...
+  &lt;table name="inner table">
+    ...
+  &lt;/table>
+  ...
+</B><B>&lt;/table></B>
+...some more HTML...
+</pre>
+
+<P>the advantage here is it makes it easier to look for a <I><B>particular</B></I> starting tag (in this case a table with "outer" in the name) as opposed to just any starting tag of that type.  It would be hard to do this with $NEST alone since any check in the "start match" section would have to be true not only for the outer nested table but the inner ones as well. 
+
+</div>
+
+<A name="SET">
+<P class=cmd>
+$SET(\# or \0-\9=Value)<br>
+$SET(Variable=Expanded Value)
+<div class=cmdsub>
+<B>Restrictions:</B> Match or Replace<BR>
+<B>Filter Types:</B> All<BR>
+</div>
+</P>
+
+<div class=cmdt>
+
+<P>The $SET command can do two slightly different things. First, you can use it set a positional variable to a specific value.  Any replacement text,
+including other variables, can be set entered here. The first parameter is a positional variable \0 through \9 or the replacement stack variable \# (although the "\" is optional). Next is an equal followed by the value to be set. For example...
+
+<P class=ind>Set <B>\1</B> equal to <B>"foobar"</B>: <B>$SET(1=foobar)</B>
+
+<P class=ind>Set variable <B>\1</B> to print the contents of <B>\2</B>: <B>$SET(1=Two is \2)</B>
+
+<P>By placing $SET commands within a matching expression, you can set various
+values *only* if the matching expression reaches that point. This can be
+used for an if/then/else effect...
+
+<P>
+<pre class=ind>
+<B>Match:</B> name=(
+   one <B class=r>$SET(0=Naoko)</B> | 
+   two <B class=g>$SET(0=Atsuko)</B> |
+   three <B class=b>$SET(0=Michie)</B> | 
+   <B>$SET(0=Default)</B>)
+<B>Replace:</B> "\0 Matched"
+</table>
+</pre>
+
+<P>will produce the following results...
+
+<P class=ind>
+if name=<B class=r>one</B> then "<B>Naoko Matched</B>"<BR>
+if name=<B class=g>two</B> then "<B>Atsuko Matched</B>"<BR>
+if name=<B class=b>three</B> then  "<B>Michie Matched</B>"<BR>
+else "<B>Default matched</B>"<BR>
+
+<P>This form of the SET command has some limitations: The value a variable is set to isn't "expanded" until it's actually called in the replacement text.  This means if <B>\1</B> is "fish" and you use a SET command like <B>$SET(\2=\1 food)</B>,  the <B>\2</B> will not become "fish food" but will be <I>literally</I> set to "<B>\1 food</B>".  However this will be expanded to "<B>fish food</B>" when \2 is printed in the replacement section. Why is this important? Well, for one thing it means you can't set a positional variable to include part of itself as in $SET(\1=something and \1). 
+
+<p>However, don't give up hope just yet - this brings us to the <b>second</b> thing a $SET command can do - as of version Naoko 4.5 Proxomitron has a notion of <B class=r>"global variables"</b>.  These are named variables that can be set at any point in any filter (web or header) and stay set for the duration of the request. Once set, a variable may be accessed later within that filter or even a completely different filter.
+
+<p>Global variables have a name that can consist of alphanumeric characters (a-z and 0-9) but they must begin with a letter. To set a variable just use...<P>
+
+<P class="smbi">
+$SET(VarName=some value)<br>
+$SET(Chiyo=tensai)<br>
+$SET(Osaka02=atamaga warui)
+
+<p>Like with positionals the value can include replacement commands - however, unlike positionals, they're expaned fully at whatever point $SET is called. Because of this, you can set a variable even if the filter itself doesn't match later in the check. You can also set a variable to itself (see the $GET command below for more on that).
+
+<P>To clear a global variable, just call $SET like so...
+
+<P class="smbi">$SET(VarName=)
+
+<P>This is a good thing to do if you know it won't be used later on as it frees any memory used and speeds up the name lookup of other variables.
+</div>
+
+<A name="GET">
+<P class=cmd>$GET(VariableName)
+<div class=cmdsub>
+<B>Restrictions:</B> Replace only<BR>
+<B>Filter Types:</B> All<BR>
+</div>
+<div class=cmdt>
+
+<P>The $GET command can be used it in any replacement text to insert the current value of a global variable created by $SET (see above). This may even be within another $SET command. For example... 
+
+<p>
+<pre class=ind>
+<B>Match:</B> &lt;a * href=$AVQ(\1)<b class=b>$SET(LinkURL=>>\1<<)</b> *&gt;
+<B>Replace:</B> "The linked URL was: <b class=r>$GET(LinkURL)</b>"
+</pre>
+
+<p>Unlike positional variables such as "\1", global variables can be retrieved even in other filters as long as it's within the same request. Because of this, it's possible to have one filter grab some text at the top of a web page which some later filter then uses at the bottom. It's also possible to "grow" a variable using $SET and $GET together - for example...
+
+<pre class=ind>
+<b>$SET(foo=$GET(foo) more stuff)</b> ...adds to the end of "foo"
+<b>$SET(foo=more stuff $GET(foo))</b> ...adds to the start of "foo"
+<b>$SET(foo=$GET(foo) \1)</b>         ...adds value of "\1" to the end of "foo"
+<b>$SET(foo=$GET(foo)$GET(bar))</b>   ...adds value of "bar" to the end of "foo"
+</pre>
+
+Note that $GET should only be used for <b>named</b> variables and <b>not</b> positionals like "$GET(\1)" - all you need in such a case is just "<b>\1</b>".  
+
+</div>
+
+<A name="TST">
+<P class=cmd>
+$TST(\# or \0-\9=Matching expression)<br>
+$TST(VariableName=Matching expression)<br>
+$TST(VariableName or \# or \0-\9)
+<div class=cmdsub>
+<B>Restrictions:</B> Match or Replace<BR>
+<B>Filter Types:</B> All<BR>
+</div>
+</P>
+<div class=cmdt>
+
+<P>The $TST command can be used to test the contents of a global or positional variable to see if they match a specific value. For example...
+
+<P class="smbi">
+<b>$TST(Chiyo=*(tensai|short)*)</b>
+
+<p>would test as true if the variable "Chiyo" contained either the word "tensai" or "short".  Here's another example...
+
+<P class="smbi">
+<B>Match:</B> &lt;img * height=$AV(\1) * > <b class=r>$TST(\1=[#10-40])</b>
+
+<p>which would test as "true" only if "<B>\1</B>" contained a numeric value between 10 and 40.
+
+<p>Also, you must match the <b>full length</b> of the value for $TST to match sucessfully. To match only part of the variable's text, begin and end your match with an asterisk "*" as in the first example. 
+
+<p>$TST has a final trick up it's hat - if you leave the match out, it's possible to test a variable against the text currently being matched.  This can be used, for instance, to find the matched end tag for an unknown start tag...
+
+<p class="smbi">
+<B>Match:</B> &lt;<b class=b>([a-z]+)\1</b> * &lt;/<b class=r>$TST(\1)</b>&gt;
+
+
+<p>this would match "<b>&lt;AnyTag> stuff &lt;/AnyTag></b>", but not "<b>&lt;AnyTag> stuff &lt;/ADifferentTag></b>". Note that except for case the match must be exact - anything in the variable's value is just treated as plain text and not wildcards.
+
+<p class=ind><b class=r>Speed Tip</b>: using $TST is a bit slower than a normal match since it includes a variable lookup. When possible it's usually best to place it <b>after</b> the normal matching checks your filter does. Also try to avoid placing a wildcard like "<B>*</B>" directly in front of it. For example...
+</p>
+
+<pre class=ind>
+<B>Slow:</B> &lt;a *$TST(foo=*bar*)&lt;/a&gt;
+<B>Better:</B> &lt;a *&lt;/a&gt;$TST(foo=*bar*)
+</pre>
+
+<p class=ind>This can dramatically reduce the number of times $TST must be checked.
+
+</div>
+
+<A name="CON">
+<P class=cmd>$CON:(x,y[,z])
+<div class=cmdsub>
+<B>Restrictions:</B> Match only<BR>
+<B>Filter Types:</B> All<BR>
+</div>
+<div class=cmdt>
+
+<P>CON will be true only if the current connection number is 'x' of 'y' (optionally for every 'z' connections). It can be used to rotate values based on connection. The following for example will rotate between three values in \0 ...
+
+<P class=indb>
+($CON(1,3) $SET(0=Value one of three)|<BR>
+ $CON(2,3) $SET(0=Value two of three)|<BR>
+ $CON(3,3) $SET(0=Value three of three))<BR>
+
+<P>use the 'z' option to delay the rotation to every so many connections.
+</div>
+
+<A name="IHDR">
+<A name="OHDR">
+<P class=cmd>
+$IHDR(header-name:matching)<BR>
+$OHDR(header-name:matching)<BR>
+<div class=cmdsub>
+<B>Restrictions:</B> Match or Replace<BR>
+<B>Filter Types:</B> All<BR>
+</div>
+<div class=cmdt>
+
+<P> $OHDR and $IHDR Can be use to test the value of any outgoing or incoming HTTP header respectively. First include the specific header to test (no wildcards) followed by a match for the header's value (wildcards are allowed here). The command will be true only if the named header's value matches the 'matching' section. $OHDR tests outgoing headers while $IHDR tests incoming headers. For example this will only match is the "Referer" header contains 'microsoft.com'
+
+<P class=indb>$OHDR(Referer:*.microsoft.com)
+
+<P>Using these you can have web filter only match if specific header values are
+also true, or to capture and use header values into a variables to use in a
+filter's replacement.  You can use also them in HTTP header filters to check
+combinations of headers for a match.
+</div>
+
+<A name="RESP"></A>
+<P class=cmd>
+$RESP(matching)<BR>
+<div class=cmdsub>
+<B>Restrictions:</B> Match or Replace<BR>
+<B>Filter Types:</B> All<BR>
+</div>
+<div class=cmdt>
+
+<p>The $RESP command can be used to match or capture the response code returned by a web server (which you can view in the <a href="Log.html">log window</a>). Normally they'll look something like "<b>200 OK</b>" or "<b>404 Not Found</b>" etc.
+
+<p>The match starts directly with the returned code so does not include the "HTTP/x.x" portion of the reply line. It includes only the three digit status code and the descriptive text that usually follows it. For example, to match server redirects you could use "<b>$RESP(302*)</b>". It can also be useful for capturig information to include in a log file.
+</div>
+
+
+<A name="URL">
+<P class=cmd>$URL(matching value)
+<div class=cmdsub>
+<B>Restrictions:</B> Match or Replace<BR>
+<B>Filter Types:</B> All<BR>
+</div>
+<div class=cmdt>
+
+<P>$URL can be used to test the URL inside the matching portion of a filter. Normally you would use the filter's URL match for this, but by using this command you can check for different URL based on the text matched. It's also useful to capture portions of a URL into variables.  The following would capture the URL's path...
+
+<P class=indb>$URL(http://www.somehost.com/\1)  
+
+<P>Note: The URL matching now include the protocol portion of the URL in the test (i.e. the "http://").  Since Proxomitron now handles more than HTTP, that can come in useful. However it does make a change from previous versions, so you may need to adjust older filters.
+</div>
+
+<A name="TYPE">
+<P class=cmd>$TYPE(code)<BR>
+<div class=cmdsub>
+<B>Restrictions:</B> Match only<BR>
+<B>Filter Types:</B> Web filters<BR>
+</div>
+<div class=cmdt>
+
+<P>Content Type check command. This command can be used to limit a filter to
+only affect certain types of pages (like JavaScript files only). The "code"
+must be one of the following known types...
+
+<P>
+<div class=indb>
+<table border=0 cellpadding=0>
+<tr><td><B>htm</B><td>- Web pages
+<tr><td><B>css</B><td>- Cascading style sheets
+<tr><td><B>js</B><td>- JavaScript
+<tr><td><B>vbs</B><td>- VB Script
+<tr><td><B>oth</B><td>- Anything else
+</table>
+</div>
+
+<P>This is can be useful for web filters especially in their URL match. Its value is undefined in header filters (since the content-type may not be known yet). Keep in mind it's a fast and simple check. For more complex content-type checks you
+can also use "<B>$IHDR(Content-Type: ... )</B>" where "<B>...</B>" is any matching expression including wildcards.
+</div>
+
+<A name="RDIR">
+<P class=cmd>$RDIR(http://some.url.com/)<BR>
+<div class=cmdsub>
+<B>Restrictions:</B> Match or replace<BR>
+<B>Filter Types:</B> IN or OUT header filters only<BR>
+</div>
+<div class=cmdt>
+
+<P>The $RDIR (redirect) command is used to transparently redirect URLs to a different location. It's also possible to redirect to a local file by using the
+"http://file//filename" URL command syntax.   The new URL must be of a type
+Proxomitron understands (http, or with SSLeay, https).
+
+<P>Use both $RDIR and $JUMP (see below) commands in the replacement section of <B class=r>header</B> filters only. It's important to note that for outgoing headers the redirect will happen before the original site is ever contacted, but when used with incoming headers, the initial site must be contacted first.  These commands
+have no effect in web filters since by this point the original page has already begun loading into your browser. In such cases you can often use JavaScript to change to a new location as in...
+
+<P class=ind>&lt;script> document.location="http://some.new.url/"; &lt;/script></P>
+</div>
+
+<A name="JUMP">
+<P class=cmd>$JUMP(http://some.url.com/)<BR>
+<div class=cmdsub>
+<B>Restrictions:</B> Match or replace<BR>
+<B>Filter Types:</B> IN or OUT header filters only<BR>
+</div>
+<div class=cmdt>
+
+<P>Similar to the $RDIR command, the $JUMP command can be used to redirect a 
+URL to a different location.  However instead of transparent redirection
+this works by just telling your browser to go to that new location. It's
+more like using a refresh "meta" tag or setting document.location in
+a JavaScript (it actually send a 302 redirect command to the browser).
+
+<P>With $JUMP your browser is aware of the redirection and the URL you see
+will be updated to reflect the new location.  It works best for redirecting
+an entire page, while $RDIR is better at invisibly redirecting individual
+page elements like images or java apps.  Use $RDIR when you want the
+redirection to happen "behind the scenes" and use $JUMP when you want to
+simply go to a different site from the one requested.
+</div>
+
+<A name="STOP">
+<P class=cmd>$STOP()
+<div class=cmdsub>
+<B>Restrictions:</B> Match or Replace<BR>
+<B>Filter Types:</B> All<BR>
+</div>
+<div class=cmdt>
+<P>$STOP is a very simple command. If encountered in either the match or replace of a filter $STOP will turn that filter off for the rest of the page/connection. The current match will be allowed to complete, but once that happens, no further matching will be done on that filter.
+
+<P>This can be very useful for filters you only want to match once. Especially ones that insert something into a page at a given point.  For example, say you wanted to insert a small script after the <B>&lt;BODY></B> tag. You could use...
+
+<P>
+<div class=ind>
+   <table cellspacing=0 cellpadding=0>
+   <TR><TD valign=top><B>Match:</B><TD>&lt;body\s <B>\1</B>><BR>
+   <TR><TD valign=top><B>Replace:</B><TD>&lt;body <B>\1</B>><BR>
+   &lt;script>my script&lt;/script><BR>
+   <B class=r>$STOP( )</b>
+   </table>
+</div>
+
+<P>Not only does this insure the script will only be inserted once, but it also speeds things up since Proxomitron doesn't have to waste time checking for it anymore. Also note that $STOP will now do its thing even if the filter as a whole doesn't match as long as it's called at some point in the matching process.  
+
+</div>
+
+<A name="FILTER">
+<P class=cmd>$FILTER(True or False boolean value)<BR>
+<div class=cmdsub>
+<B>Restrictions:</B> Match or replace<BR>
+<B>Filter Types:</B> IN or OUT header filters only<BR>
+</div>
+<div class=cmdt>
+
+<P>The $FILTER command can be used to force a particular request to be filtered
+or not filtered regardless of it's type.  Normally only specific types are
+filtered (like text/html, text/css, image/gif, etc).  $FILTER can be used in
+the match or replace of any header filter and takes a "true" or "false" 
+value.  If true, the request will be run through the web filters regardless
+of it's type.  Beware this only makes sense for content that's text based. 
+
+<P>You can also use it to avoid "freezing" certain GIF images by using it in
+a header filter along with a URL match.
+
+<P>Take for example...
+
+<P class=indb>
+Out = "True"<BR>
+Key="URL: Don't freeze this gif"<BR>
+URL="www.somewhere.com/animate_me.gif"<BR>
+Replace="<B class=r>$FILTER(False)</B>"<BR>
+</P>
+</div>
+
+<A name="USEPROXY">
+<P class=cmd>$USEPROXY(True or False boolean value)<BR>
+<div class=cmdsub>
+<B>Restrictions:</B> Match or replace<BR>
+<B>Filter Types:</B> OUT header filters only<BR>
+</div>
+<div class=cmdt>
+
+<P>The $USEPROXY command also takes a "true" or "false" boolean value and can override the "<B>Use remote proxy</B>" check box for a given connection either turning the proxy on or off. It can be use to ensure a proxy is or isn't used for with a given site or for a particular action.
+
+<P>To have effect this command must be called in either the match or replace
+of an *outgoing* header filter. This is because the proxy setting must be
+established prior to connecting to the site.
+</div>
+
+<A name="SETPROXY">
+<P class=cmd>$SETPROXY(remote.proxy.name[:port])<BR>
+<div class=cmdsub>
+<B>Restrictions:</B> Match or replace<BR>
+<B>Filter Types:</B> OUT header filters only<BR>
+</div>
+<div class=cmdt>
+
+<P>The $SETPROXY command will force a connection to use a particular proxy. It
+overrides both the "Use remote proxy" checkbox and the current proxy chosen
+in the proxy selector. It's useful for insuring a particular proxy is used
+in a given situation or with a particular URL.
+
+<P>The proxy to set <B>must</B> be one <B>already</B> entered into the External Proxy Selector list.
+This command simply looks up and sets a proxy from that list.  It's usually 
+only necessary type the first part of the proxy name - the first proxy 
+matched in the list will be use. The partial match must be exact
+though (no wildcards).
+
+<P>Like the previous command  this command must be also called in either
+the match or replace of an *outgoing* header filter.
+</div>
+
+<A name="UESC">
+<P class=cmd>$UESC(escaped text)<BR>
+<div class=cmdsub>
+<B>Restrictions:</B> Replace only<BR>
+<B>Filter Types:</B> All<BR>
+</div>
+<div class=cmdt>
+
+<P>The $UESC command is intended to be similar to the JavaScript unescape()
+command. It will convert most URL escaped characters back to their ASCII
+form. It's useful for unescaping URLs that may be embedded in other URLs
+(an increasingly common trick used by many sites to track the links you
+click). Often characters like ":" and "/" will be escaped by their hex
+equivilents ("%3A" and "%2F") making the real URL hard to use.
+
+<P>$UESC can be used in the replacement text of a filter, and can be given 
+any valid replacement text as input (such as \1 variables). It will
+convert most escaped characters back to their correct form, but spaces 
+and any non-displayable ASCII characters will remain escaped.
+</div>
+
+<A name="ESC">
+<P class=cmd>$ESC(any text)<BR>
+<div class=cmdsub>
+<B>Restrictions:</B> Replace only<BR>
+<B>Filter Types:</B> All<BR>
+</div>
+<div class=cmdt>
+
+<P>The $ESC command is the reverse of <B>$UESC</B> command. Similar in function to the JavaScript escape() command, it converts most non-alphanumeric characters into hexadecimal escape codes (of the form %xx) making them safe for inclusion as part of a URL.
+
+<P>$ESC can be used in the replacement text of a filter, and can be given 
+any valid replacement text as input (such as \1 variables).
+</div>
+
+<A name="WESC">
+<P class=cmd>$WESC(any text)<BR>
+<div class=cmdsub>
+<B>Restrictions:</B> Replace only<BR>
+<B>Filter Types:</B> All<BR>
+</div>
+<div class=cmdt>
+
+<P>The $WESC is a bit like $ESC except it's designed to escape any wildcards or matching commands Proxomitron may use. It can be useful for inserting captured text into a blockfile when the text may contain possible wildcards characters like <B>*</B> or <B>?</B>.  
+
+<P>$WESC can be used in the replacement text of a filter, or even in the matching section if used within a command that does a replacement expansion on it's input (like $ADDLST and $ADDLSTBOX).
+</div>
+
+
+<p><hr><img src="images/bullet.gif" align=top><a href="Contents.html"> Return to main index</a>
+</DIV>
+</BODY>
+</HTML>

@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Configuration Dialog</TITLE>
+</HEAD>
+
+<script language="JavaScript" src="help.js"></script>
+<script>
+var t5_ssl="<b>Filter 'secure; (https://) pages</b><p>This option allows Proxomitron to actively filter secure SSL webpages, but only if you've supplied the <B>ssleay32.dll</b> and <b>libeay32.dll</b> files. For legal reasons Proxomitron doesn't come with these files (see below).";
+
+var t5_http="<B>Send HTTP/1.0 Requests</B><P>Some older proxies and perhaps a very few web servers many not like the newer HTTP/1.1 protocols Proxomitron now supports. If you click this Proxomitron will make all requests as HTTP/1.0  In most cases you shouldn't need to worry about this.";
+
+var t5_port="<B>Proxomitron's port</b><p>Any proxy like Proxomitron must 'listen' for requests from your browser on a special port number.  By default Proxomitron uses port 8080 (a common proxy port), but it can be set to use anything.  You may need to change this if, for example, some other application is already using this port.  If you do, be sure to change your browser's proxy settings to match.";
+</script>
+<LINK REL="stylesheet" type="text/css" href="help.css">
+<body marginwidth=0 marginheight=0>
+
+<div id="help" style="position:absolute;visibility:hidden;"></div>
+
+<table width=100% cellspacing=0 cellpadding=0 border=0>
+<tr><td class=hdr>
+<div class=hdr>The Configuration Dialog - HTTP
+</div></td>
+<td class=hdr><image align=right src="images/nav-a.jpg" usemap="#nav" border=0></td></tr>
+<tr><td colspan=2 class=hdsep><img src='images/clear.gif' width=1 height=1></td></tr>
+</table>
+
+<MAP NAME="nav">
+     <AREA SHAPE="RECT" HREF="CfgT4.html" alt="Previous" COORDS="6,0, 44,25">
+     <AREA SHAPE="RECT" HREF="Mainscreen.html" alt="Back to contents" COORDS="58,0, 94,24">
+     <AREA SHAPE="RECT" HREF="External Proxy Dialog.html" alt="Next" COORDS="112,0, 149,25">
+</MAP>
+
+<DIV class='text'>
+
+<P>Here is where several of the Proxomitron's global settings can be changed. Click a tab and area for an explanation of its function.</P>
+
+
+<A name="foo">
+<P class=ctr>
+<IMG SRC="images/CfgT5.jpg" USEMAP="#T5" BORDER=0>
+</P>
+
+<MAP NAME="T5">
+     <AREA SHAPE="RECT" HREF="CfgT4.html#foo" COORDS="167,30, 214,45">
+     <AREA SHAPE="RECT" HREF="CfgT3.html#foo" COORDS="117,29, 164,46">
+     <AREA SHAPE="RECT" HREF="CfgT2.html#foo" COORDS="68,28, 113,46">
+     <AREA SHAPE="RECT" HREF="Configuration Dialog.html#foo" COORDS="14,29, 65,46">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,t5_ssl);" COORDS="36,146, 269,175">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,t5_http);" COORDS="35,124, 206,141">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,t5_port);" COORDS="197,84, 263,104">
+</MAP>
+
+<P>&nbsp;</P>
+<P class=li><B>The "HTTP" Tab</B></P>
+
+<P>This allows you to control some of Proxomitron's network settings.</P>
+
+<p>Proxomitron's proxy port is the number Proxomitron uses to "listen" for connections from your browser. You can change this from the default of 8080 if you like (or need to because some other program is using the same port), but Proxomitron must be restarted for this to take effect. <span class=r><b>If you do, be sure to also change your browser's proxy setting to match the new port.</b></span></p>
+
+<p><b class=li>Enabling SSL Filtering</b></p>
+
+<p>If you want to use the SSLeay .DLL files to filter <B>Secure</B> (https://) pages, you need to check the box here after adding the .dll files to Proxomitron's program folder.</P>  
+
+<p>However, <b class=r>Use this with caution!</b> If the SSL is being used for something sensitive (like on-line banking or credit card purchases) you're probably better off <b>not</b> filtering the connection.</p>
+
+<p>Also this option is only available after you place the <B>ssleay32.dll</b> and <b>libeay32.dll</b> files in Proxomitron's program folder. Because of the laws regarding exporting cryptography from the US, Proxomitron does <B>not</B> include these .DLL files. However with some luck you may find them as part of other packages.</p>
+
+<p><hr><img src="images/bullet.gif" align=top><a href="Contents.html"> Return to main index</a>
+</DIV>
+</BODY>
+</HTML>

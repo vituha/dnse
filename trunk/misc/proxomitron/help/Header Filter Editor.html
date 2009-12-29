@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Header Filter Editor</TITLE>
+</HEAD>
+
+<script>
+var rep="<b>Replacement Text</b><p>The replacement text will replace the header's contents with text of your own. You can also use matching variables to capture parts of the original header's text (See <A HREF='Matching Rules.html'>Matching Rules</A>).<P>To delete a header altogether, simply leave this field blank.<P>Right-clicking over this window will also let you insert a file URL or MIME encode/decode a selected portion of text.";
+
+var mch="<B>Matching Text</b><p>The header filter matching clause uses the Proxomitron's <A HREF='Matching Rules.html'>Matching Rules</A> to limit the filter to only headers containing certain information. For instance, under the <B>User-Agent:</B> filter, a matching clause of <B>*nav*</B> would restrict it to just matching Netscape.<P>Just place an asterisk '<B>*</B>' here if you want to match all headers of this type, or leave this field blank to add a new header of your own.<P>You can test a match by right-clicking over this window and selecting <A HREF='Matching Test Window.html'>Test matching</A>. You can also right-click to insert or edit blocklists here too.";
+
+var url="<B>URL Match</B><P>The URL match allows you to limit the header filter to only affect certain web sites. You can use the full compliment of <A HREF='Matching Rules.html'>Matching Rules</A> to match against the site's URL. Note that 'http://' is first removed from the URL before the match is done.  This also allows you to create several header filters for the same HTTP header, having different values sent to different web sites. Here's some examples...<P><B>'www.bison.com|www.frog.com'</B> - will only match URLs beginning with 'www.bison.com' or 'www.frog.com'<P><B>'*sailormoon&amp;(^*negaverse)'</B> - would match any URL that has the word 'sailormoon' unless it also has the word 'negaverse'<p>For anything more elaborate, you can place a call to a <a href='CfgT4.html'>URL blockfile</a> here.  Blockfiles are very useful when you either have many URLs to check or want to use the same check in multiple filters. Right click over the URL window to insert or edit a blockfile list.<P><P>To test your URL match right-click and select <a href='Matching Test Window.html'>Test matching</a> from the menu.";
+
+var hed="<B>HTTP Header name</B><p>This contains the name of the header you want to filter.  An easy way to find this is simply copy the header you want from the <A HREF='Log.html'>Log Window</A> and just paste it here.<P>If the header name is followed by a colon '<b>:</b>', you can place a descriptive comment after it. This will have no effect on the actual filtering.<P>'<B>HTTP-Header-Name: optional comment</B>'</P>";
+
+var hwWid=500;
+</script>
+
+<script language="JavaScript" src="help.js"></script>
+
+<LINK REL="stylesheet" type="text/css" href="help.css">
+<body marginwidth=0 marginheight=0>
+
+<div id="help" style="position:absolute;visibility:hidden;"></div>
+
+<table width=100% cellspacing=0 cellpadding=0 border=0>
+<tr><td class=hdr>
+<div class=hdr>The Header Filter Editor
+</div></td>
+<td class=hdr><image align=right src="images/nav-a.jpg" usemap="#nav" border=0></td></tr>
+<tr><td colspan=2 class=hdsep><img src='images/clear.gif' width=1 height=1></td></tr>
+</table>
+
+<MAP NAME="nav">
+     <AREA SHAPE="RECT" HREF="HTTP Header Filters.html" alt="Previous" COORDS="6,0, 44,25">
+     <AREA SHAPE="RECT" HREF="HTTP Header Filters.html" alt="Back to contents" COORDS="58,0, 94,24">
+     <AREA SHAPE="RECT" HREF="Matching Test Window.html" alt="Next" COORDS="112,0, 149,25">
+</MAP>
+
+<DIV class='text'>
+
+<P>Here is where you change HTTP header filters or create new ones. Click on an area below to get an explanation of its function.</P>
+
+<P class=ctr><IMG SRC="images/HttpEdit.gif" usemap="#hedtr" BORDER=0></P>
+
+<MAP NAME="hedtr">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,rep);" COORDS="27,233, 416,251">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,mch);" COORDS="27,174, 417,192">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,url);" COORDS="26,111, 418,130">
+     <AREA SHAPE="RECT" HREF="javascript:nop();" OnClick="pophelp(this,event,hed);" COORDS="24,51, 312,70">
+</MAP>
+
+<P>Unlike web page filters, the header filter's name is very important. It's simply the name of the header you want filtered and, except for case,  it must match exactly (sorry no wildcards here). A comment can be added after the colon ":" which will be ignored during filter matching.</P>
+
+<P>The matching clause and replacement text work similar to the <A HREF="Web Page Filter Editor.html">web page filter editor</A> but match on the header's contents only (not the header's name).</P>
+
+<P>A header filter can basically do one of three things: delete an existing header, modify an existing header, or add a new header.  </P>
+
+<UL>
+<LI><B class=b>To change a header:</B> both the matching expression <B><I>and</I></B> replacement text must have something in them. Just use "<B>*</B>" in the matching clause to match all headers of that type.<p>
+<LI><B class=b>To delete a header:</B> include a matching expression, but leave the replacement text blank.<p>
+<LI><B class=b>To always add a header:</B> include a replacement text, but leave the matching expression blank.<p>
+<LI><B class=b>To add a header only if it doesn't exist:</B> include a replacement text, but use "<B>(^?)</b>" in the match. Looks odd? Well, it is! Since <b>(^...)</b> means NOT and <b>?</b> means ANY character, (^?) translates into "not any character"! <p>
+</UL>
+
+
+<P class=li><B>Testing a match</B></P>
+
+<P>To test a filter's matching clause or URL match right-click over either the matching edit box or the URL edit box and select "Test matching" from the pop-up menu.  This will take you to Proxomitron's <a href="Matching Test Window.html">Matching Test Window</a> where you can check to see what your filter will do. Just enter the contents of the header you wish to test in the window (enter only the stuff that appears after the "<B>Header-Name:</B>" bit, do not include the actual header name itself).</P>
+
+
+<P class=li><B>The URL: header</B></P>
+
+<p>Sometimes you may want to change a web page's URL itself.  Although not really a header, Proxomitron will treat the name <b>"URL:"</b> as a special URL header filter.  In this case the match will be the full URL (including the http:// part that the normal URL match ignores).</p>
+<p>In the replacement text you'll probably want to use one of the <B>redirect</b> matching commands.  There are two <B>$JUMP(someurl)</B> and <B>$RDIR(someurl)</B>. Both will redirect the connection to a new (possibly different) URL.</p>
+
+<p><B class=li>$JUMP( )</B> works by sending a redirect back to your browser and letting it do the work.  This is handy because it browser will know it's got a new URL and display it correctly in the location bar.</p>
+
+<p><B class=li>$RDIR( )</B> Is more sneaky and redirects the connection in Proxomitron without telling your browser. This is useful when you want your browser to think it going one place when, in reality, it's going somewhere else.</p>
+
+<p>Here's an example of using the URL: header to redirect a URL.  This filter will convert a hostname like "<B>some-site</b>" to "<b>www.some-site.com</b>".  It just adds "www." and ".com" to any hostname without any periods (note: this filter would be enabled under the "out" column).</p>
+
+<p>
+<B class=r>HTTP Header =</b> <b> URL:  Dot-Communize dotless hostnames (out)</b><br>
+<B class=r>Match =</b> <b> http://([^./]+)\1/\2</b><br>
+<B class=r>Replace =</b> <b> $JUMP(http://www.\1.com/\2)</b><br>
+</p>
+
+<p>Here's the important features of this filter...</p>
+<p><UL>
+<li>The header name begins with <b>"URL: ...."</b> This tells it we want to filter the URL itself.
+<li>The match checks for a hostname that lacks any dots or slashes (<b>[^./]</b>) and captures this into variable "<b>\1</b>".  Variable "<b>\2</b>" then captures the rest of the path. (see the <a href="Matching Rules.html">Matching Rules</a> for all the gory details).
+<li>Finally, in the replace, we take the parts of the original URL we captured and use them to cobble together a new URL for the $JUMP(...) command.
+</UL>
+
+<P class=li><B>Killing connections and rejecting selected URLs</B></P>
+
+<P>A new option in the replacement text, "<B>\k</B>", allows you to kill any connection before it is loaded. When used with the URL match, you can create a "ban list" of URLs never to accept. Look at the "<B>URL-Killer:</B>" HTTP filter in the default filter set for an example of this. </P>
+
+<P class=li><B>MIME encode/decode and password strings</B></P>
+
+<P>Right-clicking over the replacement text window will reveal an option to MIME encode/decode an selected text. This can be used to create password entries to automatically log you into sites or proxy servers that require a password.  For web sites use the following header filter...</P>
+
+<P>
+<B class=r>Name=</b> <b>Authorization: </B><br>
+<B class=r>URL=</b> <b>The site you wish to send the password to</B><br>
+<B class=r>Replace=</b> <b>basic username:password</B>
+</P>
+
+<P>Next select the <B>username:password</B> portion and select <B>MIME &gt; encode</B> from the context menu. The end result should look something like this...</P>
+
+<P class=li><B>basic dXNlcm5hbWU6cGFzc3dvcmQ=</B></P>
+
+<P>When enabled, this rule will send your password string to the server automatically and you will not be prompted for a login.  Note: this only works for sites using the "basic" HTTP authentication scheme. You can use the decode option if you need to see or change your password at a later date. </P>
+
+<P>Creating a proxy server password is much the same - just change the header name to...</P>
+
+<P><B class=r>Name =</b> <b>Proxy-Authorization: </B></P>
+
+<P>and remove any URL match (since the proxy server will be used for all URLs)</P>
+
+<p><hr><img src="images/bullet.gif" align=top><a href="Contents.html"> Return to main index</a>
+</DIV>
+</BODY>
+</HTML>

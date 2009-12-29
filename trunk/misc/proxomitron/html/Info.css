@@ -1,0 +1,26 @@
+/*  Style Sheet for Proxomitron Information pages
+ *  http://local.ptron/.pinfo/
+ */
+
+td.ru.c2{text-align: right;}
+td.ru.c5{text-align: right;}
+table.ru{width: 100%;}
+
+tr.DNS {background-color:#bbffff;}
+tr.Connecting {background-color:#ffbbbb;}
+tr.Request {background-color:#ffbbff;}
+tr.Reply {background-color:#ffffbb;}
+tr.Loading {background-color:#bbffbb;}
+tr.Retry {background-color:#dd0000; color: white;}
+
+td{text-align: left; border: solid 1px #000000;  padding: 2px 4px; }
+td.th{background-color:yellow; font-weight:bold;}
+td.ld.th{background-color:#88ff88; font-weight:normal;}
+
+table{border-collapse: collapse;  border-spacing: 0px;}
+
+h2{background-color:#88ff88; border: solid 1px #000000; padding: 3px;}
+
+h3{background-color:yellow;  border: solid 1px #888800; padding: 1px;}
+
+body{font-family: Arial; background-color:white; color:#444444; font-size:10pt;}

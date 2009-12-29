@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Matching Character Reference</TITLE>
+</HEAD>
+
+<script language="JavaScript" src="help.js"></script>
+<LINK REL="stylesheet" type="text/css" href="help.css">
+
+<body marginwidth=0 marginheight=0>
+
+<table width=100% cellspacing=0 cellpadding=0 border=0>
+<tr><td class=hdr>
+<div class=hdr>Meta Character Quick Reference
+</div></td>
+<td class=hdr><image align=right src="images/nav-a.jpg" usemap="#nav" border=0></td></tr>
+<tr><td colspan=2 class=hdsep><img src='images/clear.gif' width=1 height=1></td></tr>
+</table>
+
+<MAP NAME="nav">
+     <AREA SHAPE="RECT" HREF="Tips And Tricks.html" alt="Previous" COORDS="6,0, 44,25">
+     <AREA SHAPE="RECT" HREF="Contents.html" alt="Back to contents" COORDS="58,0, 94,24">
+     <AREA SHAPE="RECT" HREF="Filter Merge.html" alt="Next" COORDS="112,0, 149,25">
+</MAP>
+
+<style>
+td {font-weight: normal; font-size:10pt; }
+td.bd {font-weight:bold; color: green;}
+</style>
+
+<div class='text'>
+
+<P>Here's a quick list of all Proxomitron's special characters. See <A HREF="Matching Rules.html">Matching Rules</A> for more detailed explanations.
+
+<P class=li><B>Matching meta characters</B> 
+<P>
+
+<table>
+<TR><TD class=bd>*&nbsp;&nbsp; <TD>match a string of any characters.
+<TR><TD class=bd>?&nbsp;&nbsp; <TD>match any single character.
+<TR><TD class=bd>[abc]&nbsp;&nbsp; <TD>match any single character listed in the brackets.
+<TR><TD class=bd>[^a-z]&nbsp;&nbsp; <TD>match any single character not listed in the brackets.
+<TR><TD class=bd>[#x:y]&nbsp;&nbsp; <TD>numeric range match.  Supports negative numbers.
+<TR><TD class=bd>" "&nbsp;&nbsp; <TD>(a Space) Always matches but also consumes any whitespace.
+<TR><TD class=bd>\s&nbsp;&nbsp; <TD>match string of whitespace only.
+<TR><TD class=bd>\w&nbsp;&nbsp; <TD>match any number of non-space characters except ">".
+<TR><TD class=bd>\t&nbsp;&nbsp; <TD>matches a single tab character.
+<TR><TD class=bd>\r&nbsp;&nbsp; <TD>matches a single carriage return character.
+<TR><TD class=bd>\n&nbsp;&nbsp; <TD>matches a single newline character.
+<TR><TD class=bd>\0-9&nbsp;&nbsp; <TD>put match into a variable - works like "*" unless following stuff in parentheses: "( ... )\1"
+<TR><TD class=bd>\#&nbsp;&nbsp; <TD>append match on to replacement stack.
+<TR><TD class=bd>&amp;&nbsp;&nbsp; <TD>AND function.
+<TR><TD class=bd>&amp;&amp;&nbsp;&nbsp; <TD>AND-AND (like AND but limits scope of second part).
+<TR><TD class=bd>|&nbsp;&nbsp; <TD>OR function.
+<TR><TD class=bd>(^...)&nbsp;&nbsp; <TD>NOT function.
+<TR><TD class=bd>(...)&nbsp;&nbsp; <TD>group a sub-expression.  Negate with "(^ ... )"
+<TR><TD class=bd>+&nbsp;&nbsp; <TD>repeat previous match until there are no more left.
+<TR><TD class=bd>++&nbsp;&nbsp; <TD>same as '+' except matches to up to the point where what follows is true.
+<TR><TD class=bd>+{5}&nbsp;&nbsp; <TD>the + or ++ pattern run will match only 5 repetitions.
+<TR><TD class=bd>+{2,7}&nbsp;&nbsp; <TD>the + or ++ pattern run will match 2 to 7 repetitions.
+<TR><TD class=bd>+{3,*}&nbsp;&nbsp; <TD>the + or ++ pattern run will match 3 or more repetitions.
+<TR><TD class=bd>\&nbsp;&nbsp; <TD>escape any meta character's special meaning.
+<TR><TD class=bd>=&nbsp;&nbsp; <TD>magic equal - absorbs leading/trailing spaces.
+<TR><TD class=bd>"&nbsp;&nbsp; <TD>magic quote - matches double or single quote.
+<TR><TD class=bd>'&nbsp;&nbsp; <TD>smart ending quote - use to deal with nested quotes.
+<TR><TD class=bd>&lt;start&gt;&nbsp;&nbsp; <TD>insert this at the beginning of a page
+<TR><TD class=bd>&lt;end&gt;&nbsp;&nbsp; <TD>insert this at the end of a page
+</table>
+
+<P class=li><B>Special Matching Commands</B>
+
+<P class=smb>(m=matching value r=replacement text b=boolean value)
+<P>
+
+<table>
+<TR><TD class=bd>$ADDLST(ListName, r)&nbsp;&nbsp; <TD>add a new item to a blocklist
+<TR><TD class=bd>$ADDLSTBOX(ListName, [title,] r)&nbsp;&nbsp; <TD>prompt user for item to add to blocklist
+<TR><TD class=bd>$ALERT(r)&nbsp;&nbsp; <TD>display a pop-up alert message
+<TR><TD class=bd>$ASK(List, List, prompt, r [,r])&nbsp;&nbsp; <TD>ask user if item should be filtered
+<TR><TD class=bd>$AV(m)&nbsp;&nbsp; <TD>match an attribute's value excluding any quotes
+<TR><TD class=bd>$AVQ(m)&nbsp;&nbsp; <TD>match an attribute's value including any quotes
+<TR><TD class=bd>$CON(x,y,[z])&nbsp;&nbsp; <TD>test current connection number
+<TR><TD class=bd>$CONFIRM(r)&nbsp;&nbsp; <TD>display pop-up Yes/No dialog
+<TR><TD class=bd>$DTM(fmt)&nbsp;&nbsp; <TD>insert current date, time or connection number
+<TR><TD class=bd>$ESC(r)&nbsp;&nbsp; <TD>escape special characters in a string to make it URL safe (reverse of $UESC)
+<TR><TD class=bd>$FILE(filename)&nbsp;&nbsp; <TD>Insert a file into the replacement
+<TR><TD class=bd>$FILTER(b)&nbsp;&nbsp; <TD>force filtering or not
+<TR><TD class=bd>$GET(var)&nbsp;&nbsp; <TD>returns the value of a named global variable
+<TR><TD class=bd>$IHDR(header: m)&nbsp;&nbsp; <TD>match input headers
+<TR><TD class=bd>$INEST(start,[m],end)&nbsp;&nbsp; <TD>like nest, but assumes inital tag already matched
+<TR><TD class=bd>$JUMP(url)&nbsp;&nbsp; <TD>redirect URL (non-transparent)
+<TR><TD class=bd>$KEYCHK(keycodes)&nbsp;&nbsp; <TD>Test for a user keypress
+<TR><TD class=bd>$LOCK()&nbsp;&nbsp; <TD>Lock filter for synchronization between pages
+<TR><TD class=bd>$LOG(r)&nbsp;&nbsp; <TD>add text to log window
+<TR><TD class=bd>$LST(listname)&nbsp;&nbsp; <TD>include a blocklist in any matching expression
+<TR><TD class=bd>$NEST(start,[m],end)&nbsp;&nbsp; <TD>find pair of nested tags
+<TR><TD class=bd>$OHDR(header: m)&nbsp;&nbsp; <TD>match output headers
+<TR><TD class=bd>$RDIR(url)&nbsp;&nbsp; <TD>redirect URL (transparent)
+<TR><TD class=bd>$RESP(m)&nbsp;&nbsp; <TD>Match on a web server's response status code
+<TR><TD class=bd>$SET(0=r)&nbsp;&nbsp; <TD>set a positional variable (\0-9 or \#) to a specific value.
+<TR><TD class=bd>$SET(var=r)&nbsp;&nbsp; <TD>set a named global variable to a specific value.
+<TR><TD class=bd>$SETPROXY&nbsp;&nbsp; <TD>select a particular proxy for connection .
+<TR><TD class=bd>$STOP()&nbsp;&nbsp; <TD>turn filter off for rest of page
+<TR><TD class=bd>$TST(var=m)&nbsp;&nbsp; <TD>tests the value of a named or positional varible
+<TR><TD class=bd>$TST(var)&nbsp;&nbsp; <TD>compares the value of a varible against the current text
+<TR><TD class=bd>$TYPE(type value)&nbsp;&nbsp; <TD>check type of page being processed
+<TR><TD class=bd>$UESC(r)&nbsp;&nbsp; <TD>remove hexidecimal "%xx" style URL escapes
+<TR><TD class=bd>$UNLOCK()&nbsp;&nbsp; <TD>Unlock a $LOCK'ed filter (optional)
+<TR><TD class=bd>$URL(m)&nbsp;&nbsp; <TD>match a the URL inside the matching portion of a filter.
+<TR><TD class=bd>$USEPROXY(b)&nbsp;&nbsp; <TD>turn external proxy on or off for connection
+<TR><TD class=bd>$WESC(r)&nbsp;&nbsp; <TD>escape any wildcards in text
+</table>
+
+<P class=li><b>Replacement Text Escapes</b>
+<P>
+
+<table>
+<TR><TD class=bd>\0-9&nbsp;&nbsp; <TD>Insert a variable into the replacement text.
+<TR><TD class=bd>\#&nbsp;&nbsp; <TD>Inserts one item from the replacement stack each time it is used - first in first out
+<TR><TD class=bd>\@&nbsp;&nbsp; <TD>Insert all the items in the replacement stack.
+<TR><TD class=bd>\\&nbsp;&nbsp; <TD>Insert a single backslash.
+<TR><TD class=bd>\a&nbsp;&nbsp; <TD>Insert any anchor text from a URL (anything following a "#").
+<TR><TD class=bd>\d&nbsp;&nbsp; <TD>Insert The Proxomitron base directory in "file://" URL format.
+<TR><TD class=bd>\h&nbsp;&nbsp; <TD>Insert the host portion of the URL.
+<TR><TD class=bd>\k&nbsp;&nbsp; <TD>Kills the current connection.
+<TR><TD class=bd>\p&nbsp;&nbsp; <TD>Insert the path portion of the URL.
+<TR><TD class=bd>\q&nbsp;&nbsp; <TD>Insert any query string from a URL (anything following a "?").
+<TR><TD class=bd>\u&nbsp;&nbsp; <TD>Insert the full URL of the current web page.
+<TR><TD class=bd>\x&nbsp;&nbsp; <TD>Insert URL command prefix if defined.
+</table>
+
+<p><hr><img src="images/bullet.gif" align=top><a href="Contents.html"> Return to main index</a>
+</div>
+</BODY>
+</HTML>
