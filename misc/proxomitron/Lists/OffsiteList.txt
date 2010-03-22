@@ -1,9 +1,0 @@
-#
-# Kill all offsite Resources list: images, inputs, iframes etc.
-# 
-# This list is used by "Kill off-site Resources {sites} [ALX]" filter.
-
-# Russian Edition system URLs:
-$LST(OffsiteList-RE)
-
-# User added URLs:

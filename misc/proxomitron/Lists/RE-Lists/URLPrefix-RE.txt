@@ -1,9 +1,0 @@
-#
-# Proxomitron URL Prefix file - Russian Edition (NOADDURL)
-# Don't modify! Please use "Lists\URL Prefix.txt" instead.
-#
-# There are some sites which links should be left prefixed
-#
-
-groups.yahoo.com/
-([^/]++.|)yandex.ru/

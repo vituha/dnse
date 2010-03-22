@@ -1,8 +1,0 @@
-#
-# Allow cookies from the following sites - Russian Edition (NOADDURL)
-# Don't modify! Please use "Lists\AllowCookies.txt" instead.
-
-proxomitron.ru/board/
-forum.ru-board.com/
-computercops.biz/
-gmail.google.com/
