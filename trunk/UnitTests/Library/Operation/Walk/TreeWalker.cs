@@ -24,20 +24,23 @@ namespace VS.Library.UT.Operation.Walk {
         [Test]
         public void Walk() {
             Stats.Clear();
-            ObjectWalker walker = ObjectWalkerFactory.CreateWalker();
+            ObjectWalker walker = new ObjectWalker();
+			walker.RegisterAllKnownAdapters();
             walker.ObjectHit += new EventHandler<ObjectHitEventArgs>(walker_ObjectHit);
             walker.ContainerHit += new EventHandler<ContainerHitEventArgs>(walker_ContainerHit);
+        	TotalCount = 0;
             Console.WriteLine("\nWalking over the TestGraph...\n");
             walker.Walk(TestGraph);
-            DisplayStats(walker);
+            DisplayStats();
         }
 
         private Dictionary<Type, int> Stats = new Dictionary<Type, int>();
+		private int TotalCount { get; set; }
 
-        private void DisplayStats(ObjectWalker walker) {
+        private void DisplayStats() {
             Console.WriteLine("\nTestGraph Statistics:");
 
-            Console.WriteLine("\nTotal objects: " + walker.TotalCount);
+            Console.WriteLine("\nTotal objects: " + TotalCount);
             Console.WriteLine("\nPer Type:");
 
             foreach (var pair in Stats) {
@@ -47,7 +50,7 @@ namespace VS.Library.UT.Operation.Walk {
             }
         }
 
-        private string FormatTypeString(Type type) {
+        private static string FormatTypeString(Type type) {
             StringBuilder sb = new StringBuilder(type.Name);
             if (type.IsGenericType) {
                 Type[] args = type.GetGenericArguments();
@@ -71,6 +74,7 @@ namespace VS.Library.UT.Operation.Walk {
         }
 
         private void RegisterObject(ObjectWalker walker, object obj) {
+			TotalCount++;
             if (obj != null) {
                 Type type = obj.GetType();
                 int counter;
