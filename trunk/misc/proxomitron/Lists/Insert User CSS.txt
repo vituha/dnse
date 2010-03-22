@@ -1,8 +1,0 @@
-#
-# URL List for "Insert User CSS {sites} [YDY]" filter.
-#
-# List servers, wich have an ugly layout and
-# this filter will insert my favourite CSS in. 
-# 
-# All wildcard are allowed.
-#
