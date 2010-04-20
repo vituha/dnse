@@ -28,17 +28,27 @@
           <Default>PropType</Default>
           <Function />
         </Literal>
+        <Literal Editable="true">
+          <ID>fieldName</ID>
+          <Type />
+          <ToolTip />
+          <Default>fieldName</Default>
+          <Function />
+        </Literal>
       </Declarations>
-      <Code Language="csharp" Kind="method decl" Delimiter="$"><![CDATA[        private static object _$PropName$Lock = new object();
-        private static $PropType$ _$PropName$;
+      <Code Language="csharp" Kind="method decl" Delimiter="$"><![CDATA[        private static object $fieldName$Lock= new object();
+        private static $PropType$ $fieldName$;
         public static $PropType$ $PropName$
         {
             get {
-                if (_$PropName$ == null)
+                if ($fieldName$ == null)
                 {
-                    _$PropName$ = new $PropType$();
+					lock($fieldName$Lock) 
+					{
+                    	$fieldName$ = new $PropType$();
+					}
                 }
-                return _$PropName$;
+                return $fieldName$;
             }
         }]]></Code>
     </Snippet>
