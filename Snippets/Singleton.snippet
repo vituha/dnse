@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Singleton</Title>
+      <Author></Author>
+      <Description></Description>
+      <HelpUrl></HelpUrl>
+      <SnippetTypes />
+      <Keywords />
+      <Shortcut></Shortcut>
+    </Header>
+    <Snippet>
+      <References />
+      <Imports />
+      <Declarations>
+        <Literal Editable="true">
+          <ID>NewLiteral</ID>
+          <Type />
+          <ToolTip />
+          <Default>NewLiteral</Default>
+          <Function />
+        </Literal>
+        <Literal Editable="true">
+          <ID>ClassName</ID>
+          <Type />
+          <ToolTip />
+          <Default>Singleton2</Default>
+          <Function />
+        </Literal>
+      </Declarations>
+      <Code Language="csharp" Kind="type decl" Delimiter="$"><![CDATA[    public sealed class $ClassName$
+    {
+        private $ClassName$() { }
+
+        private static $ClassName$()
+        {
+            Instance = CreateInstance();
+        }
+
+        public static $ClassName$ Instance { get; private set; }
+
+        private static $ClassName$ CreateInstance()
+        {
+            return new $ClassName$();
+        }
+    }	]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
