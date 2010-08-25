@@ -21,8 +21,8 @@ namespace Log4NetTest.ConsoleHost
         /// <summary>
         /// The logger.
         /// </summary>
-        private readonly ILog logger = 
-            LogManager.GetLogger(typeof(Program).FullName.Strip(ApplicationContext.Current.NamespacePrefix));
+        private readonly ILog logger =
+            LogManager.GetLogger(typeof(Program));
 
         /// <summary>
         /// The main routine.
@@ -38,7 +38,10 @@ namespace Log4NetTest.ConsoleHost
         /// </summary>
         private void Run()
         {
-            logger.InfoFormat("App is running");
+            using (log4net.ThreadContext.Stacks["NDC"].Push("my context"))
+            {
+                logger.InfoFormat("App is running");
+            }
             Console.ReadKey();
         }
     }
