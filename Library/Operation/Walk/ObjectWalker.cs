@@ -61,7 +61,9 @@ namespace VS.Library.Operation.Walk {
 		/// </summary>
         public object[] CurrentPath { 
             get {
-                return _path.ToArray();
+                object[] result = _path.ToArray();
+                Array.Reverse(result);
+                return result;
             } 
         }
 
