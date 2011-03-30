@@ -8,7 +8,6 @@ using System.IO;
 using System.Diagnostics;
 
 using FixtNS = VS.Library.Pattern.Lifetime;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace VS.Library.UT.Cache
 {
