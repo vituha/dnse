@@ -7,7 +7,6 @@ using System.Collections;
 
 using VS.Library.Collections;
 using VS.Library.Collections.Adapters;
-using NUnit.Framework.SyntaxHelpers;
 using VS.Library.Validation;
 
 namespace VS.Library.UT.Collections.Adapters

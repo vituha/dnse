@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 using VS.Library.Text;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace VS.Library.UT.Text
 {

@@ -65,11 +65,7 @@ namespace VS.Library.Text
         private void BuildValue()
         {
             var sb = new StringBuilder(Length);
-            var itemCount = buffer.Count;
-            for (int i = 0; i < itemCount; i++)
-            {
-                sb.Append(buffer[i]);
-            }
+            buffer.ForEach(s => sb.Append(s));
             value = sb.ToString();
         }
     }
