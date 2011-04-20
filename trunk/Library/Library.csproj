@@ -63,6 +63,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\ArrayExtensions.cs" />
+    <Compile Include="Collections\CollectionExtensions.cs" />
+    <Compile Include="Collections\CollectionUtil.cs" />
+    <Compile Include="Collections\Empty.cs" />
+    <Compile Include="Collections\EnumerableExtensions.cs" />
+    <Compile Include="Collections\ListExtensions.cs" />
+    <Compile Include="Collections\Range.cs" />
     <Compile Include="Diagnostics\Exceptions\ObjectUnavailableException.cs" />
     <Compile Include="Diagnostics\Exceptions\ObjectUnusableException.cs" />
     <Compile Include="Operation\Walk\ObjectWalker.cs" />
