@@ -76,6 +76,7 @@
     <Compile Include="Collections\Adapters\EnumerableAdapter.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\CollectionFactory.cs" />
+    <Compile Include="Collections\CollectionReadOnlyException.cs" />
     <Compile Include="Collections\CollectionVisitor.cs" />
     <Compile Include="Collections\Adapters\TypedCollectionAdapter.cs" />
     <Compile Include="Collections\Adapters\TypedListAdapter.cs" />
@@ -84,6 +85,15 @@
     <Compile Include="Collections\Delegates.cs" />
     <Compile Include="Collections\EnumerableExtensions.cs" />
     <Compile Include="Collections\Adapters\ListAdapter.cs" />
+    <Compile Include="Collections\Views\CollectionExceptions.cs" />
+    <Compile Include="Collections\Views\DelegateCollectionAdapter.cs" />
+    <Compile Include="Collections\Views\ListRange.cs" />
+    <Compile Include="Collections\Views\CollectionAdapterBase.cs" />
+    <Compile Include="Collections\Views\ReadOnlyDictionary.cs" />
+    <Compile Include="Collections\Views\ReadOnlyDictionaryBase.cs" />
+    <Compile Include="Collections\Views\ReadOnlyList.cs" />
+    <Compile Include="Collections\Views\ReadOnlyListBase.cs" />
+    <Compile Include="Collections\Views\ReverseList.cs" />
     <Compile Include="Common\CommonDelegates.cs" />
     <Compile Include="Common\CommonPropertyInterfaces.cs" />
     <Compile Include="Common\DelegateExtensions.cs" />
