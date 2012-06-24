@@ -13,7 +13,7 @@
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -31,6 +31,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -65,6 +66,10 @@
   <ItemGroup>
     <Compile Include="Cache\GetterCache.cs" />
     <Compile Include="Diagnostics\CodeSpy.cs" />
+    <Compile Include="IO\Copier.cs" />
+    <Compile Include="IO\ReaderStream.cs" />
+    <Compile Include="IO\ProducerConsumerStream.cs" />
+    <Compile Include="IO\WriterStream.cs" />
     <Compile Include="Operation\Walk\TreeWalker.cs" />
     <Compile Include="Pattern\Enumerable\EnumeratorMonitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
