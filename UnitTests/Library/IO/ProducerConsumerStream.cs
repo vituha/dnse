@@ -35,7 +35,7 @@ namespace VS.Library.UT.IO
         {
         }
 
-        protected long length = long.MaxValue;
+        protected long length;
 
         public override long Length
         {

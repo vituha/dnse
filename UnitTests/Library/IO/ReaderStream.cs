@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.Collections.Concurrent;
-
-namespace VS.Library.UT.IO
+﻿namespace VS.Library.UT.IO
 {
+    using System.Collections.Concurrent;
+
     public class ReaderStream : ProducerConsumerStream
     {
         public ReaderStream(BlockingCollection<byte> queue)
@@ -23,16 +18,14 @@ namespace VS.Library.UT.IO
         {
             int initialOffset = offset;
             foreach (byte item in queue.GetConsumingEnumerable())
-	        {
+            {
                 buffer[offset++] = item;
                 if (--count <= 0)
                 {
                     break;
                 }
             }
-            int readCount = offset - initialOffset;
-            length += readCount;
-            return readCount;
+            return offset - initialOffset;
         }
     }
 }

@@ -53,9 +53,8 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.4.3.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\NUnit 2.4.3\bin\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\ReferenceAssemblies\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -66,7 +65,7 @@
   <ItemGroup>
     <Compile Include="Cache\GetterCache.cs" />
     <Compile Include="Diagnostics\CodeSpy.cs" />
-    <Compile Include="IO\Copier.cs" />
+    <Compile Include="IO\BinaryCopyTest.cs" />
     <Compile Include="IO\ReaderStream.cs" />
     <Compile Include="IO\ProducerConsumerStream.cs" />
     <Compile Include="IO\WriterStream.cs" />
