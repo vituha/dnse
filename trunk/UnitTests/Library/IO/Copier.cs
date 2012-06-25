@@ -25,9 +25,16 @@ namespace VS.Library.UT.IO
             using (var writerStream = new WriterStream(buffer))
             {
 
-                Task serializeTask = new Task(() => serializer.Serialize(writerStream, obj1));
-                serializeTask.Start();
-                deserializedObj = (string)serializer.Deserialize(readerStream);
+                var deserializeTask = Task<string>.Factory.StartNew(() => (string)serializer.Deserialize(readerStream));
+                try
+                {
+                    serializer.Serialize(writerStream, obj1);
+                    deserializedObj = deserializeTask.Result;
+                }
+                finally
+                {
+                    deserializeTask.Dispose();
+                }
             }
             Assert.AreEqual(obj1, deserializedObj);
         }
