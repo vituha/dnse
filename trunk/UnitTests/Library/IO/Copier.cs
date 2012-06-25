@@ -20,11 +20,10 @@ namespace VS.Library.UT.IO
             string deserializedObj;
 
             var serializer = new BinaryFormatter();
-            var buffer = new BlockingCollection<byte>(new ConcurrentQueue<byte>());
+            var buffer = new BlockingCollection<byte>(new ConcurrentQueue<byte>(), 32768);
             using (var readerStream = new ReaderStream(buffer))
             using (var writerStream = new WriterStream(buffer))
             {
-
                 var deserializeTask = Task<string>.Factory.StartNew(() => (string)serializer.Deserialize(readerStream));
                 try
                 {
