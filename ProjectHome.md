@@ -1,0 +1,1 @@
+Effective general dotNet patterns, concepts, libraries and utilities
