@@ -1,9 +1,7 @@
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using NUnit.Framework;
 using System.Reflection;
-
 using FixtNS = VS.Library.Diagnostics;
 
 namespace VS.Library.UT.Diagnostics
@@ -11,7 +9,7 @@ namespace VS.Library.UT.Diagnostics
 	[TestFixture]
 	public class CodeSpy
 	{
-		Dictionary<string, int> blocks = new Dictionary<string, int>();
+	    readonly Dictionary<string, int> blocks = new Dictionary<string, int>();
 
 		[SetUp]
 		public void Init()
