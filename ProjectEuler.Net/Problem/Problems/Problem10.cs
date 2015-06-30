@@ -21,8 +21,13 @@ namespace Problem.Problems
                 candidate += 2;
 
                 bool isPrime = true;
+                int sqrtc = (int)Math.Ceiling(Math.Sqrt(candidate));
                 foreach (int prime in primes)
                 {
+                    if (prime >= sqrtc)
+                    {
+                        break;
+                    }
                     if ((candidate % prime) == 0)
                     {
                         isPrime = false;
