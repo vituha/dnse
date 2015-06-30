@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -52,6 +53,7 @@
     <Compile Include="Problems\Problem8.cs" />
     <Compile Include="Problems\Problem9.cs" />
     <Compile Include="Problems\Problem10.cs" />
+    <Compile Include="Problems\Problem11.cs" />
     <Compile Include="Problems\ProblemTemplate.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
