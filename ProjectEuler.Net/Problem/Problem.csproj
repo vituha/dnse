@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DividerGenerator.cs" />
     <Compile Include="ProblemBase.cs" />
     <Compile Include="Problems\Problem1.cs" />
     <Compile Include="Problems\Problem2.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="Problems\Problem20.cs" />
     <Compile Include="Problems\Problem21.cs" />
     <Compile Include="Problems\Problem22.cs" />
+    <Compile Include="Problems\Problem23.cs" />
     <Compile Include="Problems\ProblemTemplate.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

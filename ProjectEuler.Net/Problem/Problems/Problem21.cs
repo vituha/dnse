@@ -23,7 +23,7 @@ Evaluate the sum of all the amicable numbers under 10000.
 
         private void RunInternal(int n)
         {
-            var primes = new List<int>();
+            var primes = new DividerGenerator();
 
             var sums = new List<int> {0, 0};
 
@@ -45,56 +45,9 @@ Evaluate the sum of all the amicable numbers under 10000.
             Console.WriteLine(totalSum);
         }
 
-        private int CalcSum(List<int> primes, int number)
+        private int CalcSum(DividerGenerator primes, int number)
         {
-            var primeCounts = new List<KeyValuePair<int, int>>();
-            bool isPrime = true;
-
-            int current = number;
-            foreach (int prime in primes)
-            {
-                int cnt = 0;
-                while ((current % prime) == 0)
-                {
-                    cnt++;
-                    current /= prime;
-                }
-                if (cnt > 0)
-                {
-                    primeCounts.Add(new KeyValuePair<int, int>(prime, cnt));
-                    isPrime = false;
-                }
-            }
-
-            if (isPrime)
-            {
-                primes.Add(number);
-                return 1;
-            }
-
-            List<int> takenCount = Enumerable.Range(0, primeCounts.Count).Select(i => primeCounts[i].Value).ToList();
-            List<int> multipliers = Enumerable.Range(0, primeCounts.Count).Select(i => 1).ToList();
-
-            int sum = 1;
-            while (true)
-            {
-                Decrement(takenCount, primeCounts, multipliers);
-
-                int divider = 1;
-                foreach (int multiplier in multipliers)
-                {
-                    divider *= multiplier;
-                }
-
-                if (divider == number)
-                {
-                    break;
-                }
-
-                sum += divider;
-            }
-
-            return sum;
+            return primes.GenerateDividers(number).Sum() + 1;
         }
 
         private void Decrement(List<int> takenCount, List<KeyValuePair<int, int>> primeCounts, List<int> multipliers)
