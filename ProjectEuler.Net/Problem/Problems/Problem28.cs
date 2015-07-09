@@ -13,15 +13,16 @@ namespace Problem.Problems
         {
             int sum = 1;
             int adder = 1;
-            int round = 0;
+            int round2 = 2;
 
-            while (++round * 2 < max)
+            while (round2 < max)
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    adder += round * 2;
+                    adder += round2;
                     sum += adder;
                 }
+                round2 += 2;
             }
 
             Console.WriteLine(sum);
