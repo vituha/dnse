@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DividerGenerator.cs" />
+    <Compile Include="PrimeGenerator.cs" />
     <Compile Include="ProblemBase.cs" />
     <Compile Include="Problems\Problem1.cs" />
     <Compile Include="Problems\Problem2.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Problems\Problem24.cs" />
     <Compile Include="Problems\Problem25.cs" />
     <Compile Include="Problems\Problem26.cs" />
+    <Compile Include="Problems\Problem27.cs" />
     <Compile Include="Problems\ProblemTemplate.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
