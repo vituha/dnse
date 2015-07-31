@@ -31,7 +31,7 @@
                         buffer.CompleteAdding();
                         deserializedObj = deserializeTask.Result;
                     }
-                    catch (Exception exception)
+                    catch (Exception)
                     {
                         if (!buffer.IsAddingCompleted)
                         {
