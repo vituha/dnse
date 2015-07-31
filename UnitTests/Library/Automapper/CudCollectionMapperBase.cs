@@ -1,24 +1,26 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using AutoMapper.Mappers;
 
 namespace VS.Library.UT.Automapper
 {
-    public abstract class CudCollectionMapperBase<TEnumerable> : IObjectMapper where TEnumerable : IEnumerable
+    public abstract class CudCollectionMapperBase<TKey> : IObjectMapper
     {
         public object Map(ResolutionContext context, IMappingEngineRunner mapper)
         {
             if (context.IsSourceValueNull && mapper.ShouldMapSourceCollectionAsNull(context))
                 return (object)null;
 
-            IEnumerable collection = ((context.SourceValue as IEnumerable ?? new object[0]).Cast<object>().ToList<object>());
-            Type elementType1 = TypeHelper.GetElementType(context.SourceType, collection);
-            Type elementType2 = TypeHelper.GetElementType(context.DestinationType);
-            TEnumerable enumerableFor = (TEnumerable)context.DestinationValue;
+            IEntityWithKey<TKey>[] source = ((IEnumerable<IEntityWithKey<TKey>>)context.SourceValue).ToArray();
 
-            //Merge(collection, enumerableFor, elementType1, elementType2);
+            Type sourceElementType = TypeHelper.GetElementType(context.SourceType, source);
+            Type destinationElementType = TypeHelper.GetElementType(context.DestinationType);
+            ICollection<IEntityWithKey<TKey>> destination = (ICollection<IEntityWithKey<TKey>>)context.DestinationValue;
+
+            Merge(source, destination, sourceElementType, destinationElementType);
 
             //ClearEnumerable(enumerableFor);
             //int num = 0;
@@ -33,12 +35,22 @@ namespace VS.Library.UT.Automapper
             //    this.SetElementValue(enumerableFor, mappedValue, num);
             //    ++num;
             //}
-            return enumerableFor;
+            return destination;
         }
 
-        private void Merge(ICollection source, TEnumerable destination, Type sourceElementType, Type destinationElementType)
+        private void Merge(IEnumerable<IEntityWithKey<TKey>> source, ICollection<IEntityWithKey<TKey>> destination, Type sourceElementType, Type destinationElementType)
         {
-            
+            Dictionary<TKey, IEntityWithKey<TKey>> sourceLookup = source.ToDictionary(e => e.Id);
+            var visitedDestinations = new HashSet<IEntityWithKey<TKey>>();
+
+            foreach (IEntityWithKey<TKey> destinationItem in destination)
+            {
+                IEntityWithKey<TKey> sourceItem;
+                if (sourceLookup.TryGetValue(destinationItem.Id, out sourceItem))
+                {
+                    Update()
+                }
+            }
         }
 
         protected virtual object GetOrCreateDestinationObject(ResolutionContext context, IMappingEngineRunner mapper, Type destElementType, int sourceLength)

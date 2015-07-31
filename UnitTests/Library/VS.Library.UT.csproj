@@ -85,6 +85,7 @@
   <ItemGroup>
     <Compile Include="Automapper\CollectionMappingTests.cs" />
     <Compile Include="Automapper\CudCollectionMapperBase.cs" />
+    <Compile Include="Automapper\IEntityWithKey.cs" />
     <Compile Include="Automapper\Order.cs" />
     <Compile Include="Automapper\OrderDetail.cs" />
     <Compile Include="Automapper\OrderDetailsDto.cs" />
