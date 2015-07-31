@@ -75,6 +75,8 @@
     <Compile Include="Collections\EnumerableExtensions.cs" />
     <Compile Include="Collections\ListExtensions.cs" />
     <Compile Include="Collections\Range.cs" />
+    <Compile Include="Collections\Specialized\BulkEditCollectionExtensions.cs" />
+    <Compile Include="Collections\Specialized\BulkEditExtensions.cs" />
     <Compile Include="Collections\Specialized\BulkEditList.cs" />
     <Compile Include="Collections\Specialized\IBulkEditCollection.cs" />
     <Compile Include="Collections\Specialized\IBulkEditList.cs" />

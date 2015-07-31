@@ -91,6 +91,7 @@
     <Compile Include="Automapper\OrderDetailsDto.cs" />
     <Compile Include="Automapper\OrderDto.cs" />
     <Compile Include="Cache\GetterCache.cs" />
+    <Compile Include="Collections\JoinTests.cs" />
     <Compile Include="Collections\Specialized\BulkEditListTests.cs" />
     <Compile Include="Diagnostics\CodeSpy.cs" />
     <Compile Include="IO\BinaryCopyTest.cs" />

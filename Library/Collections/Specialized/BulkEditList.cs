@@ -69,14 +69,20 @@ namespace VS.Library.Collections.Specialized
             get { return false; }
         }
 
-        public void AddRange(IEnumerable<T> source)
+        private void AddRange(IEnumerable<T> source)
         {
             AddRange(source, _count);
         }
 
-        public void RemoveRange(int count)
+        private void RemoveRange(int count)
         {
             RemoveRange(_count - count, count);
+        }
+
+        public void ReplaceRange(int removeCount, IEnumerable<T> addSource)
+        {
+            RemoveRange(removeCount);
+            AddRange(addSource);
         }
 
         public int IndexOf(T item)
@@ -120,7 +126,7 @@ namespace VS.Library.Collections.Specialized
             set { _buffer[ImportIndex(index)] = value; }
         }
 
-        public void AddRange(IEnumerable<T> source, int start)
+        private void AddRange(IEnumerable<T> source, int start)
         {
             var collectionSource = source as IReadOnlyCollection<T>;
             if (collectionSource != null)
@@ -135,7 +141,7 @@ namespace VS.Library.Collections.Specialized
             {
                 itemArray[0] = item;
                 BulkAdd(itemArray, start++);
-                _count ++;
+                _count++;
             }
         }
 
@@ -158,7 +164,10 @@ namespace VS.Library.Collections.Specialized
             int moveCount = start;
             if (_start < insertCount) return false;
 
-            Array.Copy(_buffer, _start, _buffer, _start - insertCount, moveCount);
+            if (moveCount > 0)
+            {
+                Array.Copy(_buffer, _start, _buffer, _start - insertCount, moveCount);
+            }
             int insertPosition = ImportIndex(start);
             foreach (T insertedItem in collectionSource)
             {
@@ -174,7 +183,10 @@ namespace VS.Library.Collections.Specialized
             int moveCount = _count - start;
             if (_start + _count + insertCount > _buffer.Length) return false;
 
-            Array.Copy(_buffer, ImportIndex(start), _buffer, ImportIndex(start) + insertCount, moveCount);
+            if (moveCount > 0)
+            {
+                Array.Copy(_buffer, ImportIndex(start), _buffer, ImportIndex(start) + insertCount, moveCount);
+            }
             int insertPosition = ImportIndex(start);
             foreach (T insertedItem in collectionSource)
             {
@@ -189,28 +201,45 @@ namespace VS.Library.Collections.Specialized
             int leftMoveCount = start;
             int rightMoveCount = _count - leftMoveCount;
 
-            int minBufferLength = _count + insertCount;
+            int newCount = _count + insertCount;
             int newBufferLength = Math.Max(_buffer.Length * 2, MinBufferSize);
-            while (newBufferLength < minBufferLength)
+            while (newBufferLength < newCount)
             {
                 newBufferLength *= 2;
             }
 
             var newBuffer = new T[newBufferLength];
 
-            Array.Copy(_buffer, _start, newBuffer, 0, leftMoveCount);
-            Array.Copy(_buffer, _start + leftMoveCount, newBuffer, leftMoveCount + insertCount, rightMoveCount);
+            int newStart;
+            if (_count > 0)
+            {
+                int newFreeSpace = newBufferLength - newCount;
+                int minReserved = newFreeSpace / 2;
+                newStart = (int)(minReserved / 2 + (newFreeSpace - minReserved) * (long)rightMoveCount / _count);
+            }
+            else
+            {
+                newStart = (newBufferLength - insertCount) / 2;
+            }
+            if (leftMoveCount > 0)
+            {
+                Array.Copy(_buffer, _start, newBuffer, newStart, leftMoveCount);
+            }
+            if (rightMoveCount > 0)
+            {
+                Array.Copy(_buffer, _start + leftMoveCount, newBuffer, newStart + leftMoveCount + insertCount, rightMoveCount);
+            }
 
-            int insertPosition = leftMoveCount;
+            int insertPosition = newStart + leftMoveCount;
             foreach (T insertedItem in collectionSource)
             {
                 newBuffer[insertPosition++] = insertedItem;
             }
-            _start = 0;
+            _start = newStart;
             _buffer = newBuffer;
         }
 
-        public void RemoveRange(int start, int count)
+        private void RemoveRange(int start, int count)
         {
             if (start < 0)
             {
@@ -228,6 +257,12 @@ namespace VS.Library.Collections.Specialized
                 Array.Copy(_buffer, ImportIndex(firstSurviverIndex), _buffer, ImportIndex(start), surviverCount);
             }
             _count -= count;
+        }
+
+        public void ReplaceRange(int removeAt, int removeCount, int insertAt, IEnumerable<T> insertSource)
+        {
+            RemoveRange(removeAt, removeCount);
+            AddRange(insertSource, insertAt);
         }
     }
 }
