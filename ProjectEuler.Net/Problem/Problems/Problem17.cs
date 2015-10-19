@@ -9,6 +9,16 @@ NOTE: Do not count spaces or hyphens. For example, 342 (three hundred and forty-
      */
     internal sealed class Problem17 : ProblemBase
     {
+        readonly string[] _teens =
+            {
+                "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
+                "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"
+            };
+
+        readonly string[] _tens = { "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety" };
+
+        readonly string[] _thousands = { "thousand", "million", "billion" };
+
         public override void Run()
         {
             int sum = 0;
@@ -33,8 +43,8 @@ NOTE: Do not count spaces or hyphens. For example, 342 (three hundred and forty-
 
             if (thousandIndex >= 0)
             {
-                letterCount += thousands[thousandIndex].Length;
-                Console.Write(" " + thousands[thousandIndex--]);
+                letterCount += _thousands[thousandIndex].Length;
+                Console.Write(" " + _thousands[thousandIndex--]);
             }
 
             while (x > 0)
@@ -47,8 +57,8 @@ NOTE: Do not count spaces or hyphens. For example, 342 (three hundred and forty-
 
                 if (thousandIndex >= 0)
                 {
-                    letterCount += thousands[thousandIndex].Length;
-                    Console.Write(" " + thousands[thousandIndex--]);
+                    letterCount += _thousands[thousandIndex].Length;
+                    Console.Write(" " + _thousands[thousandIndex--]);
                 }
             }
 
@@ -65,8 +75,8 @@ NOTE: Do not count spaces or hyphens. For example, 342 (three hundred and forty-
 
             if (hundreds > 0)
             {
-                Console.Write(" " + teens[hundreds] + " hundred");
-                cnt += teens[hundreds].Length + 7;
+                Console.Write(" " + _teens[hundreds] + " hundred");
+                cnt += _teens[hundreds].Length + 7;
             }
 
             if (tuple == 0)
@@ -82,8 +92,8 @@ NOTE: Do not count spaces or hyphens. For example, 342 (three hundred and forty-
 
             if (tuple < 20)
             {
-                Console.Write(" " + teens[tuple]);
-                cnt += teens[tuple].Length;
+                Console.Write(" " + _teens[tuple]);
+                cnt += _teens[tuple].Length;
             }
             else 
             {
@@ -91,27 +101,17 @@ NOTE: Do not count spaces or hyphens. For example, 342 (three hundred and forty-
                 int low = tuple % 10;
                 if (high > 1)
                 {
-                    Console.Write(" " + tens[high - 2]);
-                    cnt += tens[high - 2].Length;
+                    Console.Write(" " + _tens[high - 2]);
+                    cnt += _tens[high - 2].Length;
                 }
                 if (low > 0)
                 {
-                    Console.Write(" " + teens[low]);
-                    cnt += teens[low].Length;
+                    Console.Write(" " + _teens[low]);
+                    cnt += _teens[low].Length;
                 }
             }
 
             return cnt;
         }
-
-        string[] teens = 
-            {
-                "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", 
-                "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"
-            };
-
-        string[] tens = { "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety" };
-
-        string[] thousands = { "thousand", "million", "billion" };
     }
 }
