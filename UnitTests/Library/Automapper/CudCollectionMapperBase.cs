@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using AutoMapper.Mappers;
+using Ipreo.Vision.Utils.Collections;
 
 namespace VS.Library.UT.Automapper
 {
@@ -20,7 +21,7 @@ namespace VS.Library.UT.Automapper
             Type destinationElementType = TypeHelper.GetElementType(context.DestinationType);
             ICollection<IEntityWithKey<TKey>> destination = (ICollection<IEntityWithKey<TKey>>)context.DestinationValue;
 
-            Merge(source, destination, sourceElementType, destinationElementType);
+            Merge(source, destination, sourceElementType, destinationElementType, mapper);
 
             //ClearEnumerable(enumerableFor);
             //int num = 0;
@@ -38,17 +39,31 @@ namespace VS.Library.UT.Automapper
             return destination;
         }
 
-        private void Merge(IEnumerable<IEntityWithKey<TKey>> source, ICollection<IEntityWithKey<TKey>> destination, Type sourceElementType, Type destinationElementType)
+        private void Merge(IEnumerable<IEntityWithKey<TKey>> source, ICollection<IEntityWithKey<TKey>> destination, Type sourceElementType, Type destinationElementType, IMappingEngineRunner mapper, TypeMap typeMapFor)
         {
-            Dictionary<TKey, IEntityWithKey<TKey>> sourceLookup = source.ToDictionary(e => e.Id);
-            var visitedDestinations = new HashSet<IEntityWithKey<TKey>>();
+            ResolutionResult resolutionResult = new ResolutionResult(context.CreateElementContext((TypeMap)null, obj, elementType1, elementType2, num));
+            TypeMap typeMapFor = mapper.ConfigurationProvider.FindTypeMapFor(resolutionResult, destinationElementType);
 
-            foreach (IEntityWithKey<TKey> destinationItem in destination)
+            var added = new List<IEntityWithKey<TKey>>();
+            var deleted = new List<IEntityWithKey<TKey>>();
+            foreach (var pair in source.FullJoin(destination).On(s => s.Id, d => d.Id))
             {
-                IEntityWithKey<TKey> sourceItem;
-                if (sourceLookup.TryGetValue(destinationItem.Id, out sourceItem))
+                IEntityWithKey<TKey> sourceItem = pair.Outer;
+                IEntityWithKey<TKey> destinationItem = pair.Inner;
+                if (sourceItem == null)
                 {
-                    Update()
+                    deleted.Add(destinationItem);
+                }
+                else if (destinationItem == null)
+                {
+                    ResolutionContext elementContext = new ResolutionContext(typeMapFor, sourceItem, sourceElementType, destinationElementType, null, null);
+                    destinationItem = (IEntityWithKey<TKey>) mapper.Map(elementContext);
+                    added.Add(destinationItem);
+                }
+                else
+                {
+                    ResolutionContext elementContext = new ResolutionContext(typeMapFor, sourceItem, destinationItem, sourceElementType, destinationElementType, null, null);
+                    mapper.Map(elementContext);
                 }
             }
         }

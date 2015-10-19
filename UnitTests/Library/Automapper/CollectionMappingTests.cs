@@ -14,9 +14,9 @@ namespace VS.Library.UT.Automapper
         public void Automapper_ShouldNotMapCollectionPropertiesByDefault()
         {
             IConfiguration configuration = Mapper.Configuration;
-            //MapperRegistry.Mappers.Add(new EntityCollectionMapper());
 
             configuration.CreateMap<OrderDto, Order>().ForMember(o => o.OrderDetails, opt => opt.UseDestinationValue());
+            configuration.CreateMap<IEnumerable<OrderDetailsDto>, ICollection<OrderDetail>>().ConvertUsing<OrderDetailDtoConverter>();
             configuration.CreateMap<OrderDetailsDto, OrderDetail>();
 
             IMappingEngine mapper = Mapper.Engine;

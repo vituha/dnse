@@ -83,11 +83,20 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Automapper\CollectionJoins\FullConditionalJoin.cs" />
+    <Compile Include="Automapper\CollectionJoins\IConditionalJoin.cs" />
+    <Compile Include="Automapper\CollectionJoins\InnerConditionalJoin.cs" />
+    <Compile Include="Automapper\CollectionJoins\JoinEnumerableExtensions.cs" />
+    <Compile Include="Automapper\CollectionJoins\JoinMatch.cs" />
+    <Compile Include="Automapper\CollectionJoins\LeftConditionalJoin.cs" />
+    <Compile Include="Automapper\CollectionJoins\RightConditionalJoin.cs" />
     <Compile Include="Automapper\CollectionMappingTests.cs" />
     <Compile Include="Automapper\CudCollectionMapperBase.cs" />
     <Compile Include="Automapper\IEntityWithKey.cs" />
+    <Compile Include="Automapper\ITypeConverter.cs" />
     <Compile Include="Automapper\Order.cs" />
     <Compile Include="Automapper\OrderDetail.cs" />
+    <Compile Include="Automapper\OrderDetailDtoConverter.cs" />
     <Compile Include="Automapper\OrderDetailsDto.cs" />
     <Compile Include="Automapper\OrderDto.cs" />
     <Compile Include="Cache\GetterCache.cs" />
