@@ -33,8 +33,8 @@ namespace Problem
                 yield break;
             }
 
-            List<int> takenCount = Enumerable.Range(0, primeCounts.Length).Select(i => primeCounts[i].Value).ToList();
-            List<int> multipliers = Enumerable.Range(0, primeCounts.Length).Select(i => 1).ToList();
+            List<int> takenCount = primeCounts.Select(p => p.Value).ToList();
+            List<int> multipliers = primeCounts.Select(p => 1).ToList();
 
             while (true)
             {
@@ -58,7 +58,7 @@ namespace Problem
         /// <summary>
         /// Calculates factorization of given number, i.e. its prime dividers and their counts.
         /// </summary>
-        public KeyValuePair<int, int>[] GetFactorization(int number)
+        private KeyValuePair<int, int>[] GetFactorization(int number)
         {
             var primeCounts = new List<KeyValuePair<int, int>>();
 
