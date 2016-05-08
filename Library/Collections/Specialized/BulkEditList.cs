@@ -29,7 +29,7 @@ namespace VS.Library.Collections.Specialized
 
         public void Add(T item)
         {
-            AddRange(CollectionUtil.Yield(item));
+            AddRange(EnumerableUtil.Yield(item));
         }
 
         public void Clear()
@@ -112,7 +112,7 @@ namespace VS.Library.Collections.Specialized
 
         public void Insert(int index, T item)
         {
-            AddRange(CollectionUtil.Yield(item), index);
+            AddRange(EnumerableUtil.Yield(item), index);
         }
 
         public void RemoveAt(int index)
