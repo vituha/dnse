@@ -4,9 +4,9 @@
     
     public static class ListExtensions
     {
-        public static IList<T> GetRange<T>(IList<T> source, int start, int count, bool reverse)
+        public static IReadOnlyList<T> GetRange<T>(IReadOnlyList<T> source, int start, int count, bool reverse)
         {
-            return new Range<T>(source, start, count, reverse);
+            return new ReadOnlyListRange<T>(source, start, count);
         }
-   }
+    }
 }

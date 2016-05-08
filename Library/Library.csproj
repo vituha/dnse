@@ -74,7 +74,7 @@
     <Compile Include="Collections\EnumerableUtil.cs" />
     <Compile Include="Collections\EnumerableExtensions.cs" />
     <Compile Include="Collections\ListExtensions.cs" />
-    <Compile Include="Collections\Range.cs" />
+    <Compile Include="Collections\ReadOnlyListRange.cs" />
     <Compile Include="Collections\Specialized\BulkEditCollectionExtensions.cs" />
     <Compile Include="Collections\Specialized\BulkEditExtensions.cs" />
     <Compile Include="Collections\Specialized\BulkEditList.cs" />
@@ -108,6 +108,8 @@
     <Compile Include="Text\Formatter.cs" />
     <Compile Include="Text\Joiner.cs" />
     <Compile Include="Text\StringBuffer.cs" />
+    <Compile Include="Text\StringExtensions.cs" />
+    <Compile Include="Text\StringToReadOnlyListAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Diagnostics\CodeSpy.cd" />
